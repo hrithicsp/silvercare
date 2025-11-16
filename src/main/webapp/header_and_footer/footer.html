@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Footer</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<footer class="bg-light text-muted pt-5 mt-5 border-top">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+        <h5 class="text-primary fw-bold mb-3">SilverCare</h5>
+        <p class="pe-4">
+          Compassionate elderly care services built with love, trust, and dignity.
+        </p>
+        <p class="social-icon">
+          <a href="#" class="me-3"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="me-3"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="me-3"><i class="fab fa-instagram"></i></a>
+        </p>
+      </div>
+
+      <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+        <h6 class="text-uppercase fw-bold mb-3">Quick Links</h6>
+        <ul class="list-unstyled mb-0 footer-links">
+          <li class="mb-2"><a href="home.jsp">Home</a></li>
+          <li class="mb-2"><a href="serviceCategories.jsp">Services</a></li>
+          <li class="mb-2"><a href="about.jsp">About Us</a></li>
+          <li class="mb-2"><a href="contact.jsp">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+        <h6 class="text-uppercase fw-bold mb-3">Services</h6>
+        <ul class="list-unstyled mb-0 footer-links">
+          <li class="mb-2"><a href="#">In-Home Care</a></li>
+          <li class="mb-2"><a href="#">Companion Care</a></li>
+          <li class="mb-2"><a href="#">Respite Care</a></li>
+          <li class="mb-2"><a href="#">Skilled Nursing</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+        <h6 class="text-uppercase fw-bold mb-3">Contact</h6>
+        <ul class="list-unstyled mb-0">
+          <li class="mb-2"><i class="fas fa-home me-2"></i> 123 Care St, USA</li>
+          <li class="mb-2"><i class="fas fa-envelope me-2"></i> info@silvercare.com</li>
+          <li class="mb-2"><i class="fas fa-phone me-2"></i> + 01 234 567 88</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="text-center p-3 mt-4" style="background-color: rgba(0, 0, 0, 0.02);">
+    &copy; <span id="year"></span> SilverCare. All Rights Reserved.
+  </div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

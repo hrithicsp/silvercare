@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="java.sql.*"%>
+<%@ page language="java" %>
+<%@ page import="jakarta.servlet.http.HttpSession" %>
 
 <%
-    // Detect login state
-    String client = (String) session.getAttribute("client");
-    String admin = (String) session.getAttribute("admin");
+    HttpSession sessionUser = request.getSession(false);
+    boolean loggedIn = (sessionUser != null && sessionUser.getAttribute("sessUserID") != null);
+    String role = loggedIn ? (String) sessionUser.getAttribute("sessUserRole") : "";
 %>
 
 <!DOCTYPE html>
@@ -19,15 +19,18 @@
 </head>
 
 <body>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
   <div class="container">
 
-    <!-- Logo -->
-    <a class="navbar-brand fw-bold text-primary" href="${pageContext.request.contextPath}/home.jsp" style="font-size: 1.4rem;">
+    <!-- Brand / Logo -->
+    <a class="navbar-brand fw-bold text-primary"
+       href="<%=request.getContextPath()%>/home.jsp"
+       style="font-size: 1.4rem;">
       SilverCare
     </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarNav" aria-controls="navbarNav"
             aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -36,72 +39,70 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto align-items-center">
 
-        <%-- --------------------------------------------------------
-             SHOW FOR CLIENT OR PUBLIC (NOT ADMIN)
-             Home + Services Only Visible If Admin Is NOT Logged In
-           -------------------------------------------------------- --%>
-        <% if(admin == null) { %>
-            <li class="nav-item">
-            	<a class="navbar-brand fw-bold text-primary" href="home.jsp">Home</a>
-            </li>
+        <!-- HOME -->
+        <li class="nav-item">
+          <a class="nav-link fw-semibold"
+             href="<%=request.getContextPath()%>/home.jsp">Home</a>
+        </li>
+
+        <!-- SERVICES (client service categories page) -->
+        <li class="nav-item">
+          <a class="nav-link fw-semibold"
+             href="<%=request.getContextPath()%>/client/serviceCategories.jsp">Services</a>
+        </li>
+
+        <%-- ============================
+             IF NOT LOGGED IN
+           ============================ --%>
+        <% if (!loggedIn) { %>
 
             <li class="nav-item">
-              <a class="nav-link fw-semibold" href="serviceCategories.jsp">Services</a>
-            </li>
-        <% } %>
-
-
-        <%-- --------------------------------------------------------
-             PUBLIC USER (NO LOGIN)
-             Show Register, Client Login, Admin Login
-           -------------------------------------------------------- --%>
-        <% if(client == null && admin == null) { %>
-
-            <li class="nav-item">
-                <a class="nav-link fw-semibold" href="register.jsp">Register</a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link fw-semibold" href="clientLogin.jsp">Client Login</a>
+              <a class="nav-link fw-semibold"
+                 href="<%=request.getContextPath()%>/register.jsp">Register</a>
             </li>
 
             <li class="nav-item ms-lg-2">
-                <a class="btn btn-primary btn-sm fw-semibold px-3 py-2" href="admin/adminLogin.jsp">Admin Login</a>
+              <a class="btn btn-primary btn-sm fw-semibold px-3 py-2"
+                 href="<%=request.getContextPath()%>/clientLogin.jsp">Login</a>
             </li>
 
+        <% } else { %>
 
-        <%-- --------------------------------------------------------
-             CLIENT LOGGED IN
-           -------------------------------------------------------- --%>
-        <% } else if(client != null) { %>
+            <%-- ============================
+                 LOGGED IN: ADMIN
+               ============================ --%>
+            <% if (role.equals("ADMIN")) { %>
 
-            <li class="nav-item">
-                <a class="nav-link fw-semibold" href="clientProfile.jsp">My Account</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold"
+                       href="<%=request.getContextPath()%>/admin/adminDashboard.jsp">Dashboard</a>
+                </li>
 
+            <% } else { %>
+
+            <%-- ============================
+                 LOGGED IN: CLIENT
+               ============================ --%>
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold"
+                       href="<%=request.getContextPath()%>/client/clientDashboard.jsp">Dashboard</a>
+                </li>
+
+            <% } %>
+
+            <!-- LOGOUT BUTTON -->
             <li class="nav-item ms-lg-2">
-                <a class="btn btn-danger btn-sm fw-semibold px-3 py-2" href="logout.jsp">Logout</a>
-            </li>
-
-
-        <%-- --------------------------------------------------------
-             ADMIN LOGGED IN
-           -------------------------------------------------------- --%>
-        <% } else if(admin != null) { %>
-
-            <li class="nav-item">
-                <a class="nav-link fw-semibold" href="${pageContext.request.contextPath}/admin/adminDashboard.jsp">Dashboard</a>
-            </li>
-
-            <li class="nav-item ms-lg-2">
-                <a class="btn btn-danger btn-sm fw-semibold px-3 py-2" href="admin/logout.jsp">Logout</a>
+              <a class="btn btn-danger btn-sm fw-semibold px-3 py-2"
+                 href="<%=request.getContextPath()%>/LogoutServlet">Logout</a>
             </li>
 
         <% } %>
 
       </ul>
     </div>
+
   </div>
 </nav>
+
 </body>
 </html>

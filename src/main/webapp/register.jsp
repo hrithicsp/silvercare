@@ -112,7 +112,7 @@
   </style>
 </head>
 <body>
-  <%@ include file="header_and_footer/header.html" %>
+  <%@ include file="header_and_footer/header.jsp" %>
 
   <main>
     <div class="register-container">

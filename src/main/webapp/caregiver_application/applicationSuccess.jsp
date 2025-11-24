@@ -13,7 +13,7 @@
   </style>
 </head>
 <body>
-  <%@ include file="../header_and_footer/header.html" %>
+  <%@ include file="../header_and_footer/header.jsp" %>
 
   <div class="card card-success p-4">
     <div class="card-body text-center">

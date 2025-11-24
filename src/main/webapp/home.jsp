@@ -132,7 +132,7 @@
 </head>
 <body>
 
-<%@ include file="header_and_footer/header.html" %>
+<%@ include file="header_and_footer/header.jsp" %>
 
 <section class="hero">
   <h1>Compassionate Elderly Care, Anytime.</h1>

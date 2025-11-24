@@ -43,7 +43,7 @@ h2 span{
 
 <body>
 
-<%@ include file="../header_and_footer/header.html" %>
+<%@ include file="../header_and_footer/header.jsp" %>
 
 <div class="dashboard-box">
     
@@ -51,6 +51,7 @@ h2 span{
 
     <div class="row g-4 mt-2">
 
+        <!-- Edit Profile -->
         <div class="col-md-4">
             <a href="editProfile.jsp" class="text-decoration-none">
                 <div class="card p-4 text-center">
@@ -59,23 +60,25 @@ h2 span{
             </a>
         </div>
 
+        <!-- Apply as Caregiver -->
         <div class="col-md-4">
-            <a href="caregiverApply.jsp" class="text-decoration-none">
+            <a href="../caregiver_application/applyCaregiver.jsp" class="text-decoration-none">
                 <div class="card p-4 text-center">
                     <h5>Apply As Caregiver</h5>
                 </div>
             </a>
         </div>
 
+        <!-- Logout -->
         <div class="col-md-4">
-            <a href="LogoutServlet" class="text-decoration-none">
+            <a href="<%=request.getContextPath()%>/LogoutServlet" class="text-decoration-none">
                 <div class="card p-4 text-center">
                     <h5>Logout</h5>
                 </div>
             </a>
         </div>
-    </div>
 
+    </div>
 
 </div>
 

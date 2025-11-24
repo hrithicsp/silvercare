@@ -43,7 +43,7 @@ h2 span{
 
 <body>
 
-<%@ include file="../header_and_footer/header.html" %>
+<%@ include file="../header_and_footer/header.jsp" %>
 
 <div class="dashboard-box">
 

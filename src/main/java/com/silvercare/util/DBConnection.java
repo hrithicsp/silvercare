@@ -7,7 +7,7 @@ public class DBConnection {
     
     private static final String URL = "jdbc:mysql://localhost:3306/silvercare";
     private static final String USER = "root";
-    private static final String PASS = "Pass2231";
+    private static final String PASS = "1234";
 
     public static Connection getConnection() {
         Connection con = null;

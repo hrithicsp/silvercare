@@ -1,11 +1,11 @@
-<%@ page import="java.sql.*" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="jakarta.servlet.http.HttpSession" %>
-<%@ include file="../header_and_footer/header.jsp" %>
+<%@ page import="java.sql.*" %>
 
 <%
-    // Admin guard
+    // ADMIN SESSION GUARD
     HttpSession s = request.getSession(false);
-    if(s == null || !"ADMIN".equals(s.getAttribute("sessUserRole"))){
+    if (s == null || !"ADMIN".equals(s.getAttribute("sessUserRole"))) {
         response.sendRedirect("../clientLogin.jsp");
         return;
     }
@@ -15,7 +15,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Feedback Records | Admin</title>
+<title>Client Feedback | Admin</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
@@ -23,127 +23,104 @@
 
 <style>
 
-body{
-    background: linear-gradient(145deg,#00796B,#2E7D32);
-    font-family:'Poppins',sans-serif;
-    min-height:100vh;
+body {
+    background: #e7f0ff; /* soft blue */
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
 }
 
-/* Main container */
+/* main container */
 .feedback-container {
-    background:white;
-    padding:40px;
-    border-radius:24px;
-    max-width:1200px;
-    margin:auto;
-    margin-top:45px;
-    margin-bottom:45px;
-    box-shadow:0 14px 38px rgba(0,0,0,.25);
+    background: white;
+    max-width: 1150px;
+    padding: 40px;
+    border-radius: 24px;
+    margin: auto;
+    margin-top: 50px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.15);
 }
 
-/* Page Header */
-.page-title{
-    color:#00796B;
-    font-weight:700;
-}
-
-/* Feedback Card */
+/* cards */
 .feedback-card {
-    border-radius:18px;
-    padding:25px;
-    min-height:230px;
-    transition:all .25s ease;
-    box-shadow:0 5px 14px rgba(0,0,0,.12);
-    background:white;
+    border-radius: 18px;
+    padding: 20px;
+    transition: .25s ease;
+    min-height: 240px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.10);
 }
 .feedback-card:hover {
-    transform:translateY(-6px);
-    box-shadow:0 12px 32px rgba(0,0,0,.18);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(0,0,0,.15);
 }
 
-/* Stars */
-.feedback-rating i {
-    color:#FFCA28;
-    margin-right:2px;
-    font-size:1.1rem;
+/* rating stars */
+.star {
+    color: #fbc02d;
+    font-size: 1.1rem;
 }
 
-/* Text formatting */
-.client-name {
-    font-size:1.2rem;
-    font-weight:700;
+/* title */
+.page-title {
+    color: #0d6efd;
+    font-weight: 700;
 }
 
-.service-name {
-    color:#00796B;
-    font-weight:600;
-    margin-bottom:5px;
-}
-
-.feedback-comment {
-    color:#444;
-    font-size:0.95rem;
-    min-height:60px;
-}
-
-.feedback-time {
-    font-size:0.85rem;
-    color:#6c757d;
-}
 </style>
-
 </head>
 
 <body>
 
+<%@ include file="../header_and_footer/header.jsp" %>
+
 <div class="feedback-container">
 
-    <!-- Page Title -->
-    <div class="text-center mb-5">
-        <h2 class="page-title">Client Feedback</h2>
-        <p class="text-muted">Insights from clients and families</p>
-    </div>
+    <h2 class="page-title mb-2">Client Feedback</h2>
+    <p class="text-muted mb-4">View all feedback submitted by clients.</p>
 
     <div class="row g-4">
 
-<%
-    try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(
-            "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC"
-        );
+    <%
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC"
+            );
 
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM feedback ORDER BY feedback_id DESC");
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM feedback ORDER BY feedback_id DESC");
 
-        while(rs.next()){
-            int rating = rs.getInt("rating");
-%>
+            while(rs.next()){
+                int rating = rs.getInt("rating");
+    %>
 
-        <!-- Feedback Card -->
+        <!-- FEEDBACK CARD -->
         <div class="col-md-4">
             <div class="feedback-card">
 
-                <div class="client-name"><%= rs.getString("client_name") %></div>
-                <div class="service-name"><%= rs.getString("service_name") %></div>
+                <h5 class="fw-bold mb-1"><%= rs.getString("client_name") %></h5>
 
-                <!-- Star Rating -->
-                <div class="feedback-rating mb-2">
+                <p class="fw-semibold text-primary mb-1">
+                    <i class="fa-solid fa-hand-holding-medical me-1"></i>
+                    <%= rs.getString("service_name") %>
+                </p>
+
+                <!-- Rating -->
+                <div class="mb-2">
                     <% for(int i=1; i<=rating; i++) { %>
-                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star star"></i>
                     <% } %>
                     <% for(int i=rating+1; i<=5; i++) { %>
-                        <i class="fa-regular fa-star"></i>
+                        <i class="fa-regular fa-star star"></i>
                     <% } %>
                 </div>
 
                 <!-- Comments -->
-                <p class="feedback-comment">
+                <p class="text-muted mb-2" style="min-height:60px;">
                     <%= rs.getString("comments") %>
                 </p>
 
-                <!-- Date -->
-                <p class="feedback-time">
+                <!-- Timestamp -->
+                <p class="text-secondary" style="font-size: .85rem;">
                     <i class="fa-regular fa-clock me-1"></i>
                     <%= rs.getTimestamp("submitted_at") %>
                 </p>
@@ -151,25 +128,21 @@ body{
             </div>
         </div>
 
-<%
-        }
+    <%
+            }
+            conn.close();
 
-        conn.close();
-
-    } catch(Exception e){
-%>
-
+        } catch(Exception e){
+    %>
         <div class="col-12 text-center">
             <p class="text-danger fw-bold">Error: <%= e.getMessage() %></p>
         </div>
+    <%
+        }
+    %>
 
-<%
-    }
-%>
-
-    </div> <!-- row end -->
-
-</div> <!-- container end -->
+    </div>
+</div>
 
 <%@ include file="../header_and_footer/footer.html" %>
 

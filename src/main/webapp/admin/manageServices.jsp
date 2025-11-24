@@ -24,7 +24,7 @@
 <style>
 
 body{
-    background: linear-gradient(145deg,#00796B,#2E7D32);
+    background:#e7f0ff; /* Soft blue theme */
     font-family:'Poppins',sans-serif;
     min-height:100vh;
 }
@@ -33,27 +33,46 @@ body{
 .services-container{
     background:white;
     padding:40px;
-    border-radius:24px;
+    border-radius:20px;
     max-width:1150px;
     margin:auto;
     margin-top:50px;
-    box-shadow:0 14px 38px rgba(0,0,0,.28);
+    box-shadow:0 12px 30px rgba(0,0,0,.12);
 }
 
+/* header */
+h2.fw-bold{
+    color:#0d6efd !important;
+}
+
+/* add button */
+.btn-add{
+    background:#0d6efd !important;   /* bright blue */
+    color:white !important;          /* force white text */
+    border:2px solid #0a58ca !important;
+    font-weight:600;
+    padding:10px 22px;
+    border-radius:10px;
+    position:relative;
+    z-index:9999; /* makes sure nothing hides it */
+}
+.btn-add:hover{
+    background:#0b5ed7 !important;
+}
 /* category styling */
 .category-header{
     margin-top:40px;
 }
 .category-title{
-    font-size:1.8rem;
+    font-size:1.6rem;
     font-weight:700;
-    color:#00796B;
+    color:#0d6efd;
 }
 .category-line{
     width:120px;
     height:4px;
     border-radius:10px;
-    background:#00796B;
+    background:#0d6efd;
     margin-top:6px;
 }
 
@@ -81,23 +100,6 @@ body{
     font-size:.95rem;
 }
 
-/* add button */
-.btn-add {
-    background: linear-gradient(135deg, #2E7D32, #00796B);
-    color: white !important;
-    font-weight: 700;
-    padding: 10px 22px;
-    border-radius: 10px;
-    border: none;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
-    transition: all .25s ease;
-}
-
-.btn-add:hover {
-    background: linear-gradient(135deg, #1b5e20, #005a4d);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
-}
 /* edit + delete buttons */
 .btn-warning{
     font-size:.85rem;
@@ -121,11 +123,12 @@ body{
 
     <!-- HEADER -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold text-success">Manage Services</h2>
+        <h2 class="fw-bold">Manage Services</h2>
 
-        <a href="addService.jsp" class="btn btn-add text-white">
-            <i class="fa-solid fa-plus me-1"></i> Add New Service
-        </a>
+		<a href="addService.jsp" class="btn btn-add text-white">
+		    <i class="fa-solid fa-plus me-1"></i> Add New Service
+		</a>
+
     </div>
 
 <%
@@ -176,7 +179,7 @@ body{
 
                     <p class="service-desc mb-2"><%= svcRS.getString("description") %></p>
 
-                    <p class="fw-bold text-success mb-3">
+                    <p class="fw-bold text-primary mb-3">
                         $<%= svcRS.getDouble("price") %>
                     </p>
 

@@ -10,10 +10,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
   <style>
-    /* --- 1. Brand Color Palette --- */
+    /* --- 1. Brand Color Palette (BLUE VERSION) --- */
     :root {
-      --primary-color: #00796B; /* The deep teal from homepage */
-      --primary-color-light: rgba(0, 121, 107, 0.2); /* For focus glow */
+      --primary-color: #0d6efd;             /* BLUE */
+      --primary-color-light: rgba(13,110,253,0.18);
       --light-gray-bg: #f9fafb;
       --text-dark: #343a40;
       --text-light: #6c757d;
@@ -23,17 +23,17 @@
     html,body { height: 100%; }
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: var(--light-gray-bg); /* CHANGED: Consistent with homepage */
+      background-color: var(--light-gray-bg);
       margin: 0;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     /* --- 3. Registration Form Container --- */
     .register-container {
       background: #ffffff;
       border-radius: 18px;
-      box-shadow: 0 12px 35px rgba(0,0,0,0.08); /* Softened shadow */
+      box-shadow: 0 12px 35px rgba(0,0,0,0.08);
       width: 95%;
       max-width: 760px;
       padding: 3rem 3.5rem;
@@ -46,7 +46,7 @@
 
     /* --- 4. Form Styling --- */
     .register-container .h3 {
-      color: var(--primary-color); /* CHANGED: Brand color title */
+      color: var(--primary-color);
     }
     
     .form-section-title {
@@ -55,27 +55,31 @@
       margin-top: 1.6rem;
       margin-bottom: 0.8rem;
       color: var(--text-dark);
-      border-left: 4px solid var(--primary-color); /* CHANGED: Brand color accent */
+      border-left: 4px solid var(--primary-color);
       padding-left: 10px;
     }
 
     /* --- 5. Button Styles --- */
-    .btn-gradient {
-      background: var(--primary-color); /* CHANGED: Solid brand color */
-      border-color: var(--primary-color);
-      color: white;
-      font-weight: 600;
-      transition: transform .18s ease, background-color .18s ease;
-    }
-    .btn-gradient:hover { 
-      transform: translateY(-2px); 
-      background-color: #005a4d; /* Darker teal for hover */
-    }
+	.btn-gradient {
+	  background: var(--primary-color) !important;
+	  border-color: var(--primary-color) !important;
+	  color: white !important;
+	  font-weight: 600;
+	  transition: transform .18s ease, background-color .18s ease;
+	  border-radius: 10px;
+	}
+	
+	.btn-gradient:hover {
+	  background: #0b5ed7 !important;
+	  border-color: #0b5ed7 !important;
+	  color: white !important;
+	  transform: translateY(-2px);
+	}
 
     /* --- 6. Form Input & Icon Styles --- */
     .input-group-text {
       background-color: #f8f9fa;
-      width: 42px; /* Fixed width for icon alignment */
+      width: 42px;
       justify-content: center;
       color: var(--text-light);
       border-right: 0;
@@ -90,9 +94,9 @@
       border-color: var(--primary-color);
     }
     .form-control:focus, .form-select:focus {
-      border-color: var(--primary-color); /* CHANGED: Brand focus color */
-      box-shadow: 0 0 0 0.15rem var(--primary-color-light); /* CHANGED: Brand focus glow */
-      z-index: 3; /* Ensure input is on top */
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.15rem var(--primary-color-light);
+      z-index: 3;
     }
 
     /* --- 7. Links & Checkboxes --- */
@@ -102,14 +106,14 @@
       font-weight: 500;
     }
     a:hover {
-      color: #005a4d;
+      color: #0b5ed7;
       text-decoration: underline;
     }
     .form-check-input:checked {
         background-color: var(--primary-color);
         border-color: var(--primary-color);
     }
-  </style>
+</style>
 </head>
 <body>
   <%@ include file="header_and_footer/header.jsp" %>

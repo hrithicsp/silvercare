@@ -3,20 +3,21 @@
 <%@ page import="java.sql.*" %>
 
 <%
-    // Admin session guard
+    // ADMIN SESSION GUARD
     HttpSession s = request.getSession(false);
-    if(s == null || !"ADMIN".equals(s.getAttribute("sessUserRole"))){
+    if (s == null || !"ADMIN".equals(s.getAttribute("sessUserRole"))) {
         response.sendRedirect("../clientLogin.jsp");
         return;
     }
 
-    // Retrieve service ID
+    // Get service ID
     String serviceId = request.getParameter("id");
-    if(serviceId == null){
+    if (serviceId == null) {
         out.println("<h3 class='text-danger'>Invalid service ID.</h3>");
         return;
     }
 
+    // Fetch service details
     String service_name = "";
     String description = "";
     String price = "";
@@ -34,7 +35,7 @@
         ps.setInt(1, Integer.parseInt(serviceId));
         ResultSet rs = ps.executeQuery();
 
-        if(rs.next()){
+        if (rs.next()) {
             service_name = rs.getString("service_name");
             description = rs.getString("description");
             price = rs.getString("price");
@@ -44,10 +45,8 @@
             out.println("<h3 class='text-danger'>Service not found.</h3>");
             return;
         }
-
         conn.close();
-
-    } catch(Exception e){
+    } catch (Exception e) {
         out.println("<p>Error: " + e.getMessage() + "</p>");
     }
 %>
@@ -63,46 +62,44 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
-body{
-    background: linear-gradient(145deg,#00796B,#2E7D32);
-    font-family:'Poppins',sans-serif;
-    min-height:100vh;
+
+body {
+    background: #e7f0ff; /* soft blue theme */
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
 }
 
-/* Main Card */
-.edit-container{
-    background:white;
-    padding:40px;
-    border-radius:24px;
-    max-width:850px;
-    margin:auto;
-    margin-top:50px;
-    box-shadow:0 14px 38px rgba(0,0,0,.28);
+/* main card */
+.form-container {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 750px;
+    margin: auto;
+    margin-top: 55px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.12);
 }
 
-/* Page Title */
-.page-title{
-    color:#00796B;
-    font-weight:700;
+/* header */
+.page-title {
+    color: #0d6efd;
+    font-weight: 700;
 }
 
-/* Buttons */
-.btn-update{
-    background:#2E7D32;
-    color:white;
-    font-weight:600;
-    padding:10px 22px;
-    border:none;
-    border-radius:10px;
+/* buttons */
+.btn-primary {
+    background: #0d6efd;
+    border: none;
+    font-weight: 600;
 }
-.btn-update:hover{
-    background:#1b5e20;
+.btn-primary:hover {
+    background: #0b5ed7;
 }
 
-.btn-cancel{
-    border-radius:10px;
-    font-weight:600;
+.btn-secondary {
+    font-weight: 600;
 }
+
 </style>
 </head>
 
@@ -110,11 +107,9 @@ body{
 
 <%@ include file="../header_and_footer/header.jsp" %>
 
-<div class="edit-container">
+<div class="form-container">
 
-    <h2 class="page-title mb-4">
-        <i class="fa-solid fa-pen-to-square me-2"></i> Edit Service
-    </h2>
+    <h2 class="page-title mb-4">Edit Service</h2>
 
     <form method="post" action="updateService.jsp">
         <input type="hidden" name="service_id" value="<%= serviceId %>">
@@ -122,43 +117,46 @@ body{
         <!-- Service Name -->
         <div class="mb-3">
             <label class="form-label fw-semibold">Service Name</label>
-            <input type="text" name="service_name" class="form-control" value="<%= service_name %>" required>
+            <input type="text" name="service_name" class="form-control"
+                   value="<%= service_name %>" required>
         </div>
 
-        <!-- Category Dropdown -->
+        <!-- Category -->
         <div class="mb-3">
             <label class="form-label fw-semibold">Category</label>
             <select name="category_id" class="form-select" required>
-                <option value="1" <%= (category_id==1?"selected":"") %>>Home Nursing</option>
-                <option value="2" <%= (category_id==2?"selected":"") %>>Physiotherapy</option>
-                <option value="3" <%= (category_id==3?"selected":"") %>>Meal Delivery</option>
+                <option value="1" <%= (category_id==1 ? "selected" : "") %>>Home Nursing</option>
+                <option value="2" <%= (category_id==2 ? "selected" : "") %>>Physiotherapy</option>
+                <option value="3" <%= (category_id==3 ? "selected" : "") %>>Meal Delivery</option>
             </select>
         </div>
 
         <!-- Price -->
         <div class="mb-3">
-            <label class="form-label fw-semibold">Price ($)</label>
-            <input type="number" name="price" step="0.01" min="0" class="form-control" value="<%= price %>" required>
+            <label class="form-label fw-semibold">Price (SGD)</label>
+            <input type="number" min="0" step="0.01" name="price"
+                   class="form-control" value="<%= price %>" required>
         </div>
 
         <!-- Image URL -->
         <div class="mb-3">
             <label class="form-label fw-semibold">Image URL</label>
-            <input type="text" name="image_path" class="form-control" value="<%= image_path %>">
+            <input type="text" name="image_path" class="form-control"
+                   value="<%= image_path %>">
         </div>
 
         <!-- Description -->
         <div class="mb-3">
             <label class="form-label fw-semibold">Description</label>
-            <textarea name="description" class="form-control" rows="4" required><%= description %></textarea>
+            <textarea name="description" class="form-control" rows="4" required>
+                <%= description %>
+            </textarea>
         </div>
 
-        <!-- Buttons -->
+        <!-- BUTTONS -->
         <div class="d-flex justify-content-between mt-4">
-            <a href="manageServices.jsp" class="btn btn-secondary btn-cancel px-4">Cancel</a>
-            <button type="submit" class="btn btn-update px-4">
-                <i class="fa-solid fa-save me-2"></i> Update Service
-            </button>
+            <a href="manageServices.jsp" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Update Service</button>
         </div>
 
     </form>

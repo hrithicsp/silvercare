@@ -14,9 +14,9 @@
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
-  <style>
+ <style>
     :root {
-      --primary-color: #00796B;
+      --primary-color: #0d6efd;
       --secondary-color: #FBC02D;
       --light-gray-bg: #f9fafb;
       --text-dark: #343a40;
@@ -60,9 +60,10 @@
     }
     
     .btn-primary:hover {
-      background-color: #005a4d;
+      background-color: #0b5ed7;
     }
-  </style>
+</style>
+
 </head>
 
 <body>
@@ -81,7 +82,7 @@
 
       try {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        String connURL = "jdbc:mysql://localhost/silvercare?user=root&password=Pass2231&serverTimezone=UTC";
+        String connURL = "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC";
         Connection conn = DriverManager.getConnection(connURL);
 
         Statement stmt = conn.createStatement();
@@ -109,7 +110,7 @@
           <% if (session.getAttribute("sessUserID") != null) { %>
             <a href="serviceBooking.jsp?service_id=<%= serviceId %>" class="btn btn-primary w-100">Book Now</a>
           <% } else { %>
-            <a href="clientLogin.jsp" class="btn btn-secondary w-100">Login to Book</a>
+            <a href="<%=request.getContextPath()%>/clientLogin.jsp" class="btn btn-secondary w-100">Login to Book</a>
           <% } %>
         </div>
       </div>

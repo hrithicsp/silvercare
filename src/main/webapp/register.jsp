@@ -118,7 +118,7 @@
     <div class="register-container">
       <h3 class="text-center mb-3 fw-bold h3">Create Your SilverCare Account</h3>
 
-      <form action="RegisterServlet" method="post" enctype="multipart/form-data" novalidate>
+      <form action="<%=request.getContextPath()%>/RegisterServlet" method="post" enctype="multipart/form-data" novalidate>
         <h6 class="form-section-title">Personal Information</h6>
         <div class="row g-3">
           <div class="col-md-6">
@@ -212,11 +212,17 @@
           </div>
         </div>
 
-        <h6 class="form-section-title">Additional Preferences</h6>
-        <div class="mb-3">
-          <label class="form-label">How tech-savvy are you?</label>
-          <input type="range" name="techLevel" min="1" max="5" class="form-range">
-        </div>
+		<h6 class="form-section-title">Additional Preferences</h6>
+		<div class="mb-3">
+		  <label class="form-label">How tech-savvy are you?</label>
+		
+		  <div class="d-flex align-items-center gap-3">
+		    <input type="range" name="techLevel" id="techRange" min="1" max="5" class="form-range" value="3" oninput="updateTechLabel(this.value)">
+		
+		    <span id="techValue" class="fw-bold" style="font-size:1.1rem;">3</span>
+		  </div>
+		</div>
+
 
         <div class="form-check form-switch mb-3">
           <input class="form-check-input" type="checkbox" name="notif" id="notifSwitch">
@@ -252,5 +258,12 @@
       }
     });
   </script>
+  <script>
+  	// To display slider value
+	  function updateTechLabel(val){
+	    document.getElementById("techValue").innerText = val;
+	  }
+  </script>
+  
 </body>
 </html>

@@ -15,7 +15,7 @@
 
 </head>
 <body>
-  <%@ include file="../header_and_footer/header.html" %>
+  <%@ include file="../header_and_footer/header.jsp" %>
 
   <main class="container my-5">
     <div class="row justify-content-center">

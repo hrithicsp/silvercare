@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Services</title>
+  <title>Service Categories</title>
 
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -28,39 +28,38 @@
       color: var(--text-dark);
     }
 
-    .service-card {
+    /* CATEGORY CARD DESIGN (matching home.jsp service cards) */
+    .category-card {
       border: none;
       border-radius: 12px;
-      background-color: white;
+      padding: 20px;
+      background: white;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-align: center;
       height: 100%;
     }
 
-    .service-card:hover {
+    .category-card:hover {
       transform: translateY(-8px);
       box-shadow: 0 10px 25px rgba(0,0,0,0.12);
     }
 
-    .service-img {
-      border-radius: 12px 12px 0 0;
-      height: 220px;
-      width: 100%;
-      object-fit: cover;
+    .icon-circle {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #e0f2f1;
+      color: var(--primary-color);
+      margin: 0 auto 15px auto;
     }
 
-    .service-title {
+    .category-title {
       font-weight: 700;
       color: var(--primary-color);
-    }
-
-    .btn-primary {
-      background-color: var(--primary-color);
-      border: none;
-    }
-    
-    .btn-primary:hover {
-      background-color: #005a4d;
     }
   </style>
 </head>
@@ -68,51 +67,46 @@
 <body>
 
 <!-- HEADER -->
-<%@ include file="header_and_footer/header.html" %>
+<%@ include file="../header_and_footer/header.jsp" %>
 
 <div class="container py-5">
-
-  <h2 class="text-center fw-bold mb-5">Available Services</h2>
+  <h2 class="text-center fw-bold mb-5">Our Service Categories</h2>
 
   <div class="row g-4">
 
-    <%
-      int categoryId = Integer.parseInt(request.getParameter("category_id"));
-
+    <%  
       try {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        String connURL = "jdbc:mysql://localhost/silvercare?user=root&password=root&serverTimezone=UTC";
+        String connURL = "jdbc:mysql://localhost/silvercare?user=root&password=Pass2231&serverTimezone=UTC";
         Connection conn = DriverManager.getConnection(connURL);
 
         Statement stmt = conn.createStatement();
-        String sqlStr = "SELECT * FROM service WHERE category_id=" + categoryId;
+        String sqlStr = "SELECT * FROM service_category";
         ResultSet rs = stmt.executeQuery(sqlStr);
 
+        // Icon list (rotate icons for fun)
+        String[] icons = {"bi-heart-pulse-fill", "bi-people-fill", "bi-bandaid-fill", "bi-house-heart-fill"};
+        int iconIndex = 0;
+
         while (rs.next()) {
-          int serviceId = rs.getInt("service_id");
-          String name = rs.getString("service_name");
-          String desc = rs.getString("description");
-          double price = rs.getDouble("price");
-          String img = rs.getString("image_path");
+            int id = rs.getInt("category_id");
+            String name = rs.getString("category_name");
+
+            String icon = icons[iconIndex % icons.length];
+            iconIndex++;
     %>
 
-    <!-- SERVICE CARD -->
+    <!-- CATEGORY CARD -->
     <div class="col-md-4">
-      <div class="service-card">
-        <img src="<%= img %>" class="service-img">
-
-        <div class="card-body">
-          <h5 class="service-title"><%= name %></h5>
-          <p class="text-muted"><%= desc %></p>
-          <p class="fw-bold text-dark mb-3">Price: $<%= price %></p>
-
-          <% if (session.getAttribute("client_id") != null) { %>
-            <a href="booking.jsp?service_id=<%= serviceId %>" class="btn btn-primary w-100">Book Now</a>
-          <% } else { %>
-            <a href="login.jsp" class="btn btn-secondary w-100">Login to Book</a>
-          <% } %>
+      <a href="services.jsp?category_id=<%= id %>" style="text-decoration:none; color:inherit;">
+        <div class="category-card">
+          <div class="icon-circle">
+            <i class="bi <%= icon %> fs-2"></i>
+          </div>
+          <h5 class="category-title"><%= name %></h5>
+          <p class="text-muted">Explore all services under this category.</p>
         </div>
-      </div>
+      </a>
     </div>
 
     <%
@@ -127,7 +121,7 @@
 </div>
 
 <!-- FOOTER -->
-<%@ include file="header_and_footer/footer.html" %>
+<%@ include file="../header_and_footer/footer.html" %>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 

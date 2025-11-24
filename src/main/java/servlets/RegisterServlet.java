@@ -1,11 +1,9 @@
 package servlets;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
+import jakarta.servlet.http.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,58 +11,43 @@ import java.sql.*;
 
 import com.silvercare.util.DBConnection;
 
-/**
- * Servlet implementation class RegisterServlet
- */
 @WebServlet("/RegisterServlet")
+@MultipartConfig
 public class RegisterServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public RegisterServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // Basic fields
         String fullname = request.getParameter("fullname");
         String gender = request.getParameter("gender");
         String dob = request.getParameter("dob");
         String phone = request.getParameter("phone");
+        String address = request.getParameter("address");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String preferredContact = request.getParameter("preferredContact");
-        String address = request.getParameter("address");
-        String techLevel = request.getParameter("techLevel");
-        String notif = request.getParameter("notif") != null ? "1" : "0";
+        int techLevel = Integer.parseInt(request.getParameter("techLevel"));
 
-        // ===== File Upload Logic =====
+        // Interests
+        String[] interestsArr = request.getParameterValues("interests");
+        String interests = (interestsArr != null) ? String.join(", ", interestsArr) : null;
+
+        // Notification toggle
+        boolean notifEnabled = request.getParameter("notif") != null;
+
+        // File upload
         Part filePart = request.getPart("profilePic");
         String fileName = null;
 
-        if(filePart != null && filePart.getSize() > 0) {
-
+        if (filePart != null && filePart.getSize() > 0) {
             fileName = System.currentTimeMillis() + "_" + filePart.getSubmittedFileName();
 
-            String uploadPath = request.getServletContext().getRealPath("") + "uploads";
-
+            String uploadPath = request.getServletContext().getRealPath("") + File.separator + "uploads";
             File uploadDir = new File(uploadPath);
-
-            if(!uploadDir.exists()) uploadDir.mkdir();
+            if (!uploadDir.exists()) uploadDir.mkdir();
 
             filePart.write(uploadPath + File.separator + fileName);
         }
@@ -72,32 +55,49 @@ public class RegisterServlet extends HttpServlet {
         try {
             Connection con = DBConnection.getConnection();
 
-            String sql = "INSERT INTO user(fullname, gender, dob, phone, email, password, preferred_contact, address, tech_level, notif_enabled, profile_pic) "
-                       + "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            // Insert the user
+            String sql = "INSERT INTO user (fullname, gender, dob, phone, address, email, password, profile_pic, preferred_contact, tech_level, notif_enabled, areas_of_interest, role) "
+                       + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'CLIENT')";
 
-            PreparedStatement pst = con.prepareStatement(sql);
-            
+            PreparedStatement pst = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
             pst.setString(1, fullname);
             pst.setString(2, gender);
             pst.setString(3, dob);
             pst.setString(4, phone);
-            pst.setString(5, email);
-            pst.setString(6, password);
-            pst.setString(7, preferredContact);
-            pst.setString(8, address);
-            pst.setString(9, techLevel);
-            pst.setString(10, notif);
-            pst.setString(11, fileName);
+            pst.setString(5, address);
+            pst.setString(6, email);
+            pst.setString(7, password);
+            pst.setString(8, fileName);
+            pst.setString(9, preferredContact);
+            pst.setInt(10, techLevel);
+            pst.setBoolean(11, notifEnabled);
+            pst.setString(12, interests);
 
             pst.executeUpdate();
 
-            // redirect success
-            response.sendRedirect("clientLogin.jsp?registered=true");
+            // Retrieve the user_id (AUTO_INCREMENT)
+            ResultSet generatedKeys = pst.getGeneratedKeys();
+            int newUserId = 0;
 
-        } catch(Exception e) {
+            if (generatedKeys.next()) {
+                newUserId = generatedKeys.getInt(1);
+            }
+
+            // Now create session and auto-login user
+            HttpSession session = request.getSession();
+            session.setAttribute("sessUserID", newUserId);
+            session.setAttribute("sessUserEmail", email);
+            session.setAttribute("sessUserRole", "CLIENT");
+            session.setAttribute("sessUserName", fullname);
+
+            // Redirect straight to client dashboard
+            response.sendRedirect("/silvercare/client/clientDashboard.jsp");
+
+        } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("register.jsp?error=1");
+            response.getWriter().println("Registration failed: " + e.getMessage());
         }
-	}
-
+    }
 }
+

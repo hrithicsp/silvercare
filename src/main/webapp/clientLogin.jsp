@@ -37,7 +37,7 @@
 </head>
 <body>
 
-<%@ include file="header_and_footer/header.html" %>
+<%@ include file="header_and_footer/header.jsp" %>
 
 <div class="login-card mt-5">
     <h3 class="text-center text-success fw-bold mb-4">Login</h3>

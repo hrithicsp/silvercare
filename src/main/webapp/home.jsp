@@ -137,7 +137,7 @@
 <section class="hero">
   <h1>Compassionate Elderly Care, Anytime.</h1>
   <p>Connecting families with trusted caregivers and wellness services.</p>
-  <a href="services.jsp" class="btn btn-secondary btn-lg mt-3 fw-semibold">Explore Our Services</a>
+  <a href="<%=request.getContextPath()%>/client/serviceCategories.jsp" class="btn btn-secondary btn-lg mt-3 fw-semibold">Explore Our Services</a>
 </section>
 
 <div class="container py-5">

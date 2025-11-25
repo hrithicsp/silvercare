@@ -27,7 +27,7 @@
               <h2 class="fw-bold text-primary mb-1">Apply to be a Caregiver</h2>
               <p class="text-muted mb-3">Join SilverCare’s team of trusted caregivers. Fill in your details below — our admin team will review and contact you.</p>
 
-              <form id="caregiverForm" action="ApplyCaregiverServlet" method="post" enctype="multipart/form-data" novalidate>
+              <form id="caregiverForm" action="<%=request.getContextPath()%>/ApplyCaregiverServlet" method="post" enctype="multipart/form-data" novalidate>
                 <!-- Personal -->
                 <h6 class="section-title">Personal Information</h6>
                 <div class="row g-3">

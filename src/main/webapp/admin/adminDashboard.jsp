@@ -7,35 +7,72 @@
         response.sendRedirect("../clientLogin.jsp");
         return;
     }
+
+    String adminName = (String) s.getAttribute("sessUserName");
 %>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<title>Admin Dashboard - SilverCare</title>
+<meta charset="UTF-8">
+<title>Admin Dashboard | SilverCare</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
+
 body{
-    background:#FFF2D8;
-    font-family:Poppins,sans-serif;
+    background: linear-gradient(145deg,#00796B,#2E7D32);
+    font-family:'Poppins',sans-serif;
+    min-height:100vh;
 }
-.dashboard-box{
+
+/* Main card */
+.dashboard-container{
     background:white;
-    padding:40px;
-    border-radius:18px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.18);
-    max-width:1000px;
+    box-shadow:0 14px 38px rgba(0,0,0,.28);
+    border-radius:24px;
+    max-width:1150px;
     margin:auto;
-    margin-top:40px;
+    margin-top:50px;
+    padding:3.2rem;
 }
-h2 span{
-    color:#B87333;
+
+/* welcome message */
+.welcome-box{
+    background:#E0F3EC;
+    padding:32px;
+    border-radius:20px;
+    margin-bottom:40px;
+    text-align:center;
 }
-.card{
-    border-radius:14px;
+
+/* dashboard tiles */
+.dash-card{
+    background:white;
+    border-radius:18px;
+    padding:32px;
+    text-align:center;
+    transition:all .25s ease;
+    box-shadow:0 5px 14px rgba(0,0,0,.12);
+    height:100%;
+}
+.dash-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 10px 30px rgba(0,0,0,.16);
+}
+
+/* icons */
+.dash-card i{
+    font-size:40px;
+    margin-bottom:15px;
+    color:#00796B;
+}
+
+.logout-card i{
+    color:#E53935 !important;
 }
 </style>
 
@@ -45,38 +82,71 @@ h2 span{
 
 <%@ include file="../header_and_footer/header.jsp" %>
 
-<div class="dashboard-box">
 
-    <h2 class="fw-bold mb-4">Admin Control Panel</h2>
+<div class="dashboard-container">
+
+    <div class="welcome-box">
+        <h2 class="fw-bold m-0">Welcome, Admin <span style="color:#00796B;"><%= adminName %></span></h2>
+        <p class="text-muted mt-2">Manage SilverCare system operations</p>
+    </div>
+
 
     <div class="row g-4">
 
+        <!-- View Clients -->
         <div class="col-md-4">
-            <a href="viewClients.jsp" class="text-decoration-none">
-                <div class="card p-4 text-center">
-                    <h5>View All Clients</h5>
+            <a href="viewClients.jsp" class="text-decoration-none text-dark">
+                <div class="dash-card">
+                    <i class="fa-solid fa-users"></i>
+                    <h5 class="fw-bold mt-2">View Clients</h5>
                 </div>
             </a>
         </div>
 
+        <!-- Pending caregiver applications -->
         <div class="col-md-4">
-            <a href="pendingCaregiver.jsp" class="text-decoration-none">
-                <div class="card p-4 text-center">
-                    <h5>Pending Caregiver Applications</h5>
+            <a href="pendingCaregiver.jsp" class="text-decoration-none text-dark">
+                <div class="dash-card">
+                    <i class="fa-solid fa-user-clock"></i>
+                    <h5 class="fw-bold mt-2">Pending Caregivers</h5>
                 </div>
             </a>
         </div>
 
+        <!-- Manage Services -->
         <div class="col-md-4">
-            <a href="LogoutServlet" class="text-decoration-none">
-                <div class="card p-4 text-center">
-                    <h5>Logout</h5>
+            <a href="manageServices.jsp" class="text-decoration-none text-dark">
+                <div class="dash-card">
+                    <i class="fa-solid fa-list-check"></i>
+                    <h5 class="fw-bold mt-2">Manage Services</h5>
+                </div>
+            </a>
+        </div>
+
+        <!-- Feedback -->
+        <div class="col-md-4">
+            <a href="viewFeedback.jsp" class="text-decoration-none text-dark">
+                <div class="dash-card">
+                    <i class="fa-solid fa-comments"></i>
+                    <h5 class="fw-bold mt-2">Client Feedback</h5>
+                </div>
+            </a>
+        </div>
+
+        <!-- Logout -->
+        <div class="col-md-4">
+            <a href="<%=request.getContextPath()%>/LogoutServlet" class="text-decoration-none text-dark">
+                <div class="dash-card logout-card">
+                    <i class="fa-solid fa-power-off"></i>
+                    <h5 class="fw-bold mt-2">Logout</h5>
                 </div>
             </a>
         </div>
 
     </div>
+
 </div>
+
 
 <%@ include file="../header_and_footer/footer.html" %>
 

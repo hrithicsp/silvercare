@@ -24,17 +24,18 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto align-items-center">
 
-        <li class="nav-item">
-          <a class="nav-link fw-semibold"
-             href="<%=request.getContextPath()%>/home.jsp">Home</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link fw-semibold"
-             href="<%=request.getContextPath()%>/client/serviceCategories.jsp">Services</a>
-        </li>
-
         <% if (!loggedIn) { %>
+
+            <!-- Visible to NOT LOGGED IN users -->
+            <li class="nav-item">
+              <a class="nav-link fw-semibold"
+                 href="<%=request.getContextPath()%>/home.jsp">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link fw-semibold"
+                 href="<%=request.getContextPath()%>/client/serviceCategories.jsp">Services</a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link fw-semibold" 
                    href="<%=request.getContextPath()%>/register.jsp">Register</a>
@@ -48,17 +49,31 @@
         <% } else { %>
 
             <% if (role.equals("ADMIN")) { %>
+                <!-- ADMIN sees ONLY Dashboard + Logout -->
                 <li class="nav-item">
                     <a class="nav-link fw-semibold"
                        href="<%=request.getContextPath()%>/admin/adminDashboard.jsp">Dashboard</a>
                 </li>
+
             <% } else { %>
+                <!-- CLIENT sees normal menu -->
+                <li class="nav-item">
+                  <a class="nav-link fw-semibold"
+                     href="<%=request.getContextPath()%>/home.jsp">Home</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link fw-semibold"
+                     href="<%=request.getContextPath()%>/client/serviceCategories.jsp">Services</a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link fw-semibold"
                        href="<%=request.getContextPath()%>/client/clientDashboard.jsp">Dashboard</a>
                 </li>
             <% } %>
 
+            <!-- Logout for ALL logged-in users -->
             <li class="nav-item ms-lg-2">
                 <a class="btn btn-danger btn-sm fw-semibold px-3 py-2"
                    href="<%=request.getContextPath()%>/LogoutServlet">Logout</a>

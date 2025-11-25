@@ -16,7 +16,7 @@
 
   <style>
     :root {
-      --primary-color: #00796B;
+      --primary-color: #0d6efd;
       --secondary-color: #FBC02D;
       --light-gray-bg: #f9fafb;
       --text-dark: #343a40;
@@ -28,7 +28,6 @@
       color: var(--text-dark);
     }
 
-    /* CATEGORY CARD DESIGN (matching home.jsp service cards) */
     .category-card {
       border: none;
       border-radius: 12px;
@@ -52,16 +51,18 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: #e0f2f1;
-      color: var(--primary-color);
+
+      background-color: #e7f1ff;         
+      color: var(--primary-color);        
       margin: 0 auto 15px auto;
     }
 
     .category-title {
       font-weight: 700;
-      color: var(--primary-color);
+      color: var(--primary-color);        
     }
-  </style>
+</style>
+
 </head>
 
 <body>
@@ -77,7 +78,7 @@
     <%  
       try {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        String connURL = "jdbc:mysql://localhost/silvercare?user=root&password=Pass2231&serverTimezone=UTC";
+        String connURL = "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC";
         Connection conn = DriverManager.getConnection(connURL);
 
         Statement stmt = conn.createStatement();

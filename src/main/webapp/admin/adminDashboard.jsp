@@ -24,7 +24,7 @@
 <style>
 
 body{
-    background: linear-gradient(145deg,#00796B,#2E7D32);
+    background: linear-gradient(145deg,#0d6efd,#1849b8);
     font-family:'Poppins',sans-serif;
     min-height:100vh;
 }
@@ -42,7 +42,7 @@ body{
 
 /* welcome message */
 .welcome-box{
-    background:#E0F3EC;
+    background:#e7f0ff;
     padding:32px;
     border-radius:20px;
     margin-bottom:40px;
@@ -64,11 +64,11 @@ body{
     box-shadow:0 10px 30px rgba(0,0,0,.16);
 }
 
-/* icons */
+/* icons - BLUE THEME */
 .dash-card i{
     font-size:40px;
     margin-bottom:15px;
-    color:#00796B;
+    color:#0d6efd;
 }
 
 .logout-card i{
@@ -82,14 +82,12 @@ body{
 
 <%@ include file="../header_and_footer/header.jsp" %>
 
-
 <div class="dashboard-container">
 
     <div class="welcome-box">
-        <h2 class="fw-bold m-0">Welcome, Admin <span style="color:#00796B;"><%= adminName %></span></h2>
+        <h2 class="fw-bold m-0">Welcome, Admin <span style="color:#0d6efd;"><%= adminName %></span></h2>
         <p class="text-muted mt-2">Manage SilverCare system operations</p>
     </div>
-
 
     <div class="row g-4">
 

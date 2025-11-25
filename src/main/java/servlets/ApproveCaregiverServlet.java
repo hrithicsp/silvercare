@@ -11,24 +11,27 @@ import java.sql.PreparedStatement;
 
 import com.silvercare.util.DBConnection;
 
-/**
- * Servlet implementation class ApproveCaregiverServlet
- */
 @WebServlet("/ApproveCaregiverServlet")
 public class ApproveCaregiverServlet extends HttpServlet {
- protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-     
-     int id = Integer.parseInt(req.getParameter("id"));
-     
-     try{
-         Connection con = DBConnection.getConnection();
-         PreparedStatement pst = con.prepareStatement(
-           "UPDATE caregiver_application SET status='APPROVED' WHERE application_id=?"
-         );
-         pst.setInt(1,id);
-         pst.executeUpdate();
-         res.sendRedirect("pendingCaregiver.jsp");
-         
-     }catch(Exception e){ e.printStackTrace();}
- }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+
+        int id = Integer.parseInt(req.getParameter("id"));
+
+        try {
+            Connection con = DBConnection.getConnection();
+
+            PreparedStatement pst = con.prepareStatement(
+                "UPDATE caregiver_application SET status='APPROVED' WHERE application_id=?"
+            );
+            pst.setInt(1, id);
+            pst.executeUpdate();
+
+            res.sendRedirect("/silvercare/admin/pendingCaregiver.jsp");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

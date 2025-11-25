@@ -7,58 +7,118 @@ PreparedStatement pst = con.prepareStatement(sql);
 ResultSet rs = pst.executeQuery();
 %>
 
-<div class="card shadow-sm p-4 mt-4">
+<!-- OUTER WRAPPER -->
+<div class="container my-5">
 
-    <h4 class="fw-bold text-dark mb-3">Pending Caregiver Applications</h4>
+    <!-- SECTION HEADER CARD -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4"
+         style="background: linear-gradient(135deg, #00796B, #009688); color:white;">
+        <h3 class="fw-bold mb-0">
+            <i class="fa-solid fa-user-nurse me-2"></i> Pending Caregiver Applications
+        </h3>
+        <p class="mb-0 small opacity-75">Review and approve caregiver submissions</p>
+    </div>
 
-    <table class="table align-middle table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Experience</th>
-                <th class="text-center">Actions</th>
-            </tr>
-        </thead>
+    <!-- MAIN DATA CARD -->
+    <div class="card shadow-lg border-0 rounded-4 p-4">
 
-        <tbody>
-        <% while(rs.next()){ %>
-            <tr>
-                <td class="fw-semibold"><%= rs.getString("full_name") %></td>
-                <td><%= rs.getString("phone") %></td>
-                <td><%= rs.getString("email") %></td>
-                <td><%= rs.getString("years_experience") %> years</td>
-                <td class="text-center">
+        <div class="table-responsive">
+        <table class="table table-borderless align-middle">
 
-                    <a href="viewApplication.jsp?id=<%=rs.getInt("application_id")%>" 
-                       class="btn btn-outline-primary btn-sm me-1">
-                        <i class="fa-solid fa-eye"></i> View
+            <thead>
+                <tr class="text-secondary fw-semibold" style="font-size: 0.9rem;">
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Experience</th>
+                    <th>Status</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody class="table-group-divider">
+
+            <%
+            boolean hasData = false;
+            while(rs.next()){
+                hasData = true;
+            %>
+
+            <tr class="bg-light rounded-3 shadow-sm" style="--bs-table-bg: white;">
+                <td class="py-3">
+                    <div class="fw-bold"><%= rs.getString("full_name") %></div>
+                    <div class="small text-muted"><%= rs.getString("email") %></div>
+                </td>
+
+                <td class="py-3">
+                    <span class="badge rounded-pill text-bg-success px-3 py-2">
+                        <i class="fa-solid fa-phone me-1"></i> <%= rs.getString("phone") %>
+                    </span>
+                </td>
+
+                <td class="py-3">
+                    <span class="badge bg-info text-dark rounded-pill px-3 py-2">
+                        <%= rs.getInt("years_experience") %> yrs
+                    </span>
+                </td>
+
+                <td class="py-3">
+                    <span class="badge bg-warning text-dark rounded-pill px-3 py-2">
+                        Pending Review
+                    </span>
+                </td>
+
+                <td class="text-center py-3">
+
+                    <!-- VIEW -->
+                    <a href="viewApplication.jsp?id=<%=rs.getInt("application_id")%>"
+                       class="btn btn-outline-primary btn-sm rounded-pill px-3 me-1">
+                        <i class="fa-solid fa-eye me-1"></i> View
                     </a>
 
-                    <a href="ApproveCaregiverServlet?id=<%=rs.getInt("application_id")%>" 
-                       class="btn btn-success btn-sm me-1">
+                    <!-- APPROVE -->
+                    <a href="ApproveCaregiverServlet?id=<%=rs.getInt("application_id")%>"
+                       class="btn btn-success btn-sm rounded-pill px-3 me-1"
+                       onclick="return confirm('Approve this caregiver?');">
                         <i class="fa-solid fa-check"></i>
                     </a>
 
-                    <a href="RejectCaregiverServlet?id=<%=rs.getInt("application_id")%>" 
-                       class="btn btn-danger btn-sm">
+                    <!-- REJECT -->
+                    <a href="RejectCaregiverServlet?id=<%=rs.getInt("application_id")%>"
+                       class="btn btn-danger btn-sm rounded-pill px-3"
+                       onclick="return confirm('Reject this caregiver?');">
                         <i class="fa-solid fa-xmark"></i>
                     </a>
 
                 </td>
             </tr>
-        <% } %>
-        </tbody>
-    </table>
 
+            <% } %>
+
+            <% if(!hasData) { %>
+                <tr>
+                    <td colspan="5" class="text-center py-5">
+                        <img src="https://cdn-icons-png.flaticon.com/512/4076/4076508.png"
+                             width="80" class="mb-3" />
+                        <h5 class="fw-bold text-muted">No Pending Applications</h5>
+                        <p class="text-muted small">New applications will appear here.</p>
+                    </td>
+                </tr>
+            <% } %>
+
+            </tbody>
+
+        </table>
+        </div>
+
+    </div>
 </div>
 
 <style>
-.table-hover tbody tr:hover {
-    background-color:#f0f8ff!important;
+.table-group-divider > tr {
+    border-top: 12px solid #f5f5f5 !important;
 }
-.btn-sm {
-    padding: 4px 10px;
+.table-hover tbody tr:hover {
+    background-color: #f0f8ff !important;
+    transition: 0.25s ease;
 }
 </style>

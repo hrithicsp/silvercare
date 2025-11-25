@@ -34,6 +34,7 @@ public class ApplyCaregiverServlet extends HttpServlet {
         String experience = request.getParameter("experience");
         String certifications = request.getParameter("certifications");
         String availabilityDays = request.getParameter("availabilityDays");
+        String interest = request.getParameter("interest");
         String shift = request.getParameter("shift");
 
         // join skills[]
@@ -65,8 +66,8 @@ public class ApplyCaregiverServlet extends HttpServlet {
             Connection con = DBConnection.getConnection();
 
             String sql = "INSERT INTO caregiver_application "
-                    + "(user_id, full_name, phone, email, dob, address, years_experience, experience, skills, certifications, profile_photo, cv_file, availability_days, preferred_shift) "
-                    + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    + "(user_id, full_name, phone, email, dob, address, years_experience, experience, skills, certifications, profile_photo, cv_file, availability_days, preferred_shift, interest_service) "
+                    + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
             PreparedStatement pst = con.prepareStatement(sql);
 
@@ -84,6 +85,7 @@ public class ApplyCaregiverServlet extends HttpServlet {
             pst.setString(12, cvFilename);
             pst.setString(13, availabilityDays);
             pst.setString(14, shift);
+            pst.setString(15, interest);
 
             pst.executeUpdate();
 

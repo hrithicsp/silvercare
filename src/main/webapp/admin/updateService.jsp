@@ -27,7 +27,7 @@
         Class.forName("com.mysql.cj.jdbc.Driver");
 
         Connection conn = DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/silvercare?user=root&password=1234&serverTimezone=UTC"
+            "jdbc:mysql://localhost:3306/silvercare?user=root&password=root&serverTimezone=UTC"
         );
 
         String sql = "UPDATE service SET category_id=?, service_name=?, description=?, price=?, image_path=? WHERE service_id=?";

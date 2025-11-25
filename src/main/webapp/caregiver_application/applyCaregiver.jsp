@@ -1,4 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="jakarta.servlet.http.HttpSession" %>
+<%@ page import="java.sql.*, com.silvercare.util.DBConnection" %>
+
+<%
+    // SESSION CHECK
+    HttpSession session1 = request.getSession(false);
+    if(session1 == null || session1.getAttribute("sessUserID") == null){
+        response.sendRedirect("../clientLogin.jsp");
+        return;
+    }
+
+    int uid = (int) session1.getAttribute("sessUserID");
+
+    boolean alreadyApplied = false;
+
+    Connection con = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
+    try{
+        con = DBConnection.getConnection();
+        ps = con.prepareStatement("SELECT application_id FROM caregiver_application WHERE user_id=?");
+        ps.setInt(1, uid);
+        rs = ps.executeQuery();
+
+        if(rs.next()){
+            alreadyApplied = true;
+        }
+    }catch(Exception e){
+        e.printStackTrace();
+    }
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,15 +43,41 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
-  <!-- Optional extra CSS (keeps JSP tidy) -->
   <link href="css/caregiver_styles.css" rel="stylesheet">
-
 </head>
-<body>
-  <%@ include file="../header_and_footer/header.jsp" %>
 
-  <main class="container my-5">
-    <div class="row justify-content-center">
+<body>
+<%@ include file="../header_and_footer/header.jsp" %>
+
+<main class="container my-5">
+
+    <% if(alreadyApplied){ %>
+
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-7">
+
+                <div class="alert alert-info p-5 text-center shadow rounded-4">
+                    <h2 class="fw-bold mb-3">
+                        <i class="fa-solid fa-circle-check"></i> Application Already Submitted
+                    </h2>
+
+                    <p class="text-muted fs-5 mb-4">
+                        You have already submitted a caregiver application.<br>
+                        You will be notified once the admin reviews your request.
+                    </p>
+
+                    <a href="../client/clientDashboard.jsp" class="btn btn-primary px-4">
+                        Return to Dashboard
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    <% } else { %>
+
+    <!-- FORM SECTION -->
+	<div class="row justify-content-center">
       <div class="col-lg-10">
         <div class="card shadow-sm caregiver-card overflow-hidden">
           <div class="row g-0">
@@ -96,6 +155,28 @@
                   <div class="mt-2 small text-muted">Optional but recommended.</div>
                 </div>
 
+				<!-- Interest -->
+				<h6 class="section-title mt-4">Interest Area</h6>
+				<div class="mb-3">
+				  <label class="form-label">Which service would you like to work in?</label>
+				
+				  <div class="form-check">
+				    <input class="form-check-input" type="radio" name="interest" value="Home Nursing" required>
+				    <label class="form-check-label">Home Nursing</label>
+				  </div>
+				
+				  <div class="form-check">
+				    <input class="form-check-input" type="radio" name="interest" value="Physiotherapy">
+				    <label class="form-check-label">Physiotherapy</label>
+				  </div>
+				
+				  <div class="form-check">
+				    <input class="form-check-input" type="radio" name="interest" value="Meal Delivery">
+				    <label class="form-check-label">Meal Delivery</label>
+				  </div>
+				
+				</div>
+
                 <!-- Availability -->
                 <h6 class="section-title mt-4">Availability</h6>
                 <div class="row g-2 mb-3">
@@ -135,7 +216,7 @@
 
             <!-- Right: info panel -->
             <div class="col-md-5 bg-light p-4">
-              <div class="sticky-top" style="top:90px;">
+              <div style="top:90px;">
                 <h5 class="fw-semibold">Why work with SilverCare?</h5>
                 <ul class="small text-muted">
                   <li>Flexible shifts & fair pay</li>
@@ -151,22 +232,23 @@
                   <li>Upload relevant certifications (CPR, nursing)</li>
                   <li>Make your CV concise and legible</li>
                 </ol>
-
-                <div class="mt-3">
-                  <a href="applicationSuccess.jsp" class="btn btn-outline-primary btn-sm">Preview success page</a>
-                </div>
               </div>
             </div>
           </div> <!-- row g-0 -->
         </div> <!-- card -->
       </div>
     </div>
-  </main>
+    <% } %>
 
-  <%@ include file="../header_and_footer/footer.html" %>
+</main>
 
-  <!-- scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/caregiver_form.js"></script>
+<%@ include file="../header_and_footer/footer.html" %>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/caregiver_form.js"></script>
+
 </body>
 </html>
+
+
+

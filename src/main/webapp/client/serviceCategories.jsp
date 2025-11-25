@@ -78,7 +78,7 @@
     <%  
       try {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        String connURL = "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC";
+        String connURL = "jdbc:mysql://localhost/silvercare?user=root&password=root&serverTimezone=UTC";
         Connection conn = DriverManager.getConnection(connURL);
 
         Statement stmt = conn.createStatement();

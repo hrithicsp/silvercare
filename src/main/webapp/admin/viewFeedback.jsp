@@ -83,7 +83,7 @@ body {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC"
+                "jdbc:mysql://localhost/silvercare?user=root&password=root&serverTimezone=UTC"
             );
 
             Statement stmt = conn.createStatement();

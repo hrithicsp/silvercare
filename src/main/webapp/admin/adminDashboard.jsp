@@ -9,6 +9,7 @@
     }
 
     String adminName = (String) s.getAttribute("sessUserName");
+
 %>
 
 <!DOCTYPE html>
@@ -135,6 +136,7 @@ body{
     </div>
 
 </div>
+
 
 <%@ include file="../header_and_footer/footer.html" %>
 

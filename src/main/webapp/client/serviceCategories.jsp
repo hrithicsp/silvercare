@@ -61,6 +61,28 @@
       font-weight: 700;
       color: var(--primary-color);        
     }
+    .floating-chatbot-btn{
+	    position: fixed;
+	    bottom: 30px;
+	    right: 30px;
+	    width:65px;
+	    height:65px;
+	    border-radius:50%;
+	    background:#00796B;
+	    color:white;
+	    display:flex;
+	    justify-content:center;
+	    align-items:center;
+	    cursor:pointer;
+	    font-size:26px;
+	    box-shadow:0 6px 20px rgba(0,0,0,0.25);
+	    transition:all .2s;
+	    z-index:99999;
+	}
+	.floating-chatbot-btn:hover{
+	    background:#169a8a;
+	    transform: scale(1.12);
+	}
 </style>
 
 </head>
@@ -119,6 +141,11 @@
     %>
 
   </div>
+</div>
+
+<!-- FLOATING CHATBOT ICON -->
+<div id="chatbotButton" class="floating-chatbot-btn" onclick="openChatbot()">
+    <i class="fa-solid fa-robot"></i>
 </div>
 
 <!-- FOOTER -->

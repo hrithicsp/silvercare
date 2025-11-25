@@ -109,7 +109,7 @@
           <% if (session.getAttribute("sessUserID") != null) { %>
             <a href="serviceBooking.jsp?service_id=<%= serviceId %>" class="btn btn-primary w-100">Book Now</a>
           <% } else { %>
-            <a href="clientLogin.jsp" class="btn btn-secondary w-100">Login to Book</a>
+            <a href="<%=request.getContextPath()%>/clientLogin.jsp" class="btn btn-secondary w-100">Login to Book</a>
           <% } %>
         </div>
       </div>

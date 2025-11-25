@@ -16,6 +16,7 @@ public class ServiceBookingServlet extends HttpServlet {
 
         int userId = Integer.parseInt(request.getParameter("user_id"));
         int serviceId = Integer.parseInt(request.getParameter("service_id"));
+        int caregiverId = Integer.parseInt(request.getParameter("caregiver_id"));
         String date = request.getParameter("date");
         String time = request.getParameter("time");
         String notes = request.getParameter("notes");
@@ -23,19 +24,20 @@ public class ServiceBookingServlet extends HttpServlet {
         try {
             Connection con = DBConnection.getConnection();
 
-            String sql = "INSERT INTO service_booking (user_id, service_id, appointment_date, appointment_time, notes) VALUES (?,?,?,?,?)";
+            String sql = "INSERT INTO service_booking (user_id, service_id, caregiver_id, appointment_date, appointment_time, notes) VALUES (?,?,?,?,?,?)";
             PreparedStatement pst = con.prepareStatement(sql);
 
             pst.setInt(1, userId);
             pst.setInt(2, serviceId);
-            pst.setString(3, date);
-            pst.setString(4, time);
-            pst.setString(5, notes);
+            pst.setInt(3, caregiverId);
+            pst.setString(4, date);
+            pst.setString(5, time);
+            pst.setString(6, notes);
 
             pst.executeUpdate();
             con.close();
 
-            response.sendRedirect("/silvercare/client/bookingSuccess.jsp");
+            response.sendRedirect("client/bookingSuccess.jsp");
 
         } catch (Exception e) {
             e.printStackTrace();

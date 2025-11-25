@@ -131,15 +131,6 @@ body{
             </a>
         </div>
 
-        <!-- Logout -->
-        <div class="col-md-4">
-            <a href="<%=request.getContextPath()%>/LogoutServlet" class="text-decoration-none text-dark">
-                <div class="dash-card logout-card">
-                    <i class="fa-solid fa-power-off"></i>
-                    <h5 class="fw-bold mt-2">Logout</h5>
-                </div>
-            </a>
-        </div>
 
     </div>
 

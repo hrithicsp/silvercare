@@ -9,6 +9,7 @@
     }
 
     String adminName = (String) s.getAttribute("sessUserName");
+
 %>
 
 <!DOCTYPE html>

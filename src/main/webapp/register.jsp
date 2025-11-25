@@ -107,7 +107,6 @@
     }
     a:hover {
       color: #0b5ed7;
-      text-decoration: underline;
     }
     .form-check-input:checked {
         background-color: var(--primary-color);

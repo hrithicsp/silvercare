@@ -14,9 +14,9 @@
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
-  <style>
+ <style>
     :root {
-      --primary-color: #00796B;
+      --primary-color: #0d6efd;
       --secondary-color: #FBC02D;
       --light-gray-bg: #f9fafb;
       --text-dark: #343a40;
@@ -60,9 +60,10 @@
     }
     
     .btn-primary:hover {
-      background-color: #005a4d;
+      background-color: #0b5ed7;
     }
-  </style>
+</style>
+
 </head>
 
 <body>

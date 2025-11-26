@@ -4,7 +4,7 @@
 <%
     HttpSession s = request.getSession(false);
     if(s == null || !"ADMIN".equals(s.getAttribute("sessUserRole"))){
-        response.sendRedirect("../clientLogin.jsp");
+        response.sendRedirect("../login.jsp");
         return;
     }
 
@@ -50,7 +50,6 @@ body{
     text-align:center;
 }
 
-/* table styling */
 .table thead{
     background:#0d6efd !important;
     color:white !important;

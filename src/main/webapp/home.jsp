@@ -12,15 +12,14 @@
   
   
   <style>
-	/* --- Global Color Palette --- */
 	:root {
 	  --primary-color: #0d6efd;        
 	  --primary-hover: #0b5ed7;        
-	  --secondary-color: #FBC02D;      /*
+	  --secondary-color: #FBC02D;     
 	  --text-dark: #343a40;
 	  --text-light: #6c757d;
 	}
-	
+
 	body {
 	  font-family: 'Poppins', sans-serif;
 	  background:
@@ -45,7 +44,6 @@
 	  position: relative;
 	}
 	
-	/* Soft fading curve at bottom */
 	.hero::after {
 	  content: "";
 	  position: absolute;
@@ -57,7 +55,6 @@
 	  background: linear-gradient(to bottom, rgba(255,255,255,0), #f9fafb);
 	}
 	
-	/* Header text */
 	.hero h1 {
 	  font-size: 3rem;
 	  font-weight: 700;
@@ -65,7 +62,6 @@
 	  animation: fadeDown 0.8s ease;
 	}
 	
-	/* Subtitle */
 	.hero p {
 	  font-size: 1.2rem;
 	  max-width: 600px;
@@ -73,7 +69,6 @@
 	  animation: fadeUp 1s ease;
 	}
 	
-	/* Button stays unchanged */
 	.btn-secondary {
 	  margin-top: 20px;
 	}
@@ -147,7 +142,6 @@
 	  color: #f9a825;
 	}
 	
-	/* --- CTA Section --- */
 	.cta-section {
 	  background-color: var(--primary-color);
 	  color: white;

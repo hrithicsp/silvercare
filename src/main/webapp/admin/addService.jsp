@@ -3,10 +3,10 @@
 <%@ page import="java.sql.*" %>
 
 <%
-    // ADMIN SESSION GUARD
+    // Session Guard (to check if admin or not)
     HttpSession s = request.getSession(false);
     if(s == null || !"ADMIN".equals(s.getAttribute("sessUserRole"))){
-        response.sendRedirect("../clientLogin.jsp");
+        response.sendRedirect("../login.jsp");
         return;
     }
 %>
@@ -24,12 +24,11 @@
 <style>
 
 body{
-    background:#e7f0ff;     /* soft blue theme */
+    background:#e7f0ff; 
     font-family:'Poppins',sans-serif;
     min-height:100vh;
 }
 
-/* main card container */
 .form-container{
     background:white;
     padding:40px;
@@ -40,13 +39,11 @@ body{
     box-shadow:0 12px 30px rgba(0,0,0,.12);
 }
 
-/* header text */
 .page-title{
     color:#0d6efd;
     font-weight:700;
 }
 
-/* buttons */
 .btn-primary{
     background:#0d6efd;
     border:none;
@@ -90,7 +87,7 @@ body{
                         Class.forName("com.mysql.cj.jdbc.Driver");
 
                         Connection conn = DriverManager.getConnection(
-                            "jdbc:mysql://localhost:3306/silvercare?user=root&password=root&serverTimezone=UTC"
+                            "jdbc:mysql://localhost:3306/silvercare?user=root&password=1234&serverTimezone=UTC"
                         );
 
                         String sql = "SELECT * FROM service_category ORDER BY category_name ASC";

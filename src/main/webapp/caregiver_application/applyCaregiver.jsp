@@ -3,10 +3,10 @@
 <%@ page import="java.sql.*, com.silvercare.util.DBConnection" %>
 
 <%
-    // SESSION CHECK
+    // Session Guard
     HttpSession session1 = request.getSession(false);
     if(session1 == null || session1.getAttribute("sessUserID") == null){
-        response.sendRedirect("../clientLogin.jsp");
+        response.sendRedirect("../login.jsp");
         return;
     }
 

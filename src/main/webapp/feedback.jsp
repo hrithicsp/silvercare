@@ -3,11 +3,11 @@
 <%@ include file="header_and_footer/header.jsp" %>
 
 <%
-    // ------------------------------ CLIENT SESSION GUARD ------------------------------
+    // Client Session Guard
     HttpSession s = request.getSession(false);
 
     if (s == null || !"CLIENT".equals(s.getAttribute("sessUserRole"))) {
-        response.sendRedirect("clientLogin.jsp");
+        response.sendRedirect("login.jsp");
         return;
     }
 
@@ -16,7 +16,7 @@
     String message = "";
     String messageType = "";
 
-    // ------------------------------ PROCESS FORM SUBMISSION ------------------------------
+    // Process Form Submission
     if ("POST".equalsIgnoreCase(request.getMethod())) {
 
         String serviceName = request.getParameter("service_name");
@@ -26,7 +26,7 @@
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost/silvercare?user=root&password=root&serverTimezone=UTC"
+                "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC"
             );
 
             String sql = "INSERT INTO feedback (client_name, service_name, rating, comments) VALUES (?, ?, ?, ?)";
@@ -49,7 +49,7 @@
         }
     }
 
-    // ------------------------------ FETCH SERVICES ------------------------------
+    // Fetch Services
     Connection conn2 = null;
     Statement stmtCat = null;
     Statement stmtSvc = null;
@@ -81,7 +81,6 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-/* Blue Theme */
 body {
     background: linear-gradient(145deg,#0d6efd,#0b5ed7);
     font-family: 'Poppins', sans-serif;
@@ -97,12 +96,10 @@ body {
     box-shadow: 0 14px 38px rgba(0,0,0,0.28);
 }
 
-/* Heading */
 h2.text-success {
     color: #0d6efd !important;
 }
 
-/* Star Rating (Gold Stars) */
 .star-rating {
   direction: rtl;
   display: inline-flex;
@@ -123,7 +120,6 @@ h2.text-success {
     color:#FFD700; 
 }
 
-/* Submit Button */
 .btn-submit {
     background: #0d6efd !important;
     border: none !important;
@@ -156,13 +152,13 @@ h2.text-success {
 
     <form action="feedback.jsp" method="post">
 
-        <!-- NAME -->
+        <!-- Name -->
         <div class="mb-3">
             <label class="form-label fw-semibold">Your Name</label>
             <input class="form-control" value="<%=loggedClient%>" readonly>
         </div>
 
-        <!-- SERVICE DROPDOWN -->
+        <!-- Service Dropdown -->
         <div class="mb-3">
             <label class="form-label fw-semibold">Service Received</label>
             <select name="service_name" class="form-select" required>
@@ -192,7 +188,7 @@ h2.text-success {
             </select>
         </div>
 
-        <!-- STAR RATING -->
+        <!-- Star Rating -->
         <label class="form-label fw-semibold d-block">Rating</label>
 		<div class="star-rating mb-3">
 		    <input type="radio" id="star5" name="rating" value="5">
@@ -211,7 +207,7 @@ h2.text-success {
 		    <label for="star1">&#9733;</label>
 		</div>
 
-        <!-- COMMENT -->
+        <!-- Comment -->
         <div class="mb-3">
             <label class="form-label fw-semibold">Comments</label>
             <textarea class="form-control" name="comments" rows="4" required></textarea>

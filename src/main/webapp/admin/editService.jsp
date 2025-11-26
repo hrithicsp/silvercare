@@ -3,10 +3,10 @@
 <%@ page import="java.sql.*" %>
 
 <%
-    // ADMIN SESSION GUARD
+    // Admin Session Guard
     HttpSession s = request.getSession(false);
     if (s == null || !"ADMIN".equals(s.getAttribute("sessUserRole"))) {
-        response.sendRedirect("../clientLogin.jsp");
+        response.sendRedirect("../login.jsp");
         return;
     }
 
@@ -27,7 +27,7 @@
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection conn = DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/silvercare?user=root&password=root&serverTimezone=UTC"
+            "jdbc:mysql://localhost:3306/silvercare?user=root&password=1234&serverTimezone=UTC"
         );
 
         String sql = "SELECT * FROM service WHERE service_id = ?";
@@ -57,6 +57,12 @@
 <meta charset="UTF-8">
 <title>Edit Service | Admin</title>
 
+<%--
+  Author(s): Jun Chao
+  Date: 26/11/2025
+  Description: Editing Services
+--%>
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
@@ -64,12 +70,11 @@
 <style>
 
 body {
-    background: #e7f0ff; /* soft blue theme */
+    background: #e7f0ff;
     font-family: 'Poppins', sans-serif;
     min-height: 100vh;
 }
 
-/* main card */
 .form-container {
     background: white;
     padding: 40px;
@@ -80,13 +85,11 @@ body {
     box-shadow: 0 12px 30px rgba(0,0,0,.12);
 }
 
-/* header */
 .page-title {
     color: #0d6efd;
     font-weight: 700;
 }
 
-/* buttons */
 .btn-primary {
     background: #0d6efd;
     border: none;

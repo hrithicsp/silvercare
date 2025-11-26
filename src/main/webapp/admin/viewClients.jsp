@@ -4,7 +4,7 @@
 <%
     HttpSession s = request.getSession(false);
     if(s == null || !"ADMIN".equals(s.getAttribute("sessUserRole"))){
-        response.sendRedirect("../clientLogin.jsp");
+        response.sendRedirect("../login.jsp");
         return;
     }
 
@@ -29,7 +29,6 @@ body{
     min-height:100vh;
 }
 
-/* Main container */
 .dashboard-container{
     background:white;
     box-shadow:0 14px 38px rgba(0,0,0,.28);
@@ -40,7 +39,6 @@ body{
     padding:3rem;
 }
 
-/* header box */
 .header-box{
     background:#e7f0ff;
     padding:28px;
@@ -49,7 +47,6 @@ body{
     text-align:center;
 }
 
-/* table styling */
 .table thead{
     background:#0d6efd !important;
     color:white !important;
@@ -89,7 +86,7 @@ body{
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection conn = DriverManager.getConnection(
-            "jdbc:mysql://localhost/silvercare?user=root&password=root&serverTimezone=UTC"
+            "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC"
         );
 
         String sql = "SELECT user_id, fullname, email, phone, gender FROM user WHERE role = 'CLIENT'";

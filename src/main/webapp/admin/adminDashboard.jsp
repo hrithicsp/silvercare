@@ -4,12 +4,11 @@
 <%
     HttpSession s = request.getSession(false);
     if(s == null || !"ADMIN".equals(s.getAttribute("sessUserRole"))){
-        response.sendRedirect("../clientLogin.jsp");
+        response.sendRedirect("../login.jsp");
         return;
     }
 
     String adminName = (String) s.getAttribute("sessUserName");
-
 %>
 
 <!DOCTYPE html>
@@ -30,7 +29,6 @@ body{
     min-height:100vh;
 }
 
-/* Main card */
 .dashboard-container{
     background:white;
     box-shadow:0 14px 38px rgba(0,0,0,.28);
@@ -41,7 +39,6 @@ body{
     padding:3.2rem;
 }
 
-/* welcome message */
 .welcome-box{
     background:#e7f0ff;
     padding:32px;
@@ -50,7 +47,6 @@ body{
     text-align:center;
 }
 
-/* dashboard tiles */
 .dash-card{
     background:white;
     border-radius:18px;
@@ -65,7 +61,6 @@ body{
     box-shadow:0 10px 30px rgba(0,0,0,.16);
 }
 
-/* icons - BLUE THEME */
 .dash-card i{
     font-size:40px;
     margin-bottom:15px;
@@ -102,7 +97,7 @@ body{
             </a>
         </div>
 
-        <!-- Pending caregiver applications -->
+        <!-- Pending Caregiver Applications -->
         <div class="col-md-4">
             <a href="pendingCaregiver.jsp" class="text-decoration-none text-dark">
                 <div class="dash-card">

@@ -20,12 +20,17 @@
 
     try{
         con = DBConnection.getConnection();
-        ps = con.prepareStatement("SELECT application_id FROM caregiver_application WHERE user_id=?");
+        ps = con.prepareStatement("SELECT application_id, status FROM caregiver_application WHERE user_id=?");
         ps.setInt(1, uid);
         rs = ps.executeQuery();
 
         if(rs.next()){
-            alreadyApplied = true;
+            String status = rs.getString("status");
+
+            // alreadyApplied = true ONLY if status is NOT rejected
+            if (!"REJECTED".equalsIgnoreCase(status)) {
+                alreadyApplied = true;
+            }
         }
     }catch(Exception e){
         e.printStackTrace();

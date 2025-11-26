@@ -99,6 +99,27 @@ body{
 
 <%@ include file="../header_and_footer/header.jsp" %>
 
+<%
+    String msg = request.getParameter("update");
+    if ("success".equals(msg)) {
+%>
+    <div id="updateAlert" 
+         class="alert alert-success text-center fw-semibold"
+         style="max-width:800px; margin:20px auto;">
+        	Your profile has been updated successfully!
+    </div>
+
+    <script>
+        // Auto-hide after 3 seconds
+        setTimeout(() => {
+            const alert = document.getElementById("updateAlert");
+            if (alert) alert.style.display = "none";
+        }, 3000);
+    </script>
+<%
+    }
+%>
+
 <div class="dashboard-container">
 
     <div class="welcome-box text-center mb-4">

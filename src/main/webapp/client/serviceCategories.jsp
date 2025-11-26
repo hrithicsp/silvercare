@@ -128,7 +128,7 @@
 <div id="chatbotWindow" class="chatbot-window" style="display:none;">
   <div class="chatbot-header">
     ElderCare Assistant
-    <span id="chatbotClose" style="cursor:pointer;">×</span>
+    <div id="chatbotClose" style="cursor:pointer;">&times;</div>
   </div>
   <div id="chatArea" class="chatbot-body"></div>
   <div class="chatbot-options">

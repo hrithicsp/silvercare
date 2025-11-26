@@ -3,14 +3,14 @@
 <%
     // Must be logged in
     if (session.getAttribute("sessUserID") == null) {
-        response.sendRedirect("clientLogin.jsp");
+        response.sendRedirect("login.jsp");
         return;
     }
 
     int serviceId = Integer.parseInt(request.getParameter("service_id"));
 
     Class.forName("com.mysql.cj.jdbc.Driver");
-    String connURL = "jdbc:mysql://localhost/silvercare?user=root&password=root&serverTimezone=UTC";
+    String connURL = "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC";
     Connection conn = DriverManager.getConnection(connURL);
 
     // Get the service details

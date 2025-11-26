@@ -5,13 +5,13 @@
 <%
     HttpSession s = request.getSession(false);
     if(s == null || !"CLIENT".equals(s.getAttribute("sessUserRole"))){
-        response.sendRedirect("../clientLogin.jsp");
+        response.sendRedirect("../login.jsp");
         return;
     }
 
     String fullName = (String) s.getAttribute("sessUserName");
 
-    // fetch application status
+    // Fetch Application Status
     int uid = (int) s.getAttribute("sessUserID");
 
     Connection con2 = DBConnection.getConnection();
@@ -49,7 +49,6 @@ body{
     min-height:100vh;
 }
 
-/* MAIN DASHBOARD CARD */
 .dashboard-container{
     background:white;
     border-radius:24px;
@@ -60,7 +59,6 @@ body{
     margin-top:3rem;
 }
 
-/* Top title box */
 .welcome-box{
     background:#e7f0ff;
     padding:30px;
@@ -68,7 +66,6 @@ body{
     margin-bottom:35px;
 }
 
-/* Dashboard buttons */
 .feature-card{
     padding:28px;
     border-radius:18px;
@@ -82,7 +79,6 @@ body{
     box-shadow:0 7px 22px rgba(0,0,0,0.18);
 }
 
-/* icons */
 .feature-card i{
     font-size:38px;
     margin-bottom:12px;
@@ -99,6 +95,27 @@ body{
 
 <%@ include file="../header_and_footer/header.jsp" %>
 
+<%
+    String msg = request.getParameter("update");
+    if ("success".equals(msg)) {
+%>
+    <div id="updateAlert" 
+         class="alert alert-success text-center fw-semibold"
+         style="max-width:800px; margin:20px auto;">
+          Your profile has been updated successfully!
+    </div>
+
+    <script>
+        // Auto-hide after 3 seconds
+        setTimeout(() => {
+            const alert = document.getElementById("updateAlert");
+            if (alert) alert.style.display = "none";
+        }, 3000);
+    </script>
+<%
+    }
+%>
+
 <div class="dashboard-container">
 
     <div class="welcome-box text-center mb-4">
@@ -106,7 +123,7 @@ body{
         <p class="mt-2 text-muted">Manage your services, profile & applications</p>
     </div>
 
-<!-- BEGIN STATUS AREA -->
+<!-- Begin Status Area -->
 <% 
     if(hasApp){ 
         String statusClass = "";
@@ -137,7 +154,7 @@ body{
     </div>
 
 <% } %>
-<!-- END STATUS AREA -->
+<!-- End Status Area -->
 
 
 
@@ -154,7 +171,7 @@ body{
         </div>
 
 
-        <!-- APPLY OR DISABLE -->
+        <!-- Apply or Disable -->
         <div class="col-md-4">
             <% if(!hasApp || "REJECTED".equalsIgnoreCase(appStatus)){ %>
 

@@ -93,7 +93,7 @@
         <h4 class="fw-bold mt-3"><%= rs.getString("full_name") %></h4>
     </div>
 
-    <!-- PERSONAL INFORMATION -->
+    <!-- Personal Information -->
     <div class="divider"></div>
     <h5 class="fw-bold text-dark">Personal Information</h5>
 
@@ -102,14 +102,14 @@
     <p><span class="info-label">Date of Birth:</span> <%= rs.getString("dob") %></p>
     <p><span class="info-label">Address:</span> <%= rs.getString("address") %></p>
 
-    <!-- EXPERIENCE -->
+    <!-- Experience -->
     <div class="divider"></div>
     <h5 class="fw-bold text-dark">Experience</h5>
 
     <p><span class="info-label">Years of Experience:</span> <%= rs.getInt("years_experience") %> years</p>
     <p><span class="info-label">Experience Description:</span><br> <%= rs.getString("experience") %></p>
 
-    <!-- SKILLS -->
+    <!-- Skills -->
     <div class="divider"></div>
     <h5 class="fw-bold text-dark">Skills & Certifications</h5>
 
@@ -124,20 +124,20 @@
         </p>
     <% } %>
 
-    <!-- AVAILABILITY -->
+    <!-- Availability -->
     <div class="divider"></div>
     <h5 class="fw-bold text-dark">Availability</h5>
 
     <p><span class="info-label">Days:</span> <%= rs.getString("availability_days") %></p>
     <p><span class="info-label">Preferred Shift:</span> <%= rs.getString("preferred_shift") %></p>
 
-    <!-- interest_service -->
+    <!-- Interest Service -->
     <div class="divider"></div>
     <h5 class="fw-bold text-dark">Service Interests</h5>
 
     <p><span class="info-label">Interested Service:</span> <%= rs.getString("interest_service") %></p>
 
-    <!-- ACTION BUTTONS -->
+    <!-- Action Buttons -->
     <div class="divider"></div>
 
     <div class="d-flex justify-content-center gap-3 mt-4">

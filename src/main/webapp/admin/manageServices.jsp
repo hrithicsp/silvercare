@@ -3,10 +3,10 @@
 <%@ page import="java.sql.*" %>
 
 <%
-    // ADMIN GUARD
+    // Session Admin Guard
     HttpSession s = request.getSession(false);
     if(s == null || !"ADMIN".equals(s.getAttribute("sessUserRole"))){
-        response.sendRedirect("../clientLogin.jsp");
+        response.sendRedirect("../login.jsp");
         return;
     }
 %>
@@ -17,6 +17,12 @@
 <meta charset="UTF-8">
 <title>Manage Services | Admin</title>
 
+<%--
+  Author(s): Jun Chao
+  Date: 26/11/2025
+  Description: Managing Services
+--%>
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
@@ -24,12 +30,11 @@
 <style>
 
 body{
-    background:#e7f0ff; /* Soft blue theme */
+    background:#e7f0ff;
     font-family:'Poppins',sans-serif;
     min-height:100vh;
 }
 
-/* main box */
 .services-container{
     background:white;
     padding:40px;
@@ -40,26 +45,24 @@ body{
     box-shadow:0 12px 30px rgba(0,0,0,.12);
 }
 
-/* header */
 h2.fw-bold{
     color:#0d6efd !important;
 }
 
-/* add button */
 .btn-add{
-    background:#0d6efd !important;   /* bright blue */
-    color:white !important;          /* force white text */
+    background:#0d6efd !important;   
+    color:white !important;         
     border:2px solid #0a58ca !important;
     font-weight:600;
     padding:10px 22px;
     border-radius:10px;
     position:relative;
-    z-index:9999; /* makes sure nothing hides it */
+    z-index:9999;
 }
 .btn-add:hover{
     background:#0b5ed7 !important;
 }
-/* category styling */
+
 .category-header{
     margin-top:40px;
 }
@@ -76,7 +79,6 @@ h2.fw-bold{
     margin-top:6px;
 }
 
-/* service card */
 .service-card{
     background:white;
     border-radius:18px;
@@ -100,7 +102,6 @@ h2.fw-bold{
     font-size:.95rem;
 }
 
-/* edit + delete buttons */
 .btn-warning{
     font-size:.85rem;
     font-weight:600;
@@ -136,7 +137,7 @@ h2.fw-bold{
         Class.forName("com.mysql.cj.jdbc.Driver");
 
         Connection conn = DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/silvercare?user=root&password=root&serverTimezone=UTC"
+            "jdbc:mysql://localhost:3306/silvercare?user=root&password=1234&serverTimezone=UTC"
         );
 
         String catSQL = "SELECT * FROM service_category ORDER BY category_id ASC";

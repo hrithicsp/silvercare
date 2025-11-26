@@ -3,10 +3,10 @@
 <%@ page import="java.sql.*" %>
 
 <%
-    // ADMIN SESSION GUARD
+    // Admin Session Guard
     HttpSession s = request.getSession(false);
     if (s == null || !"ADMIN".equals(s.getAttribute("sessUserRole"))) {
-        response.sendRedirect("../clientLogin.jsp");
+        response.sendRedirect("../login.jsp");
         return;
     }
 %>
@@ -24,12 +24,11 @@
 <style>
 
 body {
-    background: #e7f0ff; /* soft blue */
+    background: #e7f0ff;
     font-family: 'Poppins', sans-serif;
     min-height: 100vh;
 }
 
-/* main container */
 .feedback-container {
     background: white;
     max-width: 1150px;
@@ -40,7 +39,6 @@ body {
     box-shadow: 0 12px 30px rgba(0,0,0,.15);
 }
 
-/* cards */
 .feedback-card {
     border-radius: 18px;
     padding: 20px;
@@ -53,13 +51,11 @@ body {
     box-shadow: 0 12px 28px rgba(0,0,0,.15);
 }
 
-/* rating stars */
 .star {
     color: #fbc02d;
     font-size: 1.1rem;
 }
 
-/* title */
 .page-title {
     color: #0d6efd;
     font-weight: 700;
@@ -83,7 +79,7 @@ body {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost/silvercare?user=root&password=root&serverTimezone=UTC"
+                "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC"
             );
 
             Statement stmt = conn.createStatement();

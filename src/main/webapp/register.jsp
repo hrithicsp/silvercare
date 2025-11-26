@@ -10,16 +10,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
   <style>
-    /* --- 1. Brand Color Palette (BLUE VERSION) --- */
     :root {
-      --primary-color: #0d6efd;             /* BLUE */
+      --primary-color: #0d6efd;          
       --primary-color-light: rgba(13,110,253,0.18);
       --light-gray-bg: #f9fafb;
       --text-dark: #343a40;
       --text-light: #6c757d;
     }
 
-    /* --- 2. Body & Layout --- */
     html,body { height: 100%; }
     body {
       font-family: 'Poppins', sans-serif;
@@ -29,7 +27,6 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* --- 3. Registration Form Container --- */
     .register-container {
       background: #ffffff;
       border-radius: 18px;
@@ -59,7 +56,6 @@
       padding-left: 10px;
     }
 
-    /* --- 5. Button Styles --- */
 	.btn-gradient {
 	  background: var(--primary-color) !important;
 	  border-color: var(--primary-color) !important;
@@ -76,7 +72,6 @@
 	  transform: translateY(-2px);
 	}
 
-    /* --- 6. Form Input & Icon Styles --- */
     .input-group-text {
       background-color: #f8f9fa;
       width: 42px;
@@ -99,7 +94,6 @@
       z-index: 3;
     }
 
-    /* --- 7. Links & Checkboxes --- */
     a {
       color: var(--primary-color);
       text-decoration: none;
@@ -241,7 +235,7 @@
           <button class="btn btn-gradient btn-lg" type="submit">Create Account</button>
         </div>
         
-        <p class="text-center mt-3">Already have an account? <a href="clientLogin.jsp">Login here</a>.</p>
+        <p class="text-center mt-3">Already have an account? <a href="login.jsp">Login here</a>.</p>
       </form>
     </div>
   </main>
@@ -250,7 +244,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // simple password match check
+    // Simple Password Match Check
     document.querySelector('form').addEventListener('submit', function(e){
       const p = document.getElementById('password').value;
       const c = document.getElementById('confirmPassword').value;
@@ -262,7 +256,7 @@
     });
   </script>
   <script>
-  	// To display slider value
+  	// To display Slider Value
 	  function updateTechLabel(val){
 	    document.getElementById("techValue").innerText = val;
 	  }

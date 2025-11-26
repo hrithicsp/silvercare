@@ -6,7 +6,7 @@
 	// Admin session guard
 	HttpSession s = request.getSession(false);
 	if(s == null || !"ADMIN".equals(s.getAttribute("sessUserRole"))){
-	    response.sendRedirect("../clientLogin.jsp");
+	    response.sendRedirect("../login.jsp");
 	    return;
 	}
 
@@ -24,7 +24,7 @@
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection conn = DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/silvercare?user=root&password=root&serverTimezone=UTC"
+            "jdbc:mysql://localhost:3306/silvercare?user=root&password=1234&serverTimezone=UTC"
         );
 
         String sql = "DELETE FROM service WHERE service_id=?";
@@ -52,6 +52,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Delete Service</title>
+
+<%--
+  Author(s): Jun Chao
+  Date: 26/11/2025
+  Description: Deleting Services
+--%>
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 

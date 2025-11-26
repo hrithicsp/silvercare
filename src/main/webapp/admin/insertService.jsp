@@ -2,10 +2,10 @@
 <%@page import="java.sql.*"%>
 
 <%
-    // Admin session guard
+    // Admin Session Guard
     HttpSession s = request.getSession(false);
     if(s == null || !"ADMIN".equals(s.getAttribute("sessUserRole"))){
-        response.sendRedirect("../clientLogin.jsp");
+        response.sendRedirect("../login.jsp");
         return;
     }
 %>
@@ -16,6 +16,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert Service</title>
+
+<%--
+  Author(s): Jun Chao
+  Date: 26/11/2025
+  Description: Adding Services
+--%>
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
@@ -36,7 +43,7 @@
         Class.forName("com.mysql.cj.jdbc.Driver");
 
         Connection conn = DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/silvercare?user=root&password=root&serverTimezone=UTC"
+            "jdbc:mysql://localhost:3306/silvercare?user=root&password=1234&serverTimezone=UTC"
         );
 
         String sql = "INSERT INTO service (category_id, service_name, description, price, image_path) " +

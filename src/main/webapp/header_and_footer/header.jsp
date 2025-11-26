@@ -71,6 +71,12 @@
                     <a class="nav-link fw-semibold"
                        href="<%=request.getContextPath()%>/client/clientDashboard.jsp">Dashboard</a>
                 </li>
+                
+                <li class="nav-item">
+				    <a class="nav-link fw-semibold"
+				       href="<%=request.getContextPath()%>/client/viewProfile.jsp">Profile</a>
+				</li>
+                
             <% } %>
 
             <!-- Logout for ALL logged-in users -->

@@ -106,15 +106,28 @@ body{
         <p class="mt-2 text-muted">Manage your services, profile & applications</p>
     </div>
 
-    <!-- BEGIN STATUS AREA -->
-    <% if(hasApp){ %>
+<!-- BEGIN STATUS AREA -->
+<% 
+    if(hasApp){ 
+        String statusClass = "";
 
-    <div class="alert alert-info p-4 text-center rounded-4 shadow-sm mb-4" style="background:#E7F7F3;border:none;">
+        if("APPROVED".equalsIgnoreCase(appStatus)){
+            statusClass = "alert-success";   // green
+        } 
+        else if("PENDING".equalsIgnoreCase(appStatus)){
+            statusClass = "alert-warning";   // yellow
+        } 
+        else if("REJECTED".equalsIgnoreCase(appStatus)){
+            statusClass = "alert-danger";    // red
+        }
+%>
+
+    <div class="alert <%= statusClass %> p-4 text-center rounded-4 shadow-sm mb-4">
         <h4 class="fw-bold mb-2">
             <i class="fa-solid fa-clipboard-check"></i> Caregiver Application Status
         </h4>
 
-        <h5 class="mb-2" style="color:#00796B;">
+        <h5 class="mb-2">
             <%= appStatus %>
         </h5>
 
@@ -123,17 +136,9 @@ body{
         </small>
     </div>
 
-    <% } else { %>
+<% } %>
+<!-- END STATUS AREA -->
 
-    <div class="alert alert-warning p-4 text-center rounded-4 shadow-sm mb-4">
-        <h4 class="fw-bold mb-2">
-            <i class="fa-solid fa-circle-info"></i> You have not applied to be a caregiver yet.
-        </h4>
-        <p class="text-muted mb-1">Start your application to become a registered caregiver!</p>
-    </div>
-
-    <% } %>
-    <!-- END STATUS AREA -->
 
 
     <div class="row g-4">
@@ -151,7 +156,7 @@ body{
 
         <!-- APPLY OR DISABLE -->
         <div class="col-md-4">
-            <% if(!hasApp){ %>
+            <% if(!hasApp || "REJECTED".equalsIgnoreCase(appStatus)){ %>
 
                 <a href="../caregiver_application/applyCaregiver.jsp" class="text-decoration-none text-dark">
                     <div class="feature-card text-center">

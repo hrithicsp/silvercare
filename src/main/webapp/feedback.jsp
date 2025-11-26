@@ -26,7 +26,7 @@
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC"
+                "jdbc:mysql://localhost/silvercare?user=root&password=root&serverTimezone=UTC"
             );
 
             String sql = "INSERT INTO feedback (client_name, service_name, rating, comments) VALUES (?, ?, ?, ?)";

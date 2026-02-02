@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,38 +78,38 @@
 
 <div class="login-card mt-5">
     <h3 class="text-center fw-bold mb-4">
-        <i class="fa-solid fa-right-to-bracket me-2"></i> Login
+        <i class="fa-solid fa-right-to-bracket me-2"></i> <fmt:message key="login.title" bundle="${msg}"/>
     </h3>
 
     <form action="<%=request.getContextPath()%>/LoginServlet" method="post">
         
         <div class="mb-3">
-            <label class="form-label fw-semibold">Email</label>
+            <label class="form-label fw-semibold"><fmt:message key="login.email" bundle="${msg}"/></label>
             <input name="email" type="email" class="form-control" required />
         </div>
         
         <div class="mb-3">
-            <label class="form-label fw-semibold">Password</label>
+            <label class="form-label fw-semibold"><fmt:message key="login.password" bundle="${msg}"/></label>
             <input name="password" type="password" class="form-control" required />
         </div>
 
         <button type="submit" class="btn btn-login w-100 py-2 mt-2">
-            Login
+            <fmt:message key="login.loginBtn" bundle="${msg}"/>
         </button>
         
         <p class="mt-3 text-center">
-            Don't have an account? 
-            <a href="<%=request.getContextPath()%>/register.jsp">Register here</a>
+            <fmt:message key="login.noAccount" bundle="${msg}"/>
+            <a href="<%=request.getContextPath()%>/register.jsp"><fmt:message key="login.registerHere" bundle="${msg}"/></a>
         </p>
         <p class="mt-2 text-center">
             <a href="<%=request.getContextPath()%>/home.jsp" class="text-muted small">
-                <i class="fa-solid fa-arrow-left me-1"></i> Back to Home
+                <i class="fa-solid fa-arrow-left me-1"></i> <fmt:message key="common.backToHome" bundle="${msg}"/>
             </a>
         </p>
     </form>
 </div>
 
-<%@ include file="header_and_footer/footer.html" %>
+<%@ include file="header_and_footer/footer.jsp" %>
 
 </body>
 </html>

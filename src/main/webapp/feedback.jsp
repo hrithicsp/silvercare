@@ -1,7 +1,5 @@
 <%@ page import="jakarta.servlet.http.HttpSession" %>
 <%@ page import="java.sql.*" %>
-<%@ include file="header_and_footer/header.jsp" %>
-
 <%
     // Client Session Guard
     HttpSession s = request.getSession(false);
@@ -59,7 +57,7 @@
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
         conn2 = DriverManager.getConnection(
-            "jdbc:mysql://localhost/silvercare?user=root&password=root&serverTimezone=UTC"
+            "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC"
         );
 
         stmtCat = conn2.createStatement();
@@ -79,6 +77,7 @@
 <title>Submit Feedback | SilverCare</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
 <style>
 body {
@@ -139,8 +138,15 @@ h2.text-success {
 
 <body>
 
+<%@ include file="header_and_footer/header.jsp" %>
+
 <div class="form-box">
 
+    <p class="mb-3">
+        <a href="<%=request.getContextPath()%>/client/clientDashboard.jsp" class="text-primary text-decoration-none">
+            <i class="fa-solid fa-arrow-left me-1"></i> Back to Dashboard
+        </a>
+    </p>
     <h2 class="fw-bold text-success text-center mb-2">Share Your Experience</h2>
     <p class="text-muted text-center">Your feedback helps us serve you better.</p>
 
@@ -150,7 +156,7 @@ h2.text-success {
         </div>
     <% } %>
 
-    <form action="feedback.jsp" method="post">
+    <form action="<%=request.getContextPath()%>/feedback.jsp" method="post">
 
         <!-- Name -->
         <div class="mb-3">
@@ -222,7 +228,7 @@ h2.text-success {
     if (conn2 != null) conn2.close();
 %>
 
-<%@ include file="header_and_footer/footer.html" %>
+<%@ include file="header_and_footer/footer.jsp" %>
 
 </body>
 </html>

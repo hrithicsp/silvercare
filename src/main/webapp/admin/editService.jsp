@@ -112,6 +112,12 @@ body {
 
 <div class="form-container">
 
+    <p class="mb-3">
+        <a href="<%=request.getContextPath()%>/admin/manageServices.jsp" class="text-primary text-decoration-none">
+            <i class="fa-solid fa-arrow-left me-1"></i> Back to Manage Services
+        </a>
+    </p>
+
     <h2 class="page-title mb-4">Edit Service</h2>
 
     <form method="post" action="updateService.jsp">
@@ -158,7 +164,7 @@ body {
 
         <!-- BUTTONS -->
         <div class="d-flex justify-content-between mt-4">
-            <a href="manageServices.jsp" class="btn btn-secondary">Cancel</a>
+            <a href="<%=request.getContextPath()%>/admin/manageServices.jsp" class="btn btn-secondary">Back to Manage Services</a>
             <button type="submit" class="btn btn-primary">Update Service</button>
         </div>
 
@@ -166,7 +172,7 @@ body {
 
 </div>
 
-<%@ include file="../header_and_footer/footer.html" %>
+<%@ include file="../header_and_footer/footer.jsp" %>
 
 </body>
 </html>

@@ -32,20 +32,27 @@
         }
 
         .btn-home {
-            background-color: #00796B;
+            background-color: #0d6efd;
             border-radius: 10px;
             font-weight: 600;
             padding: 12px 25px;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.2s;
         }
 
         .btn-home:hover {
-            background-color: #005f52;
+            background-color: #0b5ed7;
+            color: white;
         }
     </style>
 
 </head>
 
 <body>
+
+<%@ include file="../header_and_footer/header.jsp" %>
 
 <div class="success-box shadow">
     
@@ -57,12 +64,19 @@
         Our caregiver team will contact you shortly.
     </p>
 
-    <a href="<%=request.getContextPath()%>/client/clientDashboard.jsp" 
-       class="btn btn-home text-white">
-        <i class="fa-solid fa-arrow-left me-2"></i> Return to Dashboard
-    </a>
+    <div class="d-flex flex-wrap gap-2 justify-content-center">
+        <a href="<%=request.getContextPath()%>/client/clientDashboard.jsp" class="btn btn-home">
+            <i class="fa-solid fa-arrow-left me-2"></i> Return to Dashboard
+        </a>
+        <a href="<%=request.getContextPath()%>/client/serviceCategories.jsp" class="btn btn-outline-primary">
+            <i class="fa-solid fa-list me-2"></i> Browse More Services
+        </a>
+    </div>
 
 </div>
 
+<%@ include file="../header_and_footer/footer.jsp" %>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

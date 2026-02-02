@@ -71,8 +71,8 @@
                         You will be notified once the admin reviews your request.
                     </p>
 
-                    <a href="../client/clientDashboard.jsp" class="btn btn-primary px-4">
-                        Return to Dashboard
+                    <a href="<%=request.getContextPath()%>/client/clientDashboard.jsp" class="btn btn-primary px-4">
+                        <i class="fa-solid fa-arrow-left me-1"></i> Return to Dashboard
                     </a>
                 </div>
 
@@ -84,6 +84,11 @@
     <!-- FORM SECTION -->
 	<div class="row justify-content-center">
       <div class="col-lg-10">
+        <p class="mb-3">
+          <a href="<%=request.getContextPath()%>/client/clientDashboard.jsp" class="text-primary text-decoration-none">
+            <i class="fa-solid fa-arrow-left me-1"></i> Back to Dashboard
+          </a>
+        </p>
         <div class="card shadow-sm caregiver-card overflow-hidden">
           <div class="row g-0">
             <!-- Left: form -->
@@ -247,7 +252,7 @@
 
 </main>
 
-<%@ include file="../header_and_footer/footer.html" %>
+<%@ include file="../header_and_footer/footer.jsp" %>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/caregiver_form.js"></script>

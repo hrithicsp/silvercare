@@ -122,6 +122,12 @@ h2.fw-bold{
 
 <div class="services-container">
 
+    <p class="mb-3">
+        <a href="<%=request.getContextPath()%>/admin/adminDashboard.jsp" class="text-primary text-decoration-none">
+            <i class="fa-solid fa-arrow-left me-1"></i> Back to Dashboard
+        </a>
+    </p>
+
     <!-- HEADER -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold">Manage Services</h2>
@@ -231,7 +237,7 @@ h2.fw-bold{
 
 </div>
 
-<%@ include file="../header_and_footer/footer.html" %>
+<%@ include file="../header_and_footer/footer.jsp" %>
 
 </body>
 </html>

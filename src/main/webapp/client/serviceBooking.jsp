@@ -3,12 +3,22 @@
 <%
     // Redirect user to login if they somehow reach this page without logging in
     if (session.getAttribute("sessUserID") == null) {
-        response.sendRedirect("login.jsp");
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
         return;
     }
 
-    // Get the service ID passed from the previous page
-    int serviceId = Integer.parseInt(request.getParameter("service_id"));
+    String serviceIdParam = request.getParameter("service_id");
+    if (serviceIdParam == null || serviceIdParam.trim().isEmpty()) {
+        response.sendRedirect(request.getContextPath() + "/client/serviceCategories.jsp");
+        return;
+    }
+    int serviceId;
+    try {
+        serviceId = Integer.parseInt(serviceIdParam);
+    } catch (NumberFormatException nfe) {
+        response.sendRedirect(request.getContextPath() + "/client/serviceCategories.jsp");
+        return;
+    }
 
     // Standard DB setup (using MySQL + UTF-8)
     Class.forName("com.mysql.cj.jdbc.Driver");
@@ -65,6 +75,11 @@
 <%@ include file="../header_and_footer/header.jsp" %>
 
 <div class="container py-5">
+    <p class="mb-3">
+        <a href="<%=request.getContextPath()%>/client/services.jsp?category_id=<%= categoryId %>" class="text-primary text-decoration-none">
+            <i class="fa-solid fa-arrow-left me-1"></i> Back to Services
+        </a>
+    </p>
     <!-- Title shows the service name dynamically -->
     <h2 class="fw-bold mb-4 text-primary">Book: <%= serviceName %></h2>
 
@@ -217,7 +232,7 @@ document.getElementById("viewDetailsBtn").addEventListener("click", function () 
 });
 </script>
 
-<%@ include file="../header_and_footer/footer.html" %>
+<%@ include file="../header_and_footer/footer.jsp" %>
 
 </body>
 </html>

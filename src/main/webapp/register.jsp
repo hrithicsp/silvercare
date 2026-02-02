@@ -235,12 +235,15 @@
           <button class="btn btn-gradient btn-lg" type="submit">Create Account</button>
         </div>
         
-        <p class="text-center mt-3">Already have an account? <a href="login.jsp">Login here</a>.</p>
+        <p class="text-center mt-3">Already have an account? <a href="<%=request.getContextPath()%>/login.jsp">Login here</a>.</p>
+        <p class="text-center mt-2">
+            <a href="<%=request.getContextPath()%>/home.jsp" class="text-muted small"><i class="fa-solid fa-arrow-left me-1"></i> Back to Home</a>
+        </p>
       </form>
     </div>
   </main>
 
-  <%@ include file="header_and_footer/footer.html" %>
+  <%@ include file="header_and_footer/footer.jsp" %>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>

@@ -109,6 +109,11 @@
 <%@ include file="../header_and_footer/header.jsp" %>
 
 <div class="container py-5">
+  <p class="mb-3">
+    <a href="<%=request.getContextPath()%>/home.jsp" class="text-primary text-decoration-none">
+      <i class="fa-solid fa-arrow-left me-1"></i> Back to Home
+    </a>
+  </p>
   <h2 class="text-center fw-bold mb-5">Our Service Categories</h2>
 
   <div class="row g-4">
@@ -187,7 +192,7 @@
 </div>
 
 <!-- Common footer -->
-<%@ include file="../header_and_footer/footer.html" %>
+<%@ include file="../header_and_footer/footer.jsp" %>
 
 
 <script>

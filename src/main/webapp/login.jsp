@@ -98,12 +98,17 @@
         
         <p class="mt-3 text-center">
             Don't have an account? 
-            <a href="register.jsp">Register here</a>
+            <a href="<%=request.getContextPath()%>/register.jsp">Register here</a>
+        </p>
+        <p class="mt-2 text-center">
+            <a href="<%=request.getContextPath()%>/home.jsp" class="text-muted small">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back to Home
+            </a>
         </p>
     </form>
 </div>
 
-<%@ include file="header_and_footer/footer.html" %>
+<%@ include file="header_and_footer/footer.jsp" %>
 
 </body>
 </html>

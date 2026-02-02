@@ -132,7 +132,10 @@
         <p><span class="label">Joined On:</span> <%= createdAt %></p>
     </div>
 
-    <div class="mt-4 text-center">
+    <div class="mt-4 d-flex justify-content-center gap-2 flex-wrap">
+        <a href="<%=request.getContextPath()%>/client/clientDashboard.jsp" class="btn btn-outline-secondary">
+            <i class="fa-solid fa-arrow-left me-1"></i> Back to Dashboard
+        </a>
         <a href="editProfile.jsp" class="btn-edit">
             <i class="fa-solid fa-pen-to-square me-1"></i> Edit Profile
         </a>
@@ -140,7 +143,7 @@
 
 </div>
 
-<%@ include file="../header_and_footer/footer.html" %>
+<%@ include file="../header_and_footer/footer.jsp" %>
 
 </body>
 </html>

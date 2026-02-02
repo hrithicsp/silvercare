@@ -239,7 +239,7 @@ ResultSet rs = pst.executeQuery();
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<%@ include file="header_and_footer/footer.jsp" %>
+<%@ include file="header_and_footer/footer.html" %>
 
 </body>
 </html>

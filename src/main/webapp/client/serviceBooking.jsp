@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.sql.*" %>
 
 <%
@@ -127,8 +128,8 @@
                         data-availability="<%= rsCare.getString("availability_days") %>"
                         data-shift="<%= rsCare.getString("preferred_shift") %>"
                     >
-                        <!-- Show name + years of experience -->
-                        <%= rsCare.getString("full_name") %> — <%= rsCare.getInt("years_experience") %> yrs
+                        <!-- Show name + years of experience (use ASCII hyphen to avoid encoding issues) -->
+                        <%= rsCare.getString("full_name") %> - <%= rsCare.getInt("years_experience") %> yrs
                     </option>
                 <% 
                     }
@@ -232,7 +233,7 @@ document.getElementById("viewDetailsBtn").addEventListener("click", function () 
 });
 </script>
 
-<%@ include file="../header_and_footer/footer.jsp" %>
+<%@ include file="../header_and_footer/footer.html" %>
 
 </body>
 </html>

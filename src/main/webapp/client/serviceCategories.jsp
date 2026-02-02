@@ -192,7 +192,7 @@
 </div>
 
 <!-- Common footer -->
-<%@ include file="../header_and_footer/footer.jsp" %>
+<%@ include file="../header_and_footer/footer.html" %>
 
 
 <script>

@@ -228,7 +228,7 @@ h2.text-success {
     if (conn2 != null) conn2.close();
 %>
 
-<%@ include file="header_and_footer/footer.jsp" %>
+<%@ include file="header_and_footer/footer.html" %>
 
 </body>
 </html>

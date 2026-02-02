@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" %>
 <%@ page import="jakarta.servlet.http.HttpSession" %>
 
 <%
@@ -7,22 +7,27 @@
     String role = loggedIn ? (String) sessionUser.getAttribute("sessUserRole") : "";
 %>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+
 <style>
-    /* Font resize buttons */
     .font-btn {
-        border: none;
-        background: #f1f1f1;
-        padding: 4px 10px;
+        border: 1px solid #0d6efd;
+        background: #eaf2ff;
+        color: #0d6efd;
+        padding: 4px 12px;
         margin-left: 6px;
         border-radius: 6px;
         font-weight: 600;
         cursor: pointer;
+        font-size: 15px;
         transition: 0.2s;
     }
     .font-btn:hover {
-        background: #e2e2e2;
+        background: #0d6efd;
+        color: white;
     }
 </style>
+
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
   <div class="container d-flex align-items-center">
@@ -34,14 +39,14 @@
       SilverCare
     </a>
 
-    <!-- Accessibility Buttons -->
-    <div class="d-flex align-items-center ms-3">
-        <button class="font-btn" id="decreaseFont">A−</button>
-        <button class="font-btn" id="increaseFont">A+</button>
-    </div>
+	<!-- Accessibility: Font Size -->
+	<div class="d-flex align-items-center ms-3">
+	    <button class="font-btn" id="decreaseFont">A-</button>
+	    <button class="font-btn" id="increaseFont">A+</button>
+	</div>
 
-    <!-- Mobile Nav Toggle -->
-    <button class="navbar-toggler ms-auto" type="button" 
+    <!-- Burger button -->
+    <button class="navbar-toggler ms-auto" type="button"
             data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -51,11 +56,12 @@
 
         <% if (!loggedIn) { %>
 
-            <!-- NOT LOGGED IN -->
+            <!-- PUBLIC -->
             <li class="nav-item">
               <a class="nav-link fw-semibold"
                  href="<%=request.getContextPath()%>/home.jsp">Home</a>
             </li>
+
             <li class="nav-item">
               <a class="nav-link fw-semibold"
                  href="<%=request.getContextPath()%>/client/serviceCategories.jsp">Services</a>
@@ -73,7 +79,7 @@
 
         <% } else { %>
 
-            <% if (role.equals("ADMIN") || role.equals("admin")) { %>
+            <% if (role.equalsIgnoreCase("ADMIN")) { %>
 
                 <!-- ADMIN -->
                 <li class="nav-item">
@@ -106,7 +112,6 @@
 
             <% } %>
 
-            <!-- LOGOUT (ALL LOGGED USERS) -->
             <li class="nav-item ms-lg-2">
                 <a class="btn btn-danger btn-sm fw-semibold px-3 py-2"
                    href="<%=request.getContextPath()%>/LogoutServlet">Logout</a>
@@ -119,7 +124,6 @@
   </div>
 </nav>
 
-<!-- Font Size Script -->
 <script>
     let currentSize = localStorage.getItem("fontSize")
         ? parseInt(localStorage.getItem("fontSize"))
@@ -143,4 +147,3 @@
         }
     };
 </script>
-

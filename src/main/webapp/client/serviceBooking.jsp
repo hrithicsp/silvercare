@@ -1,29 +1,31 @@
 <%@ page import="java.sql.*" %>
 
 <%
-    // Must be logged in
+    // Redirect user to login if they somehow reach this page without logging in
     if (session.getAttribute("sessUserID") == null) {
         response.sendRedirect("login.jsp");
         return;
     }
 
+    // Get the service ID passed from the previous page
     int serviceId = Integer.parseInt(request.getParameter("service_id"));
 
+    // Standard DB setup (using MySQL + UTF-8)
     Class.forName("com.mysql.cj.jdbc.Driver");
-    String connURL = "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC";
+    String connURL = "jdbc:mysql://localhost/silvercare?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&user=root&password=1234";
     Connection conn = DriverManager.getConnection(connURL);
 
-    // Get the service details
+    // Retrieve the selected service's details
     String sqlService = "SELECT * FROM service WHERE service_id=?";
     PreparedStatement pstService = conn.prepareStatement(sqlService);
     pstService.setInt(1, serviceId);
     ResultSet rsService = pstService.executeQuery();
-    rsService.next();
+    rsService.next();    // There should always be 1 result for a valid service_id
 
     String serviceName = rsService.getString("service_name");
     int categoryId = rsService.getInt("category_id");
 
-    // Get category name
+    // Get the category name of this service
     String sqlCat = "SELECT category_name FROM service_category WHERE category_id=?";
     PreparedStatement pstCat = conn.prepareStatement(sqlCat);
     pstCat.setInt(1, categoryId);
@@ -31,7 +33,7 @@
     rsCat.next();
     String categoryName = rsCat.getString("category_name");
 
-    // Get APPROVED caregivers linked to this category
+    // Pull all APPROVED caregivers whose interest matches this service category
     String sqlCare = "SELECT * FROM caregiver_application WHERE status='APPROVED' AND interest_service=?";
     PreparedStatement pstCare = conn.prepareStatement(sqlCare);
     pstCare.setString(1, categoryName);
@@ -47,6 +49,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
+    /* Keep caregiver images neat */
     .caregiver-img {
         width: 100%;
         max-height: 180px;
@@ -62,25 +65,28 @@
 <%@ include file="../header_and_footer/header.jsp" %>
 
 <div class="container py-5">
+    <!-- Title shows the service name dynamically -->
     <h2 class="fw-bold mb-4 text-primary">Book: <%= serviceName %></h2>
 
 <form action="<%=request.getContextPath()%>/ServiceBookingServlet" method="post" class="p-4 bg-white shadow rounded">
 
-    <!-- Hidden Fields -->
+    <!-- Pass these along quietly -->
     <input type="hidden" name="service_id" value="<%= serviceId %>">
     <input type="hidden" name="user_id" value="<%= session.getAttribute("sessUserID") %>">
 
+    <!-- Booking date -->
     <div class="mb-3">
         <label class="form-label fw-semibold">Select Date</label>
         <input type="date" name="date" class="form-control" required>
     </div>
 
+    <!-- Booking time -->
     <div class="mb-3">
         <label class="form-label fw-semibold">Select Time</label>
         <input type="time" name="time" class="form-control" required>
     </div>
 
-    <!-- Caregiver selection -->
+    <!-- Dropdown list of caregivers -->
     <div class="mb-3">
         <label class="form-label fw-bold">Choose a Caregiver</label>
 
@@ -89,7 +95,9 @@
                 <option value="">-- Select Caregiver --</option>
 
                 <%
+                    // Tracking if there were any matching caregivers
                     boolean has = false;
+
                     while (rsCare.next()) {
                         has = true;
                 %>
@@ -104,33 +112,39 @@
                         data-availability="<%= rsCare.getString("availability_days") %>"
                         data-shift="<%= rsCare.getString("preferred_shift") %>"
                     >
+                        <!-- Show name + years of experience -->
                         <%= rsCare.getString("full_name") %> — <%= rsCare.getInt("years_experience") %> yrs
                     </option>
                 <% 
                     }
+
+                    // If none found, display a message
                     if (!has) {
                 %>
                     <option disabled>No caregivers available for this service category.</option>
                 <% } %>
             </select>
 
+            <!-- Button triggers the details modal -->
             <button type="button" class="btn btn-outline-primary" id="viewDetailsBtn">
                 View Details
             </button>
         </div>
     </div>
 
+    <!-- Optional notes for users -->
     <div class="mb-3">
         <label class="form-label fw-semibold">Notes (optional)</label>
         <textarea class="form-control" name="notes" rows="3"></textarea>
     </div>
 
+    <!-- Final confirmation -->
     <button type="submit" class="btn btn-primary w-100">Confirm Booking</button>
 </form>
 
 </div>
 
-<!-- MODAL -->
+<!-- Caregiver Details Modal -->
 <div class="modal fade" id="caregiverModal" tabindex="-1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -144,12 +158,14 @@
 
         <div class="row">
             <div class="col-md-4">
+                <!-- Caregiver photo -->
                 <img id="cgPhoto" class="caregiver-img">
             </div>
 
             <div class="col-md-8">
                 <h4 id="cgName" class="fw-bold text-primary"></h4>
 
+                <!-- All modal fields will be filled via JS -->
                 <p><strong>Experience:</strong> <span id="cgYears"></span> years</p>
                 <p><strong>About:</strong> <span id="cgExp"></span></p>
                 <p><strong>Skills:</strong> <span id="cgSkills"></span></p>
@@ -165,20 +181,22 @@
   </div>
 </div>
 
-<!-- SCRIPTS -->
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+// Handles the "View Details" button
 document.getElementById("viewDetailsBtn").addEventListener("click", function () {
     let select = document.getElementById("caregiverSelect");
     let opt = select.options[select.selectedIndex];
 
+    // Make sure a caregiver is chosen first
     if (select.value === "") {
         alert("Please select a caregiver first.");
         return;
     }
 
-    // Fill modal data
+    // Insert caregiver data into modal fields
     document.getElementById("cgName").innerText = opt.dataset.fullname;
     document.getElementById("cgYears").innerText = opt.dataset.years;
     document.getElementById("cgExp").innerText = opt.dataset.experience;
@@ -187,12 +205,13 @@ document.getElementById("viewDetailsBtn").addEventListener("click", function () 
     document.getElementById("cgAvail").innerText = opt.dataset.availability;
     document.getElementById("cgShift").innerText = opt.dataset.shift;
 
+    // Show default placeholder if no photo available
     let photo = opt.dataset.profile;
     document.getElementById("cgPhoto").src = (photo && photo !== "null")
         ? "../uploads/caregiver/" + photo
         : "https://via.placeholder.com/300x200";
 
-    // Show modal
+    // Display modal
     let modal = new bootstrap.Modal(document.getElementById("caregiverModal"));
     modal.show();
 });

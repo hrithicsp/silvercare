@@ -18,7 +18,7 @@ public class ApplyCaregiverServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
 
         if(session == null || session.getAttribute("sessUserID") == null){
-            response.sendRedirect("../clientLogin.jsp");
+            response.sendRedirect("../login.jsp");
             return;
         }
 

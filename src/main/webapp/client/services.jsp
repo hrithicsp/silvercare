@@ -70,32 +70,14 @@
 
 <div class="container py-5">
 
-  <%
-    String catIdParam = request.getParameter("category_id");
-    if (catIdParam == null || catIdParam.trim().isEmpty()) {
-      response.sendRedirect(request.getContextPath() + "/client/serviceCategories.jsp");
-      return;
-    }
-    int categoryId;
-    try {
-      categoryId = Integer.parseInt(catIdParam);
-    } catch (NumberFormatException nfe) {
-      response.sendRedirect(request.getContextPath() + "/client/serviceCategories.jsp");
-      return;
-    }
-  %>
-
-  <p class="mb-3">
-    <a href="<%=request.getContextPath()%>/client/serviceCategories.jsp" class="text-primary text-decoration-none">
-      <i class="bi bi-arrow-left me-1"></i> Back to Categories
-    </a>
-  </p>
-
   <h2 class="text-center fw-bold mb-5">Available Services</h2>
 
   <div class="row g-4">
 
     <%
+      // Grab the category ID passed from previous page
+      int categoryId = Integer.parseInt(request.getParameter("category_id"));
+
       try {
         // DB connection setup
         Class.forName("com.mysql.cj.jdbc.Driver");

@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -114,20 +113,20 @@
 
   <main>
     <div class="register-container">
-      <h3 class="text-center mb-3 fw-bold h3"><fmt:message key="register.title" bundle="${msg}"/></h3>
+      <h3 class="text-center mb-3 fw-bold h3">Create Your SilverCare Account</h3>
 
       <form action="<%=request.getContextPath()%>/RegisterServlet" method="post" enctype="multipart/form-data" novalidate>
-        <h6 class="form-section-title"><fmt:message key="register.personalInfo" bundle="${msg}"/></h6>
+        <h6 class="form-section-title">Personal Information</h6>
         <div class="row g-3">
           <div class="col-md-6">
-            <label class="form-label"><fmt:message key="register.fullName" bundle="${msg}"/></label>
+            <label class="form-label">Full Name</label>
             <div class="input-group">
               <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
               <input type="text" name="fullname" class="form-control" placeholder="John Tan" required>
             </div>
           </div>
           <div class="col-md-6">
-            <label class="form-label"><fmt:message key="register.gender" bundle="${msg}"/></label>
+            <label class="form-label">Gender</label>
             <div class="input-group">
               <span class="input-group-text"><i class="fa-solid fa-venus-mars"></i></span>
               <select name="gender" class="form-select" required>
@@ -136,14 +135,14 @@
             </div>
           </div>
           <div class="col-md-6">
-            <label class="form-label"><fmt:message key="register.dob" bundle="${msg}"/></label>
+            <label class="form-label">Date of Birth</label>
             <div class="input-group">
               <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
               <input type="date" name="dob" class="form-control" required>
             </div>
           </div>
           <div class="col-md-6">
-            <label class="form-label"><fmt:message key="register.phone" bundle="${msg}"/></label>
+            <label class="form-label">Phone Number</label>
             <div class="input-group">
               <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
               <input type="tel" name="phone" class="form-control" placeholder="81234567" pattern="[0-9]{8,}" required>
@@ -158,31 +157,31 @@
           </div>
         </div>
 
-        <h6 class="form-section-title"><fmt:message key="register.accountDetails" bundle="${msg}"/></h6>
+        <h6 class="form-section-title">Account Details</h6>
         <div class="row g-3">
           <div class="col-12">
-            <label class="form-label"><fmt:message key="register.email" bundle="${msg}"/></label>
+            <label class="form-label">Email</label>
             <div class="input-group">
               <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
               <input type="email" name="email" class="form-control" placeholder="example@mail.com" required>
             </div>
           </div>
           <div class="col-md-6">
-            <label class="form-label"><fmt:message key="register.password" bundle="${msg}"/></label>
+            <label class="form-label">Password</label>
             <div class="input-group">
               <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
               <input type="password" id="password" name="password" class="form-control" minlength="6" required>
             </div>
           </div>
           <div class="col-md-6">
-            <label class="form-label"><fmt:message key="register.confirmPassword" bundle="${msg}"/></label>
+            <label class="form-label">Confirm Password</label>
             <div class="input-group">
               <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
               <input type="password" id="confirmPassword" class="form-control" required>
             </div>
           </div>
           <div class="col-12">
-            <label class="form-label"><fmt:message key="register.preferredContact" bundle="${msg}"/></label>
+            <label class="form-label">Preferred Contact Method</label>
             <div class="input-group">
               <span class="input-group-text"><i class="fa-solid fa-comments"></i></span>
               <select name="preferredContact" class="form-select">
@@ -192,9 +191,9 @@
           </div>
         </div>
 
-        <h6 class="form-section-title"><fmt:message key="footer.contact" bundle="${msg}"/> Information</h6>
+        <h6 class="form-section-title">Contact Information</h6>
         <div class="mb-3">
-          <label class="form-label"><fmt:message key="register.address" bundle="${msg}"/></label>
+          <label class="form-label">Address</label>
           <div class="input-group">
             <span class="input-group-text"><i class="fa-solid fa-location-dot"></i></span>
             <textarea name="address" class="form-control" rows="2" placeholder="123 Orchard Road, #05-10, Singapore" required></textarea>
@@ -233,18 +232,15 @@
         </div>
 
         <div class="d-grid">
-          <button class="btn btn-gradient btn-lg" type="submit"><fmt:message key="register.createAccount" bundle="${msg}"/></button>
+          <button class="btn btn-gradient btn-lg" type="submit">Create Account</button>
         </div>
         
-        <p class="text-center mt-3"><fmt:message key="register.haveAccount" bundle="${msg}"/> <a href="<%=request.getContextPath()%>/login.jsp"><fmt:message key="register.loginHere" bundle="${msg}"/></a>.</p>
-        <p class="text-center mt-2">
-            <a href="<%=request.getContextPath()%>/home.jsp" class="text-muted small"><i class="fa-solid fa-arrow-left me-1"></i> <fmt:message key="common.backToHome" bundle="${msg}"/></a>
-        </p>
+        <p class="text-center mt-3">Already have an account? <a href="login.jsp">Login here</a>.</p>
       </form>
     </div>
   </main>
 
-  <%@ include file="header_and_footer/footer.jsp" %>
+  <%@ include file="header_and_footer/footer.html" %>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>

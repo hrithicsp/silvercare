@@ -1,5 +1,4 @@
 <%@ page import="java.sql.*" %>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -154,9 +153,9 @@
 
 <!-- HERO SECTION -->
 <section class="hero">
-  <h1><fmt:message key="home.heroTitle" bundle="${msg}"/></h1>
-  <p><fmt:message key="home.heroSubtitle" bundle="${msg}"/></p>
-  <a href="<%=request.getContextPath()%>/client/serviceCategories.jsp" class="btn btn-secondary btn-lg mt-3 fw-semibold"><fmt:message key="home.exploreServices" bundle="${msg}"/></a>
+  <h1>Compassionate Elderly Care, Anytime.</h1>
+  <p>Connecting families with trusted caregivers and wellness services.</p>
+  <a href="<%=request.getContextPath()%>/client/serviceCategories.jsp" class="btn btn-secondary btn-lg mt-3 fw-semibold">Explore Our Services</a>
 </section>
 
 <!-- ========================= -->
@@ -174,7 +173,7 @@ ResultSet rs = pst.executeQuery();
 %>
 
 <div class="container py-5">
-  <h2 class="text-center fw-bold mb-5"><fmt:message key="home.popularServices" bundle="${msg}"/></h2>
+  <h2 class="text-center fw-bold mb-5">Popular Services</h2>
 
   <div class="row g-4">
     
@@ -200,47 +199,47 @@ ResultSet rs = pst.executeQuery();
 
 <!-- HOW IT WORKS -->
 <div class="container py-5">
-  <h2 class="text-center fw-bold mb-5"><fmt:message key="home.howItWorks" bundle="${msg}"/></h2>
+  <h2 class="text-center fw-bold mb-5">How SilverCare Works</h2>
   <div class="row text-center g-4">
     <div class="col-md-4">
       <div class="icon-circle bg-secondary-subtle text-secondary-emphasis mx-auto mb-3">
         <i class="bi bi-search fs-1"></i>
       </div>
-      <h5 class="fw-bold">1. <fmt:message key="home.step1Title" bundle="${msg}"/></h5>
-      <p class="text-muted px-3"><fmt:message key="home.step1Desc" bundle="${msg}"/></p>
+      <h5 class="fw-bold">1. Find a Service</h5>
+      <p class="text-muted px-3">Browse our curated list of professional care services.</p>
     </div>
     <div class="col-md-4">
       <div class="icon-circle bg-secondary-subtle text-secondary-emphasis mx-auto mb-3">
         <i class="bi bi-calendar-check fs-1"></i>
       </div>
-      <h5 class="fw-bold">2. <fmt:message key="home.step2Title" bundle="${msg}"/></h5>
-      <p class="text-muted px-3"><fmt:message key="home.step2Desc" bundle="${msg}"/></p>
+      <h5 class="fw-bold">2. Book & Confirm</h5>
+      <p class="text-muted px-3">Schedule a time that works for you and your family.</p>
     </div>
     <div class="col-md-4">
       <div class="icon-circle bg-secondary-subtle text-secondary-emphasis mx-auto mb-3">
         <i class="bi bi-shield-check fs-1"></i>
       </div>
-      <h5 class="fw-bold">3. <fmt:message key="home.step3Title" bundle="${msg}"/></h5>
-      <p class="text-muted px-3"><fmt:message key="home.step3Desc" bundle="${msg}"/></p>
+      <h5 class="fw-bold">3. Receive Care</h5>
+      <p class="text-muted px-3">A trusted and vetted professional provides the service.</p>
     </div>
   </div>
 </div>
 
 <!-- CTA -->
 <div class="text-center cta-section py-5">
-  <h3><fmt:message key="home.ctaTitle" bundle="${msg}"/></h3>
-  <p><fmt:message key="home.ctaSubtitle" bundle="${msg}"/></p>
-  <a href="<%=request.getContextPath()%>/register.jsp" class="btn btn-light-outline btn-lg mt-2"><fmt:message key="home.getStarted" bundle="${msg}"/></a>
+  <h3>Ready to make caregiving easier?</h3>
+  <p>Join SilverCare and access trusted homecare services today.</p>
+  <a href="register.jsp" class="btn btn-light-outline btn-lg mt-2">Get Started</a>
 </div>
 
 <!-- Floating Feedback Button -->
-<a href="<%=request.getContextPath()%>/feedback.jsp" class="floating-suggestion-btn">
+<a href="feedback.jsp" class="floating-suggestion-btn">
    <i class="bi bi-chat-dots-fill"></i>
 </a>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<%@ include file="header_and_footer/footer.jsp" %>
+<%@ include file="header_and_footer/footer.html" %>
 
 </body>
 </html>

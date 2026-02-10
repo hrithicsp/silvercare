@@ -104,7 +104,7 @@
                         data-availability="<%= rsCare.getString("availability_days") %>"
                         data-shift="<%= rsCare.getString("preferred_shift") %>"
                     >
-                        <%= rsCare.getString("full_name") %> — <%= rsCare.getInt("years_experience") %> yrs
+                        <%= rsCare.getString("full_name") %>
                     </option>
                 <% 
                     }

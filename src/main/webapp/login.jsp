@@ -79,6 +79,13 @@
     <h3 class="text-center fw-bold mb-4">
         <i class="fa-solid fa-right-to-bracket me-2"></i> Login
     </h3>
+    
+    <% if(request.getAttribute("loginError") != null) { %>
+    <div class="alert alert-danger text-center fw-semibold py-2 rounded-3 mb-3">
+        <i class="fa-solid fa-circle-exclamation me-1"></i>
+        <%= request.getAttribute("loginError") %>
+    </div>
+<% } %>
 
     <form action="<%=request.getContextPath()%>/LoginServlet" method="post">
         

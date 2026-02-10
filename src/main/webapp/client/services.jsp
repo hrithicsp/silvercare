@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <title>Services</title>
 
+  <!-- Bootstrap + Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
@@ -23,6 +24,7 @@
       color: var(--text-dark);
     }
 
+    /* Service card UI */
     .service-card {
       border: none;
       border-radius: 12px;
@@ -63,7 +65,7 @@
 
 <body>
 
-<!-- Header -->
+<!-- Shared header -->
 <%@ include file="../header_and_footer/header.jsp" %>
 
 <div class="container py-5">
@@ -73,18 +75,23 @@
   <div class="row g-4">
 
     <%
+      // Grab the category ID passed from previous page
       int categoryId = Integer.parseInt(request.getParameter("category_id"));
 
       try {
+        // DB connection setup
         Class.forName("com.mysql.cj.jdbc.Driver");
         String connURL = "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC";
         Connection conn = DriverManager.getConnection(connURL);
 
+        // Get services for selected category
         Statement stmt = conn.createStatement();
         String sqlStr = "SELECT * FROM service WHERE category_id=" + categoryId;
         ResultSet rs = stmt.executeQuery(sqlStr);
 
+        // Loop through each service found
         while (rs.next()) {
+
           int serviceId = rs.getInt("service_id");
           String name = rs.getString("service_name");
           String desc = rs.getString("description");
@@ -92,9 +99,11 @@
           String img = rs.getString("image_path");
     %>
 
-    <!-- Service Card -->
+    <!-- Individual service card -->
     <div class="col-md-4">
       <div class="service-card">
+
+        <!-- Service image -->
         <img src="<%= img %>" class="service-img">
 
         <div class="card-body">
@@ -102,19 +111,24 @@
           <p class="text-muted"><%= desc %></p>
           <p class="fw-bold text-dark mb-3">Price: $<%= price %></p>
 
+          <!-- Show booking button only if user logged in -->
           <% if (session.getAttribute("sessUserID") != null) { %>
             <a href="serviceBooking.jsp?service_id=<%= serviceId %>" class="btn btn-primary w-100">Book Now</a>
           <% } else { %>
             <a href="<%=request.getContextPath()%>/login.jsp" class="btn btn-secondary w-100">Login to Book</a>
           <% } %>
+
         </div>
       </div>
     </div>
 
     <%
         }
+
+        // Cleanup
         conn.close();
       } catch (Exception e) {
+        // Show DB errors if any
         out.println("<p class='text-danger'>Error: " + e.getMessage() + "</p>");
       }
     %>
@@ -122,7 +136,7 @@
   </div>
 </div>
 
-<!-- Footer -->
+<!-- Shared footer -->
 <%@ include file="../header_and_footer/footer.html" %>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

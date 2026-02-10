@@ -76,7 +76,14 @@
 
 <body>
 
+<%@ include file="../header_and_footer/header.jsp" %>
+
 <div class="app-card">
+<p class="mb-3">
+    <a href="<%=request.getContextPath()%>/admin/pendingCaregiver.jsp" class="text-primary text-decoration-none">
+        <i class="fa-solid fa-arrow-left me-1"></i> Back to Pending Caregivers
+    </a>
+</p>
 
     <h2 class="fw-bold text-primary mb-3">
         <i class="fa-solid fa-user-check me-2"></i>
@@ -157,5 +164,7 @@
     </div>
 </div>
 
+<%@ include file="../header_and_footer/footer.jsp" %>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -70,6 +70,12 @@ body {
 
 <div class="feedback-container">
 
+    <p class="mb-3">
+        <a href="<%=request.getContextPath()%>/admin/adminDashboard.jsp" class="text-primary text-decoration-none">
+            <i class="fa-solid fa-arrow-left me-1"></i> Back to Dashboard
+        </a>
+    </p>
+
     <h2 class="page-title mb-2">Client Feedback</h2>
     <p class="text-muted mb-4">View all feedback submitted by clients.</p>
 
@@ -140,7 +146,7 @@ body {
     </div>
 </div>
 
-<%@ include file="../header_and_footer/footer.html" %>
+<%@ include file="../header_and_footer/footer.jsp" %>
 
 </body>
 </html>

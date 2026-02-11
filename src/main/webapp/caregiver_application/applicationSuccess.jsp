@@ -35,7 +35,6 @@
         <a href="<%=request.getContextPath()%>/client/clientDashboard.jsp" class="btn btn-primary">Go to Dashboard</a>
         <a href="<%=request.getContextPath()%>/home.jsp" class="btn btn-outline-primary">Return to Home</a>
       </div>
-      <a href="<%=request.getContextPath()%>/home.jsp" class="btn btn-primary mt-3">Return to Home</a>
     </div>
   </div>
 

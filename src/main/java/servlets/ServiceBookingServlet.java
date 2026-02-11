@@ -43,7 +43,7 @@ public class ServiceBookingServlet extends HttpServlet {
             con.close();
 
             // Redirect user to the success page
-            response.sendRedirect("client/bookingSuccess.jsp");
+            response.sendRedirect(request.getContextPath() + "/client/bookingSuccess.jsp");
 
         } catch (Exception e) {
             // For debugging - shows the error on screen

@@ -2,10 +2,7 @@
 <%@ page import="java.sql.*" %>
 
 <%
-    // Redirect user to login if they somehow reach this page without logging in
-    // Redirect user to login if they somehow reach this page without logging in
     if (session.getAttribute("sessUserID") == null) {
-        response.sendRedirect(request.getContextPath() + "/login.jsp");
         response.sendRedirect(request.getContextPath() + "/login.jsp");
         return;
     }
@@ -26,21 +23,18 @@
     // Standard DB setup (using MySQL + UTF-8)
     Class.forName("com.mysql.cj.jdbc.Driver");
     String connURL = "jdbc:mysql://localhost/silvercare?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&user=root&password=1234";
-    String connURL = "jdbc:mysql://localhost/silvercare?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&user=root&password=1234";
     Connection conn = DriverManager.getConnection(connURL);
 
-    // Retrieve the selected service's details
-    // Retrieve the selected service's details
     String sqlService = "SELECT * FROM service WHERE service_id=?";
     PreparedStatement pstService = conn.prepareStatement(sqlService);
     pstService.setInt(1, serviceId);
     ResultSet rsService = pstService.executeQuery();
-    rsService.next();    // There should always be 1 result for a valid service_id    // There should always be 1 result for a valid service_id
+    rsService.next();
 
     String serviceName = rsService.getString("service_name");
     int categoryId = rsService.getInt("category_id");
 
-    // Get the the category name of this service of this service
+    // Get the category name of this service
     String sqlCat = "SELECT category_name FROM service_category WHERE category_id=?";
     PreparedStatement pstCat = conn.prepareStatement(sqlCat);
     pstCat.setInt(1, categoryId);
@@ -48,8 +42,6 @@
     rsCat.next();
     String categoryName = rsCat.getString("category_name");
 
-    // Pull all APPROVED caregivers whose interest matches this service category
-    // Pull all APPROVED caregivers whose interest matches this service category
     String sqlCare = "SELECT * FROM caregiver_application WHERE status='APPROVED' AND interest_service=?";
     PreparedStatement pstCare = conn.prepareStatement(sqlCare);
     pstCare.setString(1, categoryName);
@@ -65,8 +57,6 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-    /* Keep caregiver images neat */
-    /* Keep caregiver images neat */
     .caregiver-img {
         width: 100%;
         max-height: 180px;
@@ -104,7 +94,6 @@
     </div>
 
     <!-- Booking time -->
-    <!-- Booking time -->
     <div class="mb-3">
         <label class="form-label fw-semibold">Select Time</label>
         <input type="time" name="time" class="form-control" required>
@@ -120,8 +109,6 @@
                 <option value="">-- Select Caregiver --</option>
 
                 <%
-                    // Tracking if there were any matching caregivers
-                    // Tracking if there were any matching caregivers
                     boolean has = false;
 
 
@@ -140,15 +127,10 @@
                         data-shift="<%= rsCare.getString("preferred_shift") %>"
                     >
                         <%= rsCare.getString("full_name") %> - <%= rsCare.getInt("years_experience") %> yrs
-                        <!-- Show name + years of experience -->
-                        <%= rsCare.getString("full_name") %>
                     </option>
                 <% 
                     }
 
-                    // If none found, display a message
-
-                    // If none found, display a message
                     if (!has) {
                 %>
                     <option disabled>No caregivers available for this service category.</option>
@@ -163,8 +145,7 @@
         </div>
     </div>
 
-    <!-- Optional notes for users -->
-    <!-- Optional notes for users -->
+    <!-- Optional notes -->
     <div class="mb-3">
         <label class="form-label fw-semibold">Notes (optional)</label>
         <textarea class="form-control" name="notes" rows="3"></textarea>
@@ -177,7 +158,6 @@
 
 </div>
 
-<!-- Caregiver Details Modal -->
 <!-- Caregiver Details Modal -->
 <div class="modal fade" id="caregiverModal" tabindex="-1">
   <div class="modal-dialog modal-lg">

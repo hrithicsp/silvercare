@@ -36,7 +36,7 @@ public class ApproveCaregiverServlet extends HttpServlet {
             pst.executeUpdate();
 
             // Redirect admin back to the pending caregiver list page
-            res.sendRedirect("/silvercare/admin/pendingCaregiver.jsp");
+            res.sendRedirect(req.getContextPath() + "/admin/pendingCaregiver.jsp");
 
         } catch (Exception e) {
             // Print any errors in the server logs for debugging

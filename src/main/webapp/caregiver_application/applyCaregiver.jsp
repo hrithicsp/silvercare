@@ -73,8 +73,6 @@
 
                     <a href="<%=request.getContextPath()%>/client/clientDashboard.jsp" class="btn btn-primary px-4">
                         <i class="fa-solid fa-arrow-left me-1"></i> Return to Dashboard
-                    <a href="<%=request.getContextPath()%>/client/clientDashboard.jsp" class="btn btn-primary px-4">
-                        Return to Dashboard
                     </a>
                 </div>
 

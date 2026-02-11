@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.SQLException;
 
 import com.silvercare.model.User;
 import com.silvercare.dao.UserDAO;
@@ -69,40 +69,6 @@ public class LoginServlet extends HttpServlet {
 		} catch (SQLException e) {
 		    e.printStackTrace();
 		    response.sendRedirect(request.getContextPath() + "/login.jsp?error=db");
-		
-		try {
-			Connection con = DBConnection.getConnection();
-			
-			String sql = "SELECT * FROM user WHERE email=? AND password=?";
-			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setString(1, email);
-			pst.setString(2, password);
-			
-			ResultSet rs = pst.executeQuery();
-			
-			if(rs.next()) {
-				
-				HttpSession session = request.getSession();
-				session.setAttribute("sessUserID", rs.getInt("user_id"));
-				session.setAttribute("sessUserEmail", rs.getString("email"));
-				session.setAttribute("sessUserRole", rs.getString("role"));
-				session.setAttribute("sessUserName", rs.getString("fullname"));
-				
-				// redirect based on role
-				if(rs.getString("role").equals("ADMIN")) {
-					System.out.print("Success");
-					response.sendRedirect("/silvercare/admin/adminDashboard.jsp");
-				} else {
-					response.sendRedirect("/silvercare/client/clientDashboard.jsp");
-				}
-				
-			} else {
-				request.setAttribute("loginError", "Invalid email or password!");
-				request.getRequestDispatcher("login.jsp").forward(request, response);
-			}
-			
-		} catch(Exception e) {
-			e.printStackTrace();
 		}
 	}
 

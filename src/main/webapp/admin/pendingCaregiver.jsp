@@ -155,7 +155,7 @@ body{
 
 </div>
 
-<%@ include file="../header_and_footer/footer.jsp" %>
+<%@ include file="../header_and_footer/footer.html" %>
 
 </body>
 </html>

@@ -1,5 +1,4 @@
 <%@ page import="java.sql.*" %>
-<%@ page import="java.sql.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,9 +12,6 @@
 
   <style>
 	:root {
-	  --primary-color: #0d6efd;
-	  --primary-hover: #0b5ed7;
-	  --secondary-color: #FBC02D;
 	  --primary-color: #0d6efd;
 	  --primary-hover: #0b5ed7;
 	  --secondary-color: #FBC02D;
@@ -118,8 +114,6 @@
 	}
 
 	/* --- CTA Section --- */
-
-	/* --- CTA Section --- */
 	.cta-section {
 	  background-color: var(--primary-color);
 	  color: white;
@@ -168,7 +162,6 @@
 <%@ include file="header_and_footer/header.jsp" %>
 
 <!-- HERO SECTION -->
-<!-- HERO SECTION -->
 <section class="hero">
   <h1>Compassionate Elderly Care, Anytime.</h1>
   <p>Connecting families with trusted caregivers and wellness services.</p>
@@ -176,71 +169,47 @@
   
 </section>
 
-<!-- ========================= -->
-<!--  DYNAMIC POPULAR SERVICES -->
-<!-- ========================= -->
-
+<!-- DYNAMIC POPULAR SERVICES -->
 <%
-Class.forName("com.mysql.cj.jdbc.Driver");
-String connURL = "jdbc:mysql://localhost/silvercare?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&user=root&password=1234";
-Connection conn = DriverManager.getConnection(connURL);
-
-String sql = "SELECT service_id, service_name, description FROM service LIMIT 3";
-PreparedStatement pst = conn.prepareStatement(sql);
-ResultSet rs = pst.executeQuery();
-%>
-
-<!-- ========================= -->
-<!--  DYNAMIC POPULAR SERVICES -->
-<!-- ========================= -->
-
-<%
-Class.forName("com.mysql.cj.jdbc.Driver");
-String connURL = "jdbc:mysql://localhost/silvercare?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&user=root&password=1234";
-Connection conn = DriverManager.getConnection(connURL);
-
-String sql = "SELECT service_id, service_name, description FROM service LIMIT 3";
-PreparedStatement pst = conn.prepareStatement(sql);
-ResultSet rs = pst.executeQuery();
+Connection conn = null;
+PreparedStatement pst = null;
+ResultSet rs = null;
+try {
+  Class.forName("com.mysql.cj.jdbc.Driver");
+  String connURL = "jdbc:mysql://localhost/silvercare?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&user=root&password=1234";
+  conn = DriverManager.getConnection(connURL);
+  String sql = "SELECT service_id, service_name, description FROM service LIMIT 3";
+  pst = conn.prepareStatement(sql);
+  rs = pst.executeQuery();
 %>
 
 <div class="container py-5">
   <h2 class="text-center fw-bold mb-5">Popular Services</h2>
-
-
   <div class="row g-4">
-    
-    <% while(rs.next()) { %>
-
-    
-    <% while(rs.next()) { %>
-
+    <% while (rs != null && rs.next()) { %>
     <div class="col-md-4">
       <div class="card service-card text-center p-3">
         <div class="icon-circle bg-primary-subtle text-primary mx-auto mb-3">
           <i class="bi bi-heart-pulse-fill fs-1"></i>
-          <i class="bi bi-heart-pulse-fill fs-1"></i>
         </div>
-
-
         <div class="card-body p-0">
-          <h5 class="card-title fw-bold"><%= rs.getString("service_name") %></h5>
-          <p class="card-text text-muted"><%= rs.getString("description") %></p>
           <h5 class="card-title fw-bold"><%= rs.getString("service_name") %></h5>
           <p class="card-text text-muted"><%= rs.getString("description") %></p>
         </div>
       </div>
     </div>
-
-    <% } conn.close(); %>
-
-
-    <% } conn.close(); %>
-
+    <% }
+  } catch (Exception e) {
+    // ignore
+  } finally {
+    try { if (rs != null) rs.close(); } catch (Exception e2) {}
+    try { if (pst != null) pst.close(); } catch (Exception e2) {}
+    try { if (conn != null) conn.close(); } catch (Exception e2) {}
+  }
+%>
   </div>
 </div>
 
-<!-- HOW IT WORKS -->
 <!-- HOW IT WORKS -->
 <div class="container py-5">
   <h2 class="text-center fw-bold mb-5">How SilverCare Works</h2>
@@ -270,7 +239,6 @@ ResultSet rs = pst.executeQuery();
 </div>
 
 <!-- CTA -->
-<!-- CTA -->
 <div class="text-center cta-section py-5">
   <h3>Ready to make caregiving easier?</h3>
   <p>Join SilverCare and access trusted homecare services today.</p>
@@ -284,7 +252,7 @@ ResultSet rs = pst.executeQuery();
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<%@ include file="header_and_footer/footer.jsp" %>
+<%@ include file="header_and_footer/footer.html" %>
 
 </body>
 </html>

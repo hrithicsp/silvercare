@@ -59,10 +59,14 @@
         Our caregiver team will contact you shortly.
     </p>
 
-    <a href="<%=request.getContextPath()%>/client/clientDashboard.jsp" 
-       class="btn btn-home text-white">
+    <div class="d-flex flex-wrap gap-2 justify-content-center">
+      <a href="<%=request.getContextPath()%>/client/clientDashboard.jsp" class="btn btn-home text-white">
         <i class="fa-solid fa-arrow-left me-2"></i> Return to Dashboard
-    </a>
+      </a>
+      <a href="<%=request.getContextPath()%>/ServiceController?action=loadCategories" class="btn btn-outline-success">
+        <i class="fa-solid fa-calendar-plus me-2"></i> Book Another Service
+      </a>
+    </div>
 
 </div>
 

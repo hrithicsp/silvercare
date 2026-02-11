@@ -27,7 +27,7 @@ public class RejectCaregiverServlet extends HttpServlet {
          );
          pst.setInt(1,id);
          pst.executeUpdate();
-         res.sendRedirect("/silvercare/admin/pendingCaregiver.jsp");
+         res.sendRedirect(req.getContextPath() + "/admin/pendingCaregiver.jsp");
 
      }catch(Exception e){ e.printStackTrace();}
  }

@@ -80,73 +80,59 @@ body {
     <p class="text-muted mb-4">View all feedback submitted by clients.</p>
 
     <div class="row g-4">
-
     <%
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC"
-            );
-
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM feedback ORDER BY feedback_id DESC");
-
-            while(rs.next()){
-                int rating = rs.getInt("rating");
+    Connection conn = null;
+    Statement stmt = null;
+    ResultSet rs = null;
+    String feedbackError = null;
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        conn = DriverManager.getConnection(
+            "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC"
+        );
+        stmt = conn.createStatement();
+        rs = stmt.executeQuery("SELECT * FROM feedback ORDER BY feedback_id DESC");
+        while (rs.next()) {
+            int rating = rs.getInt("rating");
     %>
-
-        <!-- FEEDBACK CARD -->
         <div class="col-md-4">
             <div class="feedback-card">
-
                 <h5 class="fw-bold mb-1"><%= rs.getString("client_name") %></h5>
-
                 <p class="fw-semibold text-primary mb-1">
                     <i class="fa-solid fa-hand-holding-medical me-1"></i>
                     <%= rs.getString("service_name") %>
                 </p>
-
-                <!-- Rating -->
                 <div class="mb-2">
-                    <% for(int i=1; i<=rating; i++) { %>
-                        <i class="fa-solid fa-star star"></i>
-                    <% } %>
-                    <% for(int i=rating+1; i<=5; i++) { %>
-                        <i class="fa-regular fa-star star"></i>
-                    <% } %>
+                    <% for (int i = 1; i <= rating; i++) { %><i class="fa-solid fa-star star"></i><% } %>
+                    <% for (int i = rating + 1; i <= 5; i++) { %><i class="fa-regular fa-star star"></i><% } %>
                 </div>
-
-                <!-- Comments -->
-                <p class="text-muted mb-2" style="min-height:60px;">
-                    <%= rs.getString("comments") %>
-                </p>
-
-                <!-- Timestamp -->
+                <p class="text-muted mb-2" style="min-height:60px;"><%= rs.getString("comments") %></p>
                 <p class="text-secondary" style="font-size: .85rem;">
-                    <i class="fa-regular fa-clock me-1"></i>
-                    <%= rs.getTimestamp("submitted_at") %>
+                    <i class="fa-regular fa-clock me-1"></i><%= rs.getTimestamp("submitted_at") %>
                 </p>
-
             </div>
-        </div>
-
-    <%
-            }
-            conn.close();
-
-        } catch(Exception e){
-    %>
-        <div class="col-12 text-center">
-            <p class="text-danger fw-bold">Error: <%= e.getMessage() %></p>
         </div>
     <%
         }
+    } catch (Exception e) {
+        feedbackError = e.getMessage();
+    } finally {
+        try { if (rs != null) rs.close(); } catch (Exception e2) {}
+        try { if (stmt != null) stmt.close(); } catch (Exception e2) {}
+        try { if (conn != null) conn.close(); } catch (Exception e2) {}
+    }
+    if (feedbackError != null) {
     %>
-
+        <div class="col-12 text-center">
+            <p class="text-danger fw-bold">Error: <%= feedbackError %></p>
+        </div>
+    <%
+    }
+    %>
     </div>
 </div>
 
-<%@ include file="../header_and_footer/footer.jsp" %>
+<%@ include file="../header_and_footer/footer.html" %>
 
 </body>
 </html>

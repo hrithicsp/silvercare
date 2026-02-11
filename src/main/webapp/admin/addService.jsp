@@ -81,36 +81,33 @@ body{
             <label class="form-label fw-semibold">Service Category</label>
             <select name="category_id" class="form-select" required>
                 <option value="">-- Select Category --</option>
-
                 <%
-                    try {
-                        Class.forName("com.mysql.cj.jdbc.Driver");
-
-                        Connection conn = DriverManager.getConnection(
-                            "jdbc:mysql://localhost:3306/silvercare?user=root&password=1234&serverTimezone=UTC"
-                        );
-
-                        String sql = "SELECT * FROM service_category ORDER BY category_name ASC";
-                        Statement stmt = conn.createStatement();
-                        ResultSet rs = stmt.executeQuery(sql);
-
-                        while(rs.next()) {
+                Connection conn = null;
+                Statement stmt = null;
+                ResultSet rs = null;
+                try {
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    conn = DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3306/silvercare?user=root&password=1234&serverTimezone=UTC"
+                    );
+                    String sql = "SELECT * FROM service_category ORDER BY category_name ASC";
+                    stmt = conn.createStatement();
+                    rs = stmt.executeQuery(sql);
+                    while (rs.next()) {
                 %>
-
-                    <option value="<%= rs.getInt("category_id") %>">
-                        <%= rs.getString("category_name") %>
-                    </option>
-
-                <%  
-                        }
-                        conn.close();
-                    } catch(Exception e){
-                %>
-                        <option disabled>Error loading categories</option>
+                <option value="<%= rs.getInt("category_id") %>"><%= rs.getString("category_name") %></option>
                 <%
                     }
+                } catch (Exception e) {
                 %>
-
+                <option disabled>Error loading categories</option>
+                <%
+                } finally {
+                    try { if (rs != null) rs.close(); } catch (Exception e2) {}
+                    try { if (stmt != null) stmt.close(); } catch (Exception e2) {}
+                    try { if (conn != null) conn.close(); } catch (Exception e2) {}
+                }
+                %>
             </select>
         </div>
 
@@ -142,7 +139,7 @@ body{
 
 </div>
 
-<%@ include file="../header_and_footer/footer.jsp" %>
+<%@ include file="../header_and_footer/footer.html" %>
 
 </body>
 </html>

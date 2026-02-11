@@ -194,7 +194,7 @@ body{
 </div>
 
 <!-- Include global footer -->
-<%@ include file="../header_and_footer/footer.jsp" %>
+<%@ include file="../header_and_footer/footer.html" %>
 
 </body>
 </html>

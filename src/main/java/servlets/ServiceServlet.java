@@ -25,7 +25,7 @@ public class ServiceServlet extends HttpServlet {
             request.getRequestDispatcher("services.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("error.jsp");
+            response.sendRedirect(request.getContextPath() + "/error.jsp");
         }
     }
 }

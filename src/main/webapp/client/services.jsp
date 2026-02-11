@@ -24,8 +24,6 @@
       color: var(--text-dark);
     }
 
-    /* Service card UI */
-    /* Service card UI */
     .service-card {
       border: none;
       border-radius: 12px;
@@ -66,7 +64,6 @@
 
 <body>
 
-<!-- Shared header -->
 <%@ include file="../header_and_footer/header.jsp" %>
 
 <div class="container py-5">
@@ -114,20 +111,13 @@
             <a href="<%=request.getContextPath()%>/ServiceController?action=loadCategories" class="btn btn-outline-primary mt-3">Back to Categories</a>
         </div>
     <%
-        }
-
-        // Cleanup
-        conn.close();
-      } catch (Exception e) {
-        // Show DB errors if any
-        out.println("<p class='text-danger'>Error: " + e.getMessage() + "</p>");
       }
     %>
 
   </div>
 </div>
 
-<%@ include file="../header_and_footer/footer.jsp" %>
+<%@ include file="../header_and_footer/footer.html" %>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 

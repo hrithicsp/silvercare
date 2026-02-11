@@ -4,7 +4,7 @@
 <%
     HttpSession s = request.getSession(false);
     if(s == null || !"ADMIN".equals(s.getAttribute("sessUserRole"))){
-        response.sendRedirect("../login.jsp");
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
         return;
     }
 
@@ -89,7 +89,7 @@ body{
 
         <!-- View Clients -->
         <div class="col-md-4">
-            <a href="viewClients.jsp" class="text-decoration-none text-dark">
+            <a href="<%=request.getContextPath()%>/admin/viewClients.jsp" class="text-decoration-none text-dark">
                 <div class="dash-card">
                     <i class="fa-solid fa-users"></i>
                     <h5 class="fw-bold mt-2">View Clients</h5>
@@ -99,7 +99,7 @@ body{
 
         <!-- Pending Caregiver Applications -->
         <div class="col-md-4">
-            <a href="pendingCaregiver.jsp" class="text-decoration-none text-dark">
+            <a href="<%=request.getContextPath()%>/admin/pendingCaregiver.jsp" class="text-decoration-none text-dark">
                 <div class="dash-card">
                     <i class="fa-solid fa-user-clock"></i>
                     <h5 class="fw-bold mt-2">Pending Caregivers</h5>
@@ -109,7 +109,7 @@ body{
 
         <!-- Manage Services -->
         <div class="col-md-4">
-            <a href="manageServices.jsp" class="text-decoration-none text-dark">
+            <a href="<%=request.getContextPath()%>/ServiceController?action=manageAdmin" class="text-decoration-none text-dark">
                 <div class="dash-card">
                     <i class="fa-solid fa-list-check"></i>
                     <h5 class="fw-bold mt-2">Manage Services</h5>
@@ -119,7 +119,7 @@ body{
 
         <!-- Feedback -->
         <div class="col-md-4">
-            <a href="viewFeedback.jsp" class="text-decoration-none text-dark">
+            <a href="<%=request.getContextPath()%>/admin/viewFeedback.jsp" class="text-decoration-none text-dark">
                 <div class="dash-card">
                     <i class="fa-solid fa-comments"></i>
                     <h5 class="fw-bold mt-2">Client Feedback</h5>

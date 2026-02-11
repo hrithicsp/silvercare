@@ -10,21 +10,28 @@ import java.sql.*;
 import com.silvercare.util.DBConnection;
 
 @WebServlet("/ApplyCaregiverServlet")
-@MultipartConfig(maxFileSize = 1024 * 1024 * 5) // 5MB
+@MultipartConfig(maxFileSize = 1024 * 1024 * 5) // Max file upload limit: 5MB
 public class ApplyCaregiverServlet extends HttpServlet {
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
 
+        // ---------------------------------------------------
+        // 1. SESSION VALIDATION — Only logged-in users can apply
+        // ---------------------------------------------------
         HttpSession session = request.getSession(false);
 
         if(session == null || session.getAttribute("sessUserID") == null){
-            response.sendRedirect("../clientLogin.jsp");
+            response.sendRedirect("../login.jsp");
             return;
         }
 
+        // Logged-in user ID
         int userId = (int) session.getAttribute("sessUserID");
 
-        // read form values
+        // ---------------------------------------------------
+        // 2. READ TEXT FIELDS FROM THE FORM
+        // ---------------------------------------------------
         String fullname = request.getParameter("fullname");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");
@@ -37,36 +44,55 @@ public class ApplyCaregiverServlet extends HttpServlet {
         String interest = request.getParameter("interest");
         String shift = request.getParameter("shift");
 
-        // join skills[]
+        // ---------------------------------------------------
+        // 3. READ MULTI-SELECT SKILLS (checkboxes)
+        // ---------------------------------------------------
+        // Join into a single comma-separated string for storage
         String[] skills = request.getParameterValues("skills");
         String skillsJoined = (skills != null) ? String.join(", ", skills) : "";
 
-        // FILE UPLOAD
+        // ---------------------------------------------------
+        // 4. FILE UPLOAD HANDLING (Photo + CV)
+        // ---------------------------------------------------
         Part profilePicPart = request.getPart("profilePhoto");
         Part cvPart = request.getPart("cvFile");
 
-        String uploadPath = request.getServletContext().getRealPath("") + "uploads/caregiver/";
+        // Folder path to store caregiver uploads
+        String uploadPath = request.getServletContext().getRealPath("") 
+                            + "uploads/caregiver/";
 
+        // Create folder if it doesn't exist
         File dir = new File(uploadPath);
         if(!dir.exists()) dir.mkdirs();
 
-        String profileFilename = null, cvFilename = null;
+        String profileFilename = null;
+        String cvFilename = null;
 
+        // --- Save profile photo ---
         if(profilePicPart != null && profilePicPart.getSize() > 0){
-            profileFilename = System.currentTimeMillis()+"_"+ profilePicPart.getSubmittedFileName();
+            // Unique filename using timestamp
+            profileFilename = System.currentTimeMillis() + "_" 
+                              + profilePicPart.getSubmittedFileName();
             profilePicPart.write(uploadPath + profileFilename);
         }
 
+        // --- Save CV file ---
         if(cvPart != null && cvPart.getSize() > 0){
-            cvFilename = System.currentTimeMillis()+"_"+ cvPart.getSubmittedFileName();
+            cvFilename = System.currentTimeMillis() + "_" 
+                         + cvPart.getSubmittedFileName();
             cvPart.write(uploadPath + cvFilename);
         }
 
+        // ---------------------------------------------------
+        // 5. INSERT APPLICATION INTO DATABASE
+        // ---------------------------------------------------
         try{
             Connection con = DBConnection.getConnection();
 
             String sql = "INSERT INTO caregiver_application "
-                    + "(user_id, full_name, phone, email, dob, address, years_experience, experience, skills, certifications, profile_photo, cv_file, availability_days, preferred_shift, interest_service) "
+                    + "(user_id, full_name, phone, email, dob, address, years_experience, "
+                    + "experience, skills, certifications, profile_photo, cv_file, "
+                    + "availability_days, preferred_shift, interest_service) "
                     + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
             PreparedStatement pst = con.prepareStatement(sql);
@@ -89,12 +115,15 @@ public class ApplyCaregiverServlet extends HttpServlet {
 
             pst.executeUpdate();
 
-            response.sendRedirect(request.getContextPath() + "/caregiver_application/applicationSuccess.jsp");
+            // ---------------------------------------------------
+            // 6. REDIRECT TO SUCCESS PAGE
+            // ---------------------------------------------------
+            response.sendRedirect(request.getContextPath()
+                    + "/caregiver_application/applicationSuccess.jsp");
 
-        }catch(Exception e){
+        } catch(Exception e){
             e.printStackTrace();
         }
-
     }
 }
 

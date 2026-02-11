@@ -4,7 +4,7 @@
 <%
     HttpSession s = request.getSession(false);
     if (s == null || s.getAttribute("sessUserID") == null) {
-        response.sendRedirect("../login.jsp");
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
         return;
     }
 
@@ -137,7 +137,7 @@
     </div>
 
     <div class="mt-4 text-center">
-        <a href="editProfile.jsp" class="btn-edit">
+        <a href="<%=request.getContextPath()%>/client/editProfile.jsp" class="btn-edit">
             <i class="fa-solid fa-pen-to-square me-1"></i> Edit Profile
         </a>
     </div>

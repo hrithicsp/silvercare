@@ -6,7 +6,7 @@
     // Session Guard
     HttpSession session1 = request.getSession(false);
     if(session1 == null || session1.getAttribute("sessUserID") == null){
-        response.sendRedirect("../login.jsp");
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
         return;
     }
 
@@ -71,7 +71,7 @@
                         You will be notified once the admin reviews your request.
                     </p>
 
-                    <a href="../client/clientDashboard.jsp" class="btn btn-primary px-4">
+                    <a href="<%=request.getContextPath()%>/client/clientDashboard.jsp" class="btn btn-primary px-4">
                         Return to Dashboard
                     </a>
                 </div>

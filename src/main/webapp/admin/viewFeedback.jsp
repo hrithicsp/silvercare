@@ -6,7 +6,7 @@
     // Admin Session Guard
     HttpSession s = request.getSession(false);
     if (s == null || !"ADMIN".equals(s.getAttribute("sessUserRole"))) {
-        response.sendRedirect("../login.jsp");
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
         return;
     }
 %>

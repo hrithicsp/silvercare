@@ -5,7 +5,7 @@
 <%
     HttpSession s = request.getSession(false);
     if(s == null || !"CLIENT".equals(s.getAttribute("sessUserRole"))){
-        response.sendRedirect("../login.jsp");
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
         return;
     }
 
@@ -162,7 +162,7 @@ body{
 
         <!-- Edit Profile -->
         <div class="col-md-4">
-            <a href="editProfile.jsp" class="text-decoration-none text-dark">
+            <a href="<%=request.getContextPath()%>/client/editProfile.jsp" class="text-decoration-none text-dark">
                 <div class="feature-card text-center">
                     <i class="fa-solid fa-user-gear"></i>
                     <h5>Edit Profile</h5>
@@ -175,7 +175,7 @@ body{
         <div class="col-md-4">
             <% if(!hasApp || "REJECTED".equalsIgnoreCase(appStatus)){ %>
 
-                <a href="../caregiver_application/applyCaregiver.jsp" class="text-decoration-none text-dark">
+                <a href="<%=request.getContextPath()%>/caregiver_application/applyCaregiver.jsp" class="text-decoration-none text-dark">
                     <div class="feature-card text-center">
                         <i class="fa-solid fa-hand-holding-heart"></i>
                         <h5>Apply as Caregiver</h5>

@@ -7,7 +7,7 @@
     HttpSession s = request.getSession(false);
 
     if (s == null || !"CLIENT".equals(s.getAttribute("sessUserRole"))) {
-        response.sendRedirect("login.jsp");
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
         return;
     }
 
@@ -59,7 +59,7 @@
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
         conn2 = DriverManager.getConnection(
-            "jdbc:mysql://localhost/silvercare?user=root&password=root&serverTimezone=UTC"
+            "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC"
         );
 
         stmtCat = conn2.createStatement();

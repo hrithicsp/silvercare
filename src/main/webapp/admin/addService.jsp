@@ -6,7 +6,7 @@
     // Session Guard (to check if admin or not)
     HttpSession s = request.getSession(false);
     if(s == null || !"ADMIN".equals(s.getAttribute("sessUserRole"))){
-        response.sendRedirect("../login.jsp");
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
         return;
     }
 %>
@@ -68,7 +68,7 @@ body{
 
     <h2 class="page-title mb-4">Add New Service</h2>
 
-    <form action="insertService.jsp" method="post">
+    <form action="<%=request.getContextPath()%>/ServiceController?action=add" method="post">
 
         <!-- Service Name -->
         <div class="mb-3">
@@ -134,7 +134,7 @@ body{
 
         <!-- Buttons -->
         <div class="d-flex justify-content-between mt-4">
-            <a href="manageServices.jsp" class="btn btn-secondary">Back</a>
+            <a href="<%=request.getContextPath()%>/ServiceController?action=manageAdmin" class="btn btn-secondary">Back</a>
             <button type="submit" class="btn btn-primary">Add Service</button>
         </div>
 

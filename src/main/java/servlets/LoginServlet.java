@@ -10,7 +10,8 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.*;
 
-import com.silvercare.util.DBConnection;
+import com.silvercare.model.User;
+import com.silvercare.dao.UserDAO;
 
 /**
  * Servlet implementation class LoginServlet
@@ -42,40 +43,32 @@ public class LoginServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		
+
+		UserDAO userDAO = new UserDAO();
 		try {
-			Connection con = DBConnection.getConnection();
-			
-			String sql = "SELECT * FROM user WHERE email=? AND password=?";
-			PreparedStatement pst = con.prepareStatement(sql);
-			pst.setString(1, email);
-			pst.setString(2, password);
-			
-			ResultSet rs = pst.executeQuery();
-			
-			if(rs.next()) {
-				
-				HttpSession session = request.getSession();
-				session.setAttribute("sessUserID", rs.getInt("user_id"));
-				session.setAttribute("sessUserEmail", rs.getString("email"));
-				session.setAttribute("sessUserRole", rs.getString("role"));
-				session.setAttribute("sessUserName", rs.getString("fullname"));
-				
-				// redirect based on role
-				if(rs.getString("role").equals("ADMIN")) {
-					System.out.print("Success");
-					response.sendRedirect("/silvercare/admin/adminDashboard.jsp");
-				} else {
-					response.sendRedirect("/silvercare/client/clientDashboard.jsp");
-				}
-				
-			} else {
-				request.setAttribute("loginError", "Invalid email or password!");
-				request.getRequestDispatcher("clientLogin.jsp").forward(request, response);
-			}
-			
-		} catch(Exception e) {
-			e.printStackTrace();
+		    User user = userDAO.validateUser(email, password);
+
+		    if (user != null) {
+		        // Successful login - Set up the session
+		        HttpSession session = request.getSession();
+		        session.setAttribute("sessUserID", user.getUserId());
+		        session.setAttribute("sessUserEmail", user.getEmail());
+		        session.setAttribute("sessUserRole", user.getRole());
+		        session.setAttribute("sessUserName", user.getFullname());
+
+		        // Role-based redirection
+		        if ("ADMIN".equalsIgnoreCase(user.getRole())) {
+		            response.sendRedirect(request.getContextPath() + "/admin/adminDashboard.jsp");
+		        } else {
+		            response.sendRedirect(request.getContextPath() + "/client/clientDashboard.jsp");
+		        }
+		    } else {
+		        // Login failed
+		        response.sendRedirect(request.getContextPath() + "/login.jsp?error=invalid");
+		    }
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		    response.sendRedirect(request.getContextPath() + "/login.jsp?error=db");
 		}
 	}
 

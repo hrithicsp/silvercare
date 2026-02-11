@@ -31,7 +31,7 @@
         <li>- You will receive an email if your application is accepted or if more information is required.</li>
       </ul>
 
-      <a href="../home.jsp" class="btn btn-primary mt-3">Return to Home</a>
+      <a href="<%=request.getContextPath()%>/home.jsp" class="btn btn-primary mt-3">Return to Home</a>
     </div>
   </div>
 

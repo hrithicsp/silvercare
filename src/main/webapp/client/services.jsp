@@ -1,4 +1,4 @@
-<%@ page import="java.sql.*" %>
+<%@ page import="java.util.List, com.silvercare.model.Service" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,6 +23,7 @@
       color: var(--text-dark);
     }
 
+    /* Service card UI */
     .service-card {
       border: none;
       border-radius: 12px;
@@ -63,7 +64,6 @@
 
 <body>
 
-<!-- Header -->
 <%@ include file="../header_and_footer/header.jsp" %>
 
 <div class="container py-5">
@@ -73,56 +73,50 @@
   <div class="row g-4">
 
     <%
-      int categoryId = Integer.parseInt(request.getParameter("category_id"));
-
-      try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        String connURL = "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC";
-        Connection conn = DriverManager.getConnection(connURL);
-
-        Statement stmt = conn.createStatement();
-        String sqlStr = "SELECT * FROM service WHERE category_id=" + categoryId;
-        ResultSet rs = stmt.executeQuery(sqlStr);
-
-        while (rs.next()) {
-          int serviceId = rs.getInt("service_id");
-          String name = rs.getString("service_name");
-          String desc = rs.getString("description");
-          double price = rs.getDouble("price");
-          String img = rs.getString("image_path");
+      // 1. Fetch the list of services passed by the Servlet Controller
+      List<Service> serviceList = (List<Service>) request.getAttribute("serviceList");
+      
+      // 2. Check if the list exists and has items
+      if (serviceList != null && !serviceList.isEmpty()) {
+          // 3. Loop through the Model objects instead of a ResultSet
+          for (Service s : serviceList) {
     %>
 
-    <!-- Service Card -->
     <div class="col-md-4">
       <div class="service-card">
-        <img src="<%= img %>" class="service-img">
+
+        <img src="<%= s.getImagePath() %>" class="service-img">
 
         <div class="card-body">
-          <h5 class="service-title"><%= name %></h5>
-          <p class="text-muted"><%= desc %></p>
-          <p class="fw-bold text-dark mb-3">Price: $<%= price %></p>
+          <h5 class="service-title"><%= s.getServiceName() %></h5>
+          <p class="text-muted"><%= s.getDescription() %></p>
+          <p class="fw-bold text-dark mb-3">Price: $<%= String.format("%.2f", s.getPrice()) %></p>
 
           <% if (session.getAttribute("sessUserID") != null) { %>
-            <a href="serviceBooking.jsp?service_id=<%= serviceId %>" class="btn btn-primary w-100">Book Now</a>
+            <a href="<%=request.getContextPath()%>/client/serviceBooking.jsp?service_id=<%= s.getServiceId() %>" class="btn btn-primary w-100">Book Now</a>
           <% } else { %>
             <a href="<%=request.getContextPath()%>/login.jsp" class="btn btn-secondary w-100">Login to Book</a>
           <% } %>
+
         </div>
       </div>
     </div>
 
     <%
-        }
-        conn.close();
-      } catch (Exception e) {
-        out.println("<p class='text-danger'>Error: " + e.getMessage() + "</p>");
+          }
+      } else {
+    %>
+        <div class="col-12 text-center">
+            <h4 class="text-muted">No services found for this category.</h4>
+            <a href="<%=request.getContextPath()%>/ServiceController?action=loadCategories" class="btn btn-outline-primary mt-3">Back to Categories</a>
+        </div>
+    <%
       }
     %>
 
   </div>
 </div>
 
-<!-- Footer -->
 <%@ include file="../header_and_footer/footer.html" %>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

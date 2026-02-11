@@ -7,9 +7,9 @@ import jakarta.servlet.http.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.*;
 
-import com.silvercare.util.DBConnection;
+import com.silvercare.model.User;
+import com.silvercare.dao.UserDAO;
 
 @WebServlet("/RegisterServlet")
 @MultipartConfig
@@ -19,28 +19,9 @@ public class RegisterServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // Basic fields
-        String fullname = request.getParameter("fullname");
-        String gender = request.getParameter("gender");
-        String dob = request.getParameter("dob");
-        String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String preferredContact = request.getParameter("preferredContact");
-        int techLevel = Integer.parseInt(request.getParameter("techLevel"));
-
-        // Interests
-        String[] interestsArr = request.getParameterValues("interests");
-        String interests = (interestsArr != null) ? String.join(", ", interestsArr) : null;
-
-        // Notification toggle
-        boolean notifEnabled = request.getParameter("notif") != null;
-
-        // File upload
-        Part filePart = request.getPart("profilePic");
-        String fileName = null;
+    	
+    	Part filePart = request.getPart("profilePic");
+        String fileName = null; // Initialize variable so it's accessible below
 
         if (filePart != null && filePart.getSize() > 0) {
             fileName = System.currentTimeMillis() + "_" + filePart.getSubmittedFileName();
@@ -52,52 +33,43 @@ public class RegisterServlet extends HttpServlet {
             filePart.write(uploadPath + File.separator + fileName);
         }
 
-        try {
-            Connection con = DBConnection.getConnection();
+    	// 1. Create a User object and set the data from the request
+    	User newUser = new User();
+    	newUser.setFullname(request.getParameter("fullname"));
+    	newUser.setGender(request.getParameter("gender"));
+    	newUser.setDob(request.getParameter("dob"));
+    	newUser.setPhone(request.getParameter("phone"));
+    	newUser.setAddress(request.getParameter("address"));
+    	newUser.setEmail(request.getParameter("email"));
+    	newUser.setPassword(request.getParameter("password"));
+    	newUser.setPreferredContact(request.getParameter("preferredContact"));
+    	newUser.setTechLevel(Integer.parseInt(request.getParameter("techLevel")));
+    	newUser.setNotifEnabled(request.getParameter("notif") != null);
+    	newUser.setInterests((request.getParameterValues("interests") != null) ? 
+    	    String.join(", ", request.getParameterValues("interests")) : null);
 
-            // Insert the user
-            String sql = "INSERT INTO user (fullname, gender, dob, phone, address, email, password, profile_pic, preferred_contact, tech_level, notif_enabled, areas_of_interest, role) "
-                       + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'CLIENT')";
+    	// Handle the file upload (fileName logic remains the same)
+    	newUser.setProfilePic(fileName); 
 
-            PreparedStatement pst = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+    	// 2. Use the DAO to save the user to the database
+    	UserDAO userDAO = new UserDAO();
+    	try {
+    	    int newUserId = userDAO.registerUser(newUser);
 
-            pst.setString(1, fullname);
-            pst.setString(2, gender);
-            pst.setString(3, dob);
-            pst.setString(4, phone);
-            pst.setString(5, address);
-            pst.setString(6, email);
-            pst.setString(7, password);
-            pst.setString(8, fileName);
-            pst.setString(9, preferredContact);
-            pst.setInt(10, techLevel);
-            pst.setBoolean(11, notifEnabled);
-            pst.setString(12, interests);
+    	    if (newUserId > 0) {
+    	        // 3. Create session and redirect (The Controller's job)
+    	        HttpSession session = request.getSession();
+    	        session.setAttribute("sessUserID", newUserId);
+    	        session.setAttribute("sessUserEmail", newUser.getEmail());
+    	        session.setAttribute("sessUserRole", "CLIENT");
+    	        session.setAttribute("sessUserName", newUser.getFullname());
 
-            pst.executeUpdate();
-
-            // Retrieve the user_id (AUTO_INCREMENT)
-            ResultSet generatedKeys = pst.getGeneratedKeys();
-            int newUserId = 0;
-
-            if (generatedKeys.next()) {
-                newUserId = generatedKeys.getInt(1);
-            }
-
-            // Now create session and auto-login user
-            HttpSession session = request.getSession();
-            session.setAttribute("sessUserID", newUserId);
-            session.setAttribute("sessUserEmail", email);
-            session.setAttribute("sessUserRole", "CLIENT");
-            session.setAttribute("sessUserName", fullname);
-
-            // Redirect straight to client dashboard
-            response.sendRedirect("/silvercare/client/clientDashboard.jsp");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.getWriter().println("Registration failed: " + e.getMessage());
-        }
+    	        response.sendRedirect(request.getContextPath() + "/client/clientDashboard.jsp");
+    	    }
+    	} catch (Exception e) {
+    	    e.printStackTrace();
+    	    response.getWriter().println("Registration failed: " + e.getMessage());
+    	}
     }
 }
 

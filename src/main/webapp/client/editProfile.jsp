@@ -3,7 +3,7 @@
 <%
     HttpSession s = request.getSession(false);
     if (s == null || s.getAttribute("sessUserID") == null) {
-        response.sendRedirect("../login.jsp");
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
         return;
     }
 
@@ -51,7 +51,7 @@
             conn.close();
 
             // Redirect back to dashboard with success message
-            response.sendRedirect("clientDashboard.jsp?update=success");
+            response.sendRedirect(request.getContextPath() + "/client/clientDashboard.jsp?update=success");
             return;
 
         } catch (Exception e) {

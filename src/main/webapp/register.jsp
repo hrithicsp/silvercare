@@ -235,7 +235,7 @@
           <button class="btn btn-gradient btn-lg" type="submit">Create Account</button>
         </div>
         
-        <p class="text-center mt-3">Already have an account? <a href="login.jsp">Login here</a>.</p>
+        <p class="text-center mt-3">Already have an account? <a href="<%=request.getContextPath()%>/login.jsp">Login here</a>.</p>
       </form>
     </div>
   </main>

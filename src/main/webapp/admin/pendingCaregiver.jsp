@@ -4,7 +4,7 @@
 <%
     HttpSession s = request.getSession(false);
     if(s == null || !"ADMIN".equals(s.getAttribute("sessUserRole"))){
-        response.sendRedirect("../login.jsp");
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
         return;
     }
 
@@ -124,7 +124,7 @@ body{
 
                 <td class="text-center">
                     <!-- VIEW -->
-                    <a href="viewApplication.jsp?id=<%=rs.getInt("application_id")%>"
+                    <a href="<%=request.getContextPath()%>/admin/viewApplication.jsp?id=<%=rs.getInt("application_id")%>"
                        class="btn btn-info btn-sm me-1">
                         <i class="fa-solid fa-eye me-1"></i> View
                     </a>

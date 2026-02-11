@@ -47,6 +47,8 @@
 
 <body>
 
+<%@ include file="../header_and_footer/header.jsp" %>
+
 <div class="success-box shadow">
     
     <i class="fa-solid fa-circle-check success-icon"></i>

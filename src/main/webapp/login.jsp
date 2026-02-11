@@ -79,6 +79,19 @@
     <h3 class="text-center fw-bold mb-4">
         <i class="fa-solid fa-right-to-bracket me-2"></i> Login
     </h3>
+    
+    <% 
+    String loginError = (String) request.getAttribute("loginError");
+    if (loginError == null && request.getParameter("error") != null) {
+        if ("invalid".equals(request.getParameter("error"))) loginError = "Invalid email or password.";
+        else if ("db".equals(request.getParameter("error"))) loginError = "A database error occurred. Please try again.";
+    }
+    if (loginError != null) { %>
+    <div class="alert alert-danger text-center fw-semibold py-2 rounded-3 mb-3">
+        <i class="fa-solid fa-circle-exclamation me-1"></i>
+        <%= loginError %>
+    </div>
+    <% } %>
 
     <form action="<%=request.getContextPath()%>/LoginServlet" method="post">
         
@@ -98,7 +111,7 @@
         
         <p class="mt-3 text-center">
             Don't have an account? 
-            <a href="register.jsp">Register here</a>
+            <a href="<%=request.getContextPath()%>/register.jsp">Register here</a>
         </p>
     </form>
 </div>

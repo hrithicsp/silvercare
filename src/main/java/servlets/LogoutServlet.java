@@ -21,5 +21,6 @@ public class LogoutServlet extends HttpServlet {
         }
 
         response.sendRedirect(request.getContextPath() + "/login.jsp");
+        response.sendRedirect("login.jsp");
     }
 }

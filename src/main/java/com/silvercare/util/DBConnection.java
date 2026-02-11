@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 
 public class DBConnection {
     
-    private static final String URL = "jdbc:mysql://localhost:3306/silvercare";
+    private static final String URL = "jdbc:mysql://localhost:3306/silvercare?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC";
     private static final String USER = "root";
     private static final String PASS = "1234";
 

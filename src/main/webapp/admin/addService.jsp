@@ -134,7 +134,7 @@ body{
 
         <!-- Buttons -->
         <div class="d-flex justify-content-between mt-4">
-            <a href="<%=request.getContextPath()%>/ServiceController?action=manageAdmin" class="btn btn-secondary">Back</a>
+            <a href="<%=request.getContextPath()%>/ServiceController?action=manageAdmin" class="btn btn-secondary"><i class="fa-solid fa-arrow-left me-1"></i> Back</a>
             <button type="submit" class="btn btn-primary">Add Service</button>
         </div>
 
@@ -142,7 +142,7 @@ body{
 
 </div>
 
-<%@ include file="../header_and_footer/footer.html" %>
+<%@ include file="../header_and_footer/footer.jsp" %>
 
 </body>
 </html>

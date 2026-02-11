@@ -5,30 +5,20 @@
   <meta charset="UTF-8">
   <title>Service Categories | SilverCare</title>
 
+  <!-- Bootstrap / Icons / Fonts -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
   <style>
+    /* Main page styling */
     body { font-family:'Poppins', sans-serif; background:#f9fafb; }
+    .category-card{ border:none; background:white; padding:20px; border-radius:14px; box-shadow:0 4px 12px rgba(0,0,0,.08); text-align:center; transition:.3s; }
+    .category-card:hover{ transform:translateY(-7px); box-shadow:0 12px 28px rgba(0,0,0,.15); }
+    .icon-circle{ width:70px;height:70px;border-radius:50%; display:flex;align-items:center;justify-content:center; background:#e7f1ff;color:#0d6efd;margin:0 auto 15px; }
 
-    .category-card{
-      border:none; background:white; padding:20px;
-      border-radius:14px; box-shadow:0 4px 12px rgba(0,0,0,.08);
-      text-align:center; transition:.3s;
-    }
-    .category-card:hover{
-      transform:translateY(-7px);
-      box-shadow:0 12px 28px rgba(0,0,0,.15);
-    }
-
-    .icon-circle{
-      width:70px;height:70px;border-radius:50%;
-      display:flex;align-items:center;justify-content:center;
-      background:#e7f1ff;color:#0d6efd;margin:0 auto 15px;
-    }
-
+    /* Chatbot floating button */
     /* Chatbot Styles */
     .chatbot-launch {
       position: fixed; bottom: 25px; right: 25px;
@@ -37,12 +27,60 @@
       display:flex; align-items:center; justify-content:center;
       cursor:pointer; box-shadow:0 10px 25px rgba(0,0,0,.3);
       z-index:9999; transition:.2s;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; box-shadow:0 10px 25px rgba(0,0,0,.3);
+      z-index:9999; transition:.2s;
     }
+    .chatbot-launch:hover { transform:scale(1.12); }
+
     .chatbot-window {
+      position: fixed; bottom:110px; right:25px;
+      width:350px; height:440px; background:#fff;
+      border-radius:18px; display:flex; flex-direction:column;
+      box-shadow:0 14px 35px rgba(0,0,0,.35);
+      z-index:99999;
       position: fixed; bottom:110px; right:25px;
       width:350px; height:440px; background:#fff;
       border-radius:18px; display:none; flex-direction:column;
       box-shadow:0 14px 35px rgba(0,0,0,.35); z-index:99999;
+    }
+    .chatbot-header {
+      background:#00796B; padding:12px; color:#fff;
+      font-weight:600; display:flex; justify-content:space-between;
+    }
+    .chatbot-body {
+      flex:1; padding:12px; overflow-y:auto;
+      display:flex; flex-direction:column; gap:6px;
+    }
+    .bot-msg, .user-msg {
+      padding:10px 15px; border-radius:14px; max-width:85%;
+      word-wrap:break-word;
+    }
+    .bot-msg { background:#e8f9f6; align-self:flex-start; }
+    .user-msg { background:#dff0ff; align-self:flex-end; }
+    .chatbot-options {
+      padding:10px; display:flex; flex-wrap:wrap;
+      gap:7px; justify-content:center;
+    }
+    .chatbot-options button{
+      background:#00796B; border:none; color:#fff;
+      padding:7px 12px; border-radius:12px; cursor:pointer;
+      font-size:13px;
+    }
+    .typing-indicator{
+      align-self:flex-start; background:#e8f9f6;
+      padding:10px 15px; border-radius:14px;
+      display:inline-flex; gap:4px;
+    }
+    .typing-dot{
+      width:7px;height:7px; background:#00796B;
+      border-radius:50%; animation:blink 1.4s infinite;
+    }
+    .typing-dot:nth-child(2){ animation-delay:.2s; }
+    .typing-dot:nth-child(3){ animation-delay:.4s; }
+
+    @keyframes blink{
+      0%{opacity:.2;} 20%{opacity:1;} 100%{opacity:.2;}
     }
     .chatbot-header { background:#00796B; padding:12px; color:#fff; font-weight:600; display:flex; justify-content:space-between; }
     .chatbot-body { flex:1; padding:12px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; }
@@ -55,13 +93,34 @@
 
 <body>
 
+<!-- Common header -->
 <%@ include file="../header_and_footer/header.jsp" %>
 
 <div class="container py-5">
   <h2 class="text-center fw-bold mb-5">Our Service Categories</h2>
 
+
   <div class="row g-4">
     <%
+      // Load category list from DB
+      Class.forName("com.mysql.cj.jdbc.Driver");
+      Connection conn = DriverManager.getConnection(
+        "jdbc:mysql://localhost/silvercare?user=root&password=1234&serverTimezone=UTC"
+      );
+
+      Statement st = conn.createStatement();
+      ResultSet rs = st.executeQuery("SELECT * FROM service_category");
+
+      // Icons for each category
+      String[] icons = {
+        "bi-heart-pulse-fill",
+        "bi-people-fill",
+        "bi-bandaid-fill",
+        "bi-house-heart-fill"
+      };
+
+      int idx = 0; // track which icon to use
+      while(rs.next()){
       // Retrieve the list passed from ServiceControllerServlet
       List<Category> catList = (List<Category>) request.getAttribute("categoryList");
       
@@ -71,9 +130,13 @@
       if(catList != null) {
         for(Category cat : catList) {
     %>
+
     <div class="col-md-4">
+      <!-- Clicking category goes to service listing -->
       <a style="text-decoration:none;color:inherit;"
+        
          href="<%=request.getContextPath()%>/ServiceController?action=listClient&category_id=<%= cat.getCategoryId() %>">
+        
         <div class="category-card">
           <div class="icon-circle">
             <i class="bi <%= icons[idx++ % icons.length] %> fs-2"></i>
@@ -81,12 +144,21 @@
           <h5 class="fw-bold"><%= cat.getCategoryName() %></h5>
           <p class="text-muted">Explore available services</p>
         </div>
+
       </a>
     </div>
+
     <%
         }
       } else {
+      }
+
+      // Clean up DB connections
+      rs.close();
+      st.close();
+      conn.close();
     %>
+
       <div class="col-12 text-center">
          <p class="text-muted">Please access this page via the Home menu to load services.</p>
       </div>
@@ -95,9 +167,11 @@
 </div>
 
 <div class="chatbot-launch" id="chatbotLauncher"><i class="fa-solid fa-robot"></i></div>
-<div id="chatbotWindow" class="chatbot-window">
+<div id="chatbotWindow" class="chatbot-window" style="display:none;">
   <div class="chatbot-header">ElderCare Assistant <div id="chatbotClose" style="cursor:pointer;">&times;</div></div>
   <div id="chatArea" class="chatbot-body"></div>
+
+  <!-- Quick options -->
   <div class="chatbot-options">
     <button data-issue="med">Medication</button>
     <button data-issue="walk">Walking Aid</button>
@@ -115,13 +189,47 @@ const chatbotClose    = document.getElementById('chatbotClose');
 const chatArea        = document.getElementById('chatArea');
 const optionButtons   = document.querySelectorAll('.chatbot-options button');
 
-let started = false;
+let started = false; // Only greet once
+
+function showTyping(){
+  const wrap = document.createElement('div');
+  wrap.classList.add("typing-indicator");
+  wrap.id = "typingIndicator";
+  wrap.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+  chatArea.appendChild(wrap);
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+function hideTyping(){
+  const t = document.getElementById("typingIndicator");
+  if(t) t.remove();
+}
+
+// Bot bubble
+function addBotMessage(txt){
+  hideTyping();
+  const div = document.createElement('div');
+  div.className = 'bot-msg';
+  div.innerHTML = txt;
+  chatArea.appendChild(div);
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function addUserMessage(txt){
+  const div = document.createElement('div');
+  div.className = 'user-msg';
+  div.textContent = txt;
+  chatArea.appendChild(div);
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
 
 chatbotLauncher.addEventListener('click', () => {
   chatbotWindow.style.display = 'flex';
   if(!started){
     started = true;
-    addBotMessage("Hello! I'm your ElderCare Assistant. How can I help you find the right service today?");
+    showTyping();
+    setTimeout(() => {
+      addBotMessage("Hello! I'm your ElderCare Assistant. How can I help you find the right service today?");
+    }, 800);
   }
 });
 
@@ -132,8 +240,6 @@ optionButtons.forEach(btn => {
     const issue = btn.dataset.issue;
     addUserMessage(btn.textContent);
     let response = "";
-
-    // MVC Logic: Links in chatbot now point to the Controller
     switch(issue){
       case 'med':
         response = `We recommend our <b>Medication Supervision</b>.<br><br>
@@ -152,25 +258,10 @@ optionButtons.forEach(btn => {
                     <a href="<%=request.getContextPath()%>/ServiceController?action=listClient&category_id=3" class="btn btn-sm btn-success">View Meals</a>`;
         break;
     }
-    setTimeout(() => addBotMessage(response), 600);
+    showTyping();
+    setTimeout(() => addBotMessage(response), 800);
   });
 });
-
-function addBotMessage(txt){
-  const div = document.createElement('div');
-  div.className = 'bot-msg';
-  div.innerHTML = txt;
-  chatArea.appendChild(div);
-  chatArea.scrollTop = chatArea.scrollHeight;
-}
-
-function addUserMessage(txt){
-  const div = document.createElement('div');
-  div.className = 'user-msg';
-  div.textContent = txt;
-  chatArea.appendChild(div);
-  chatArea.scrollTop = chatArea.scrollHeight;
-}
 </script>
 </body>
 </html>

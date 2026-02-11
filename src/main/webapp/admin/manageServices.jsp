@@ -25,6 +25,13 @@
 <body>
 <%@ include file="../header_and_footer/header.jsp" %>
 <div class="services-container">
+
+    <p class="mb-3">
+        <a href="<%=request.getContextPath()%>/admin/adminDashboard.jsp" class="text-primary text-decoration-none">
+            <i class="fa-solid fa-arrow-left me-1"></i> Back to Dashboard
+        </a>
+    </p>
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold text-primary">Manage Services</h2>
         <a href="<%=request.getContextPath()%>/ServiceController?action=add" class="btn btn-add"><i class="fa-solid fa-plus me-1"></i> Add New Service</a>
@@ -60,6 +67,6 @@
         <% } %>
     </div>
 </div>
-<%@ include file="../header_and_footer/footer.html" %>
+<%@ include file="../header_and_footer/footer.jsp" %>
 </body>
 </html>

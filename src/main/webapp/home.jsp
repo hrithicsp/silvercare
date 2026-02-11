@@ -1,16 +1,21 @@
 <%@ page import="java.sql.*" %>
+<%@ page import="java.sql.*" %>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>SilverCare - Home</title>
+  <title>Home | Silvercare</title>
   
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
+
   <style>
 	:root {
+	  --primary-color: #0d6efd;
+	  --primary-hover: #0b5ed7;
+	  --secondary-color: #FBC02D;
 	  --primary-color: #0d6efd;
 	  --primary-hover: #0b5ed7;
 	  --secondary-color: #FBC02D;
@@ -26,6 +31,7 @@
 	  color: var(--text-dark);
 	}
 
+
 	/* --- Hero Section --- */
 	.hero {
 	  height: 80vh;
@@ -40,6 +46,7 @@
 	  position: relative;
 	}
 
+
 	.hero::after {
 	  content: "";
 	  position: absolute;
@@ -50,12 +57,14 @@
 	  background: linear-gradient(to bottom, rgba(255,255,255,0), #f9fafb);
 	}
 
+
 	.hero h1 {
 	  font-size: 3rem;
 	  font-weight: 700;
 	  margin-bottom: 10px;
 	  animation: fadeDown 0.8s ease;
 	}
+
 
 	.hero p {
 	  font-size: 1.2rem;
@@ -64,16 +73,19 @@
 	  animation: fadeUp 1s ease;
 	}
 
+
 	/* Animations */
 	@keyframes fadeDown {
 	  from {opacity: 0; transform: translateY(-25px);}
 	  to   {opacity: 1; transform: translateY(0);}
 	}
 
+
 	@keyframes fadeUp {
 	  from {opacity: 0; transform: translateY(25px);}
 	  to   {opacity: 1; transform: translateY(0);}
 	}
+
 
 	/* --- Service Cards --- */
 	.service-card {
@@ -91,6 +103,7 @@
 	  color: var(--primary-color);
 	}
 
+
 	/* --- Icon Circle --- */
 	.icon-circle {
 	  display: inline-flex;
@@ -103,6 +116,8 @@
 	.bg-primary-subtle {
 	  background-color: #e6edff;
 	}
+
+	/* --- CTA Section --- */
 
 	/* --- CTA Section --- */
 	.cta-section {
@@ -120,6 +135,7 @@
 	  background-color: white;
 	  color: var(--primary-color);
 	}
+
 
 	/* --- Floating Feedback Button --- */
 	.floating-suggestion-btn {
@@ -152,6 +168,7 @@
 <%@ include file="header_and_footer/header.jsp" %>
 
 <!-- HERO SECTION -->
+<!-- HERO SECTION -->
 <section class="hero">
   <h1>Compassionate Elderly Care, Anytime.</h1>
   <p>Connecting families with trusted caregivers and wellness services.</p>
@@ -173,10 +190,28 @@ PreparedStatement pst = conn.prepareStatement(sql);
 ResultSet rs = pst.executeQuery();
 %>
 
+<!-- ========================= -->
+<!--  DYNAMIC POPULAR SERVICES -->
+<!-- ========================= -->
+
+<%
+Class.forName("com.mysql.cj.jdbc.Driver");
+String connURL = "jdbc:mysql://localhost/silvercare?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&user=root&password=1234";
+Connection conn = DriverManager.getConnection(connURL);
+
+String sql = "SELECT service_id, service_name, description FROM service LIMIT 3";
+PreparedStatement pst = conn.prepareStatement(sql);
+ResultSet rs = pst.executeQuery();
+%>
+
 <div class="container py-5">
   <h2 class="text-center fw-bold mb-5">Popular Services</h2>
 
+
   <div class="row g-4">
+    
+    <% while(rs.next()) { %>
+
     
     <% while(rs.next()) { %>
 
@@ -184,9 +219,13 @@ ResultSet rs = pst.executeQuery();
       <div class="card service-card text-center p-3">
         <div class="icon-circle bg-primary-subtle text-primary mx-auto mb-3">
           <i class="bi bi-heart-pulse-fill fs-1"></i>
+          <i class="bi bi-heart-pulse-fill fs-1"></i>
         </div>
 
+
         <div class="card-body p-0">
+          <h5 class="card-title fw-bold"><%= rs.getString("service_name") %></h5>
+          <p class="card-text text-muted"><%= rs.getString("description") %></p>
           <h5 class="card-title fw-bold"><%= rs.getString("service_name") %></h5>
           <p class="card-text text-muted"><%= rs.getString("description") %></p>
         </div>
@@ -195,9 +234,13 @@ ResultSet rs = pst.executeQuery();
 
     <% } conn.close(); %>
 
+
+    <% } conn.close(); %>
+
   </div>
 </div>
 
+<!-- HOW IT WORKS -->
 <!-- HOW IT WORKS -->
 <div class="container py-5">
   <h2 class="text-center fw-bold mb-5">How SilverCare Works</h2>
@@ -227,6 +270,7 @@ ResultSet rs = pst.executeQuery();
 </div>
 
 <!-- CTA -->
+<!-- CTA -->
 <div class="text-center cta-section py-5">
   <h3>Ready to make caregiving easier?</h3>
   <p>Join SilverCare and access trusted homecare services today.</p>
@@ -240,7 +284,7 @@ ResultSet rs = pst.executeQuery();
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<%@ include file="header_and_footer/footer.html" %>
+<%@ include file="header_and_footer/footer.jsp" %>
 
 </body>
 </html>

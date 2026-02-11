@@ -1,0 +1,13 @@
+/* Caregiver application page styles */
+.caregiver-card {
+  border-radius: 18px;
+  border: none;
+}
+
+.caregiver-card .section-title {
+  font-weight: 600;
+  color: #0d6efd;
+  border-left: 4px solid #0d6efd;
+  padding-left: 10px;
+  margin-bottom: 0.75rem;
+}

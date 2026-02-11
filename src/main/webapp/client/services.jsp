@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <title>Services</title>
 
+  <!-- Bootstrap + Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
@@ -23,6 +24,7 @@
       color: var(--text-dark);
     }
 
+    /* Service card UI */
     /* Service card UI */
     .service-card {
       border: none;
@@ -64,6 +66,7 @@
 
 <body>
 
+<!-- Shared header -->
 <%@ include file="../header_and_footer/header.jsp" %>
 
 <div class="container py-5">
@@ -73,30 +76,30 @@
   <div class="row g-4">
 
     <%
-      // 1. Fetch the list of services passed by the Servlet Controller
+      // Fetch the list of services passed by the Servlet Controller
       List<Service> serviceList = (List<Service>) request.getAttribute("serviceList");
       
-      // 2. Check if the list exists and has items
       if (serviceList != null && !serviceList.isEmpty()) {
-          // 3. Loop through the Model objects instead of a ResultSet
           for (Service s : serviceList) {
     %>
 
     <div class="col-md-4">
       <div class="service-card">
 
-        <img src="<%= s.getImagePath() %>" class="service-img">
+        <img src="<%= s.getImagePath() %>" class="service-img" alt="">
 
         <div class="card-body">
           <h5 class="service-title"><%= s.getServiceName() %></h5>
           <p class="text-muted"><%= s.getDescription() %></p>
           <p class="fw-bold text-dark mb-3">Price: $<%= String.format("%.2f", s.getPrice()) %></p>
 
+          <!-- Show booking button only if user logged in -->
           <% if (session.getAttribute("sessUserID") != null) { %>
             <a href="<%=request.getContextPath()%>/client/serviceBooking.jsp?service_id=<%= s.getServiceId() %>" class="btn btn-primary w-100">Book Now</a>
           <% } else { %>
             <a href="<%=request.getContextPath()%>/login.jsp" class="btn btn-secondary w-100">Login to Book</a>
           <% } %>
+
 
         </div>
       </div>
@@ -111,13 +114,20 @@
             <a href="<%=request.getContextPath()%>/ServiceController?action=loadCategories" class="btn btn-outline-primary mt-3">Back to Categories</a>
         </div>
     <%
+        }
+
+        // Cleanup
+        conn.close();
+      } catch (Exception e) {
+        // Show DB errors if any
+        out.println("<p class='text-danger'>Error: " + e.getMessage() + "</p>");
       }
     %>
 
   </div>
 </div>
 
-<%@ include file="../header_and_footer/footer.html" %>
+<%@ include file="../header_and_footer/footer.jsp" %>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 

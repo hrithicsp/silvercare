@@ -16,13 +16,17 @@ public class ApplyCaregiverServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
 
-        // ---------------------------------------------------
-        // 1. SESSION VALIDATION — Only logged-in users can apply
-        // ---------------------------------------------------
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+
+        // Session validation — only logged-in users can apply
         HttpSession session = request.getSession(false);
 
         if(session == null || session.getAttribute("sessUserID") == null){
-            response.sendRedirect("../login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
             return;
         }
 

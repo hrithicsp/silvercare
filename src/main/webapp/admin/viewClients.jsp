@@ -87,7 +87,12 @@ body{
 
 <div class="dashboard-container">
 
-    <!-- DASHBOARD HEADER -->
+    <p class="mb-3">
+        <a href="<%=request.getContextPath()%>/admin/adminDashboard.jsp" class="text-primary text-decoration-none">
+            <i class="fa-solid fa-arrow-left me-1"></i> Back to Dashboard
+        </a>
+    </p>
+
     <div class="header-box">
         <h2 class="fw-bold m-0">
             <i class="fa-solid fa-users me-2"></i> Client Records
@@ -189,7 +194,7 @@ body{
 </div>
 
 <!-- Include global footer -->
-<%@ include file="../header_and_footer/footer.html" %>
+<%@ include file="../header_and_footer/footer.jsp" %>
 
 </body>
 </html>

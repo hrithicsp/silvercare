@@ -1,31 +1,46 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.sql.*" %>
 
 <%
     // Redirect user to login if they somehow reach this page without logging in
+    // Redirect user to login if they somehow reach this page without logging in
     if (session.getAttribute("sessUserID") == null) {
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
         response.sendRedirect(request.getContextPath() + "/login.jsp");
         return;
     }
 
-    // Get the service ID passed from the previous page
-    int serviceId = Integer.parseInt(request.getParameter("service_id"));
+    String serviceIdParam = request.getParameter("service_id");
+    if (serviceIdParam == null || serviceIdParam.trim().isEmpty()) {
+        response.sendRedirect(request.getContextPath() + "/ServiceController?action=loadCategories");
+        return;
+    }
+    int serviceId;
+    try {
+        serviceId = Integer.parseInt(serviceIdParam);
+    } catch (NumberFormatException nfe) {
+        response.sendRedirect(request.getContextPath() + "/ServiceController?action=loadCategories");
+        return;
+    }
 
     // Standard DB setup (using MySQL + UTF-8)
     Class.forName("com.mysql.cj.jdbc.Driver");
     String connURL = "jdbc:mysql://localhost/silvercare?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&user=root&password=1234";
+    String connURL = "jdbc:mysql://localhost/silvercare?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&user=root&password=1234";
     Connection conn = DriverManager.getConnection(connURL);
 
+    // Retrieve the selected service's details
     // Retrieve the selected service's details
     String sqlService = "SELECT * FROM service WHERE service_id=?";
     PreparedStatement pstService = conn.prepareStatement(sqlService);
     pstService.setInt(1, serviceId);
     ResultSet rsService = pstService.executeQuery();
-    rsService.next();    // There should always be 1 result for a valid service_id
+    rsService.next();    // There should always be 1 result for a valid service_id    // There should always be 1 result for a valid service_id
 
     String serviceName = rsService.getString("service_name");
     int categoryId = rsService.getInt("category_id");
 
-    // Get the category name of this service
+    // Get the the category name of this service of this service
     String sqlCat = "SELECT category_name FROM service_category WHERE category_id=?";
     PreparedStatement pstCat = conn.prepareStatement(sqlCat);
     pstCat.setInt(1, categoryId);
@@ -33,6 +48,7 @@
     rsCat.next();
     String categoryName = rsCat.getString("category_name");
 
+    // Pull all APPROVED caregivers whose interest matches this service category
     // Pull all APPROVED caregivers whose interest matches this service category
     String sqlCare = "SELECT * FROM caregiver_application WHERE status='APPROVED' AND interest_service=?";
     PreparedStatement pstCare = conn.prepareStatement(sqlCare);
@@ -50,6 +66,7 @@
 
 <style>
     /* Keep caregiver images neat */
+    /* Keep caregiver images neat */
     .caregiver-img {
         width: 100%;
         max-height: 180px;
@@ -65,17 +82,21 @@
 <%@ include file="../header_and_footer/header.jsp" %>
 
 <div class="container py-5">
+    <p class="mb-3">
+        <a href="<%=request.getContextPath()%>/ServiceController?action=listClient&category_id=<%= categoryId %>" class="text-primary text-decoration-none">
+            <i class="fa-solid fa-arrow-left me-1"></i> Back to Services
+        </a>
+    </p>
     <!-- Title shows the service name dynamically -->
     <h2 class="fw-bold mb-4 text-primary">Book: <%= serviceName %></h2>
 
-<form action="<%=request.getContextPath()%>/ServiceController" method="post" class="p-4 bg-white shadow rounded">
+<form action="<%=request.getContextPath()%>/ServiceBookingServlet" method="post" class="p-4 bg-white shadow rounded">
 
-    <!-- Tell the controller to process the booking (required for redirect to success page) -->
-    <input type="hidden" name="action" value="book">
     <!-- Pass these along quietly -->
     <input type="hidden" name="service_id" value="<%= serviceId %>">
     <input type="hidden" name="user_id" value="<%= session.getAttribute("sessUserID") %>">
 
+    <!-- Booking date -->
     <!-- Booking date -->
     <div class="mb-3">
         <label class="form-label fw-semibold">Select Date</label>
@@ -83,11 +104,13 @@
     </div>
 
     <!-- Booking time -->
+    <!-- Booking time -->
     <div class="mb-3">
         <label class="form-label fw-semibold">Select Time</label>
         <input type="time" name="time" class="form-control" required>
     </div>
 
+    <!-- Dropdown list of caregivers -->
     <!-- Dropdown list of caregivers -->
     <div class="mb-3">
         <label class="form-label fw-bold">Choose a Caregiver</label>
@@ -98,7 +121,9 @@
 
                 <%
                     // Tracking if there were any matching caregivers
+                    // Tracking if there were any matching caregivers
                     boolean has = false;
+
 
                     while (rsCare.next()) {
                         has = true;
@@ -114,11 +139,14 @@
                         data-availability="<%= rsCare.getString("availability_days") %>"
                         data-shift="<%= rsCare.getString("preferred_shift") %>"
                     >
+                        <%= rsCare.getString("full_name") %> - <%= rsCare.getInt("years_experience") %> yrs
                         <!-- Show name + years of experience -->
                         <%= rsCare.getString("full_name") %>
                     </option>
                 <% 
                     }
+
+                    // If none found, display a message
 
                     // If none found, display a message
                     if (!has) {
@@ -128,6 +156,7 @@
             </select>
 
             <!-- Button triggers the details modal -->
+            <!-- Button triggers the details modal -->
             <button type="button" class="btn btn-outline-primary" id="viewDetailsBtn">
                 View Details
             </button>
@@ -135,17 +164,20 @@
     </div>
 
     <!-- Optional notes for users -->
+    <!-- Optional notes for users -->
     <div class="mb-3">
         <label class="form-label fw-semibold">Notes (optional)</label>
         <textarea class="form-control" name="notes" rows="3"></textarea>
     </div>
 
     <!-- Final confirmation -->
+    <!-- Final confirmation -->
     <button type="submit" class="btn btn-primary w-100">Confirm Booking</button>
 </form>
 
 </div>
 
+<!-- Caregiver Details Modal -->
 <!-- Caregiver Details Modal -->
 <div class="modal fade" id="caregiverModal" tabindex="-1">
   <div class="modal-dialog modal-lg">
@@ -161,12 +193,14 @@
         <div class="row">
             <div class="col-md-4">
                 <!-- Caregiver photo -->
+                <!-- Caregiver photo -->
                 <img id="cgPhoto" class="caregiver-img">
             </div>
 
             <div class="col-md-8">
                 <h4 id="cgName" class="fw-bold text-primary"></h4>
 
+                <!-- All modal fields will be filled via JS -->
                 <!-- All modal fields will be filled via JS -->
                 <p><strong>Experience:</strong> <span id="cgYears"></span> years</p>
                 <p><strong>About:</strong> <span id="cgExp"></span></p>
@@ -184,20 +218,24 @@
 </div>
 
 <!-- Scripts -->
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+// Handles the "View Details" button
 // Handles the "View Details" button
 document.getElementById("viewDetailsBtn").addEventListener("click", function () {
     let select = document.getElementById("caregiverSelect");
     let opt = select.options[select.selectedIndex];
 
     // Make sure a caregiver is chosen first
+    // Make sure a caregiver is chosen first
     if (select.value === "") {
         alert("Please select a caregiver first.");
         return;
     }
 
+    // Insert caregiver data into modal fields
     // Insert caregiver data into modal fields
     document.getElementById("cgName").innerText = opt.dataset.fullname;
     document.getElementById("cgYears").innerText = opt.dataset.years;
@@ -208,18 +246,20 @@ document.getElementById("viewDetailsBtn").addEventListener("click", function () 
     document.getElementById("cgShift").innerText = opt.dataset.shift;
 
     // Show default placeholder if no photo available
+    // Show default placeholder if no photo available
     let photo = opt.dataset.profile;
     document.getElementById("cgPhoto").src = (photo && photo !== "null")
         ? "../uploads/caregiver/" + photo
         : "https://via.placeholder.com/300x200";
 
     // Display modal
+    // Display modal
     let modal = new bootstrap.Modal(document.getElementById("caregiverModal"));
     modal.show();
 });
 </script>
 
-<%@ include file="../header_and_footer/footer.html" %>
+<%@ include file="../header_and_footer/footer.jsp" %>
 
 </body>
 </html>
